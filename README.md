@@ -18,7 +18,7 @@ Every architectural decision explains the **WHY** - mapping directly to SAA exam
 
 | Scenario                  | Description                          | Status              |
 | ------------------------- | ------------------------------------ | ------------------- |
-| [TechBooks](./techbooks/) | Online bookstore for technical books | Complete (6 phases) |
+| [TechBooks](./docs/scenarios/techbooks/) | Online bookstore for technical books | Complete (6 phases) |
 
 ## View Online
 
@@ -27,7 +27,7 @@ Every architectural decision explains the **WHY** - mapping directly to SAA exam
 Or run locally:
 
 ```bash
-cd techbooks && npx serve .
+cd docs && npx serve .
 ```
 
 ## Getting Started

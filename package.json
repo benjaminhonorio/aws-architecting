@@ -4,7 +4,7 @@
   "scripts": {
     "format": "prettier --write \"**/*.md\"",
     "format:check": "prettier --check \"**/*.md\"",
-    "serve": "npx serve techbooks"
+    "serve": "npx serve docs"
   },
   "devDependencies": {
     "prettier": "^3.4.2"
