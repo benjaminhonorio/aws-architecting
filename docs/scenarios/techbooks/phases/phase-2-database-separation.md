@@ -514,9 +514,14 @@ db.t3.micro
 └───────── Family: T = burstable
 ```
 
-**Common RDS families:** | Family | Use Case | |--------|----------| | **db.t3/t4g** | Burstable,
-dev/test, small production | | **db.m5/m6g** | General purpose production | | **db.r5/r6g** | Memory
-optimized (large datasets) | | **db.x1/x2** | Extreme memory |
+**Common RDS families:**
+
+| Family        | Use Case                         |
+| ------------- | -------------------------------- |
+| **db.t3/t4g** | Burstable, dev/test, small prod  |
+| **db.m5/m6g** | General purpose production       |
+| **db.r5/r6g** | Memory optimized (large datasets)|
+| **db.x1/x2**  | Extreme memory                   |
 
 **For TechBooks Phase 2:** `db.t3.micro` (Free Tier eligible)
 
