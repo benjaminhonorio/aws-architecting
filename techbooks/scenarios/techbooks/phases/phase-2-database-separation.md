@@ -5,6 +5,7 @@
 **Situation:** TechBooks is growing! You're now seeing 500 visitors/day. The founder is thrilled, but you're worried.
 
 **Problems emerging:**
+
 - MySQL on the EC2 instance is consuming more CPU/memory
 - Application performance degrades during database-heavy operations
 - **You wake up at 3 AM thinking:** "What if the EC2 instance dies? We lose ALL customer orders!"
@@ -45,13 +46,14 @@ flowchart TB
 ```
 
 **Problems:**
-| Issue | Impact |
-|-------|--------|
-| Resource contention | DB queries slow down web responses |
-| Single point of failure | EC2 crash = everything down |
-| Scaling impossible | Can't scale web and DB independently |
-| Backup complexity | Must snapshot entire instance |
-| Maintenance windows | Patching EC2 affects database |
+
+| Issue                   | Impact                               |
+| ----------------------- | ------------------------------------ |
+| Resource contention     | DB queries slow down web responses   |
+| Single point of failure | EC2 crash = everything down          |
+| Scaling impossible      | Can't scale web and DB independently |
+| Backup complexity       | Must snapshot entire instance        |
+| Maintenance windows     | Patching EC2 affects database        |
 
 ### The Separated Architecture
 
@@ -80,13 +82,14 @@ flowchart TB
 ```
 
 **Benefits:**
-| Benefit | WHY It Matters |
-|---------|---------------|
-| Independent scaling | Scale web tier without touching DB |
-| Managed backups | AWS handles automated backups |
-| High availability options | Multi-AZ with one click |
-| Security isolation | DB in private subnet, no public access |
-| Maintenance flexibility | Patch EC2 without DB downtime |
+
+| Benefit                   | WHY It Matters                        |
+| ------------------------- | ------------------------------------- |
+| Independent scaling       | Scale web tier without touching DB    |
+| Managed backups           | AWS handles automated backups         |
+| High availability options | Multi-AZ with one click               |
+| Security isolation        | DB in private subnet, no public access |
+| Maintenance flexibility   | Patch EC2 without DB downtime         |
 
 ---
 
@@ -119,6 +122,7 @@ flowchart TB
 ```
 
 **What this means:**
+
 - RDS MySQL **IS** MySQL - same engine, same port (3306), same SQL
 - Your app connects to RDS MySQL exactly like it connected to MySQL on EC2
 - Only the connection string changes: `localhost` → `techbooks-db.abc123.us-east-1.rds.amazonaws.com`
@@ -126,16 +130,16 @@ flowchart TB
 
 ### Self-Managed vs RDS Comparison
 
-| Task | Self-Managed (EC2) | RDS |
-|------|-------------------|-----|
-| **Installation** | You do it | AWS handles |
-| **Patching** | You schedule, you do | AWS handles (maintenance window) |
-| **Backups** | You script, you monitor | Automated daily + transaction logs |
-| **Replication** | You configure | One checkbox for Multi-AZ |
-| **Failover** | You build it | Automatic (Multi-AZ) |
-| **Monitoring** | You set up | CloudWatch integrated |
-| **Scaling** | Stop, resize, restart | Few clicks, minimal downtime |
-| **Encryption** | You configure | One checkbox |
+| Task             | Self-Managed (EC2)      | RDS                                |
+| ---------------- | ----------------------- | ---------------------------------- |
+| **Installation** | You do it               | AWS handles                        |
+| **Patching**     | You schedule, you do    | AWS handles (maintenance window)   |
+| **Backups**      | You script, you monitor | Automated daily + transaction logs |
+| **Replication**  | You configure           | One checkbox for Multi-AZ          |
+| **Failover**     | You build it            | Automatic (Multi-AZ)               |
+| **Monitoring**   | You set up              | CloudWatch integrated              |
+| **Scaling**      | Stop, resize, restart   | Few clicks, minimal downtime       |
+| **Encryption**   | You configure           | One checkbox                       |
 
 ### The Trade-off
 
@@ -164,6 +168,7 @@ flowchart LR
 ```
 
 **WHY RDS for TechBooks:**
+
 - Small team (just you!) - no time for DB operations
 - Standard MySQL workload - no exotic requirements
 - Need reliable backups - customer orders are critical
@@ -205,6 +210,7 @@ flowchart TB
 ```
 
 **What makes it private:**
+
 1. No route to Internet Gateway in the route table
 2. No public IP assigned
 3. Only accessible from within the VPC
@@ -213,12 +219,12 @@ flowchart TB
 
 Even within the private subnet, we add more protection:
 
-| Layer | Protection |
-|-------|-----------|
-| **Network** | Private subnet - no internet route |
+| Layer              | Protection                                     |
+| ------------------ | ---------------------------------------------- |
+| **Network**        | Private subnet - no internet route             |
 | **Security Group** | Only allow port 3306 from EC2's security group |
-| **RDS Settings** | "Publicly Accessible" = No |
-| **Encryption** | Encryption at rest + in transit |
+| **RDS Settings**   | "Publicly Accessible" = No                     |
+| **Encryption**     | Encryption at rest + in transit                |
 
 > **SAA Exam Tip:** "Defense in depth" is a common theme. Multiple layers of security is always better than relying on one.
 
@@ -231,6 +237,7 @@ Even within the private subnet, we add more protection:
 Your RDS instance is in a private subnet (good for security), but what if it needs to reach the internet?
 
 **Use cases:**
+
 - RDS doesn't need internet, but other private resources might
 - Lambda functions in private subnets
 - EC2 instances that shouldn't be publicly accessible but need to download updates
@@ -274,16 +281,17 @@ flowchart TB
 
 ### NAT Gateway vs NAT Instance
 
-| Feature | NAT Gateway | NAT Instance |
-|---------|-------------|--------------|
-| **Managed by** | AWS | You |
-| **Availability** | Highly available in AZ | You manage failover |
-| **Bandwidth** | Up to 100 Gbps | Depends on instance type |
-| **Maintenance** | None | Patching, monitoring |
-| **Cost** | ~$32/month + data | Instance cost + data |
-| **Security Groups** | Not supported | Supported |
+| Feature             | NAT Gateway            | NAT Instance             |
+| ------------------- | ---------------------- | ------------------------ |
+| **Managed by**      | AWS                    | You                      |
+| **Availability**    | Highly available in AZ | You manage failover      |
+| **Bandwidth**       | Up to 100 Gbps         | Depends on instance type |
+| **Maintenance**     | None                   | Patching, monitoring     |
+| **Cost**            | ~$32/month + data      | Instance cost + data     |
+| **Security Groups** | Not supported          | Supported                |
 
 **WHY NAT Gateway:**
+
 - AWS manages everything
 - Automatically scales bandwidth
 - Highly available within an AZ
@@ -293,6 +301,7 @@ flowchart TB
 ### Cost Consideration
 
 NAT Gateway is one of the more expensive networking components:
+
 - **Hourly charge:** ~$0.045/hour (~$32/month)
 - **Data processing:** $0.045/GB
 
@@ -333,6 +342,7 @@ flowchart TB
 ```
 
 **WHY this requirement:**
+
 - Even for Single-AZ deployments, AWS wants the option to fail over
 - Future Multi-AZ enablement requires subnets in multiple AZs
 - AWS places your DB in one of the subnets you specify
@@ -369,45 +379,55 @@ flowchart LR
 
 **WHY reference security groups instead of IPs:**
 
-| Approach | Problem |
-|----------|---------|
-| Allow specific IP (10.0.1.10) | IP changes if EC2 is replaced |
-| Allow subnet CIDR (10.0.1.0/24) | Too broad - any instance in subnet can connect |
-| Allow security group (sg-ec2web) | Only instances with that SG can connect |
+| Approach                         | Problem                                        |
+| -------------------------------- | ---------------------------------------------- |
+| Allow specific IP (10.0.1.10)    | IP changes if EC2 is replaced                  |
+| Allow subnet CIDR (10.0.1.0/24)  | Too broad - any instance in subnet can connect |
+| Allow security group (sg-ec2web) | Only instances with that SG can connect        |
 
 ### Security Group Rules for TechBooks
 
 **EC2 Security Group (sg-techbooks-web):**
-```
+
 Inbound:
-- HTTP (80) from 0.0.0.0/0
-- HTTPS (443) from 0.0.0.0/0
-- SSH (22) from YOUR_IP/32
+
+| Type  | Port | Source     |
+| ----- | ---- | ---------- |
+| HTTP  | 80   | 0.0.0.0/0  |
+| HTTPS | 443  | 0.0.0.0/0  |
+| SSH   | 22   | YOUR_IP/32 |
 
 Outbound:
-- All traffic to 0.0.0.0/0
-```
+
+| Type | Port | Destination |
+| ---- | ---- | ----------- |
+| All  | All  | 0.0.0.0/0   |
 
 **RDS Security Group (sg-techbooks-db):**
-```
+
 Inbound:
-- MySQL (3306) from sg-techbooks-web
+
+| Type  | Port | Source            |
+| ----- | ---- | ----------------- |
+| MySQL | 3306 | sg-techbooks-web  |
 
 Outbound:
-- None needed (stateful - responses auto-allowed)
-```
+
+| Type | Port | Destination                                |
+| ---- | ---- | ------------------------------------------ |
+| None | -    | Not needed (stateful - responses allowed)  |
 
 ### WHY Port 3306?
 
 Each database engine has its standard port. RDS uses the same ports because it runs the actual engine:
 
-| RDS Engine | Default Port | WHY This Port |
-|------------|--------------|---------------|
-| **MySQL** | 3306 | MySQL's standard port since 1995 |
-| **PostgreSQL** | 5432 | PostgreSQL's standard port |
-| **MariaDB** | 3306 | MySQL-compatible, same port |
-| **Oracle** | 1521 | Oracle's standard port |
-| **SQL Server** | 1433 | Microsoft's standard port |
+| RDS Engine     | Default Port | WHY This Port                    |
+| -------------- | ------------ | -------------------------------- |
+| **MySQL**      | 3306         | MySQL's standard port since 1995 |
+| **PostgreSQL** | 5432         | PostgreSQL's standard port       |
+| **MariaDB**    | 3306         | MySQL-compatible, same port      |
+| **Oracle**     | 1521         | Oracle's standard port           |
+| **SQL Server** | 1433         | Microsoft's standard port        |
 
 **The connection flow:**
 
@@ -431,26 +451,28 @@ flowchart LR
 ```
 
 **Before (Phase 1):**
+
 ```javascript
 // Connecting to MySQL on same EC2
 const db = mysql.createConnection({
-  host: 'localhost',      // Same machine
+  host: "localhost", // Same machine
   port: 3306,
-  user: 'techbooks',
-  password: '***',
-  database: 'techbooks'
+  user: "techbooks",
+  password: "***",
+  database: "techbooks",
 });
 ```
 
 **After (Phase 2):**
+
 ```javascript
 // Connecting to RDS MySQL - only host changes!
 const db = mysql.createConnection({
-  host: 'techbooks-db.abc123.us-east-1.rds.amazonaws.com',  // RDS endpoint
-  port: 3306,             // Same port!
-  user: 'techbooks',      // Same credentials
-  password: '***',
-  database: 'techbooks'   // Same database
+  host: "techbooks-db.abc123.us-east-1.rds.amazonaws.com", // RDS endpoint
+  port: 3306, // Same port!
+  user: "techbooks", // Same credentials
+  password: "***",
+  database: "techbooks", // Same database
 });
 ```
 
@@ -486,14 +508,15 @@ db.t3.micro
 
 ### Storage
 
-| Type | IOPS | Use Case | Cost |
-|------|------|----------|------|
-| **gp2** | Burstable, 3 IOPS/GB | General purpose | $ |
-| **gp3** | Configurable baseline | General purpose (newer) | $ |
-| **io1/io2** | Provisioned, up to 256K | High performance | $$$ |
-| **magnetic** | Legacy | Don't use | $ |
+| Type         | IOPS                    | Use Case                | Cost |
+| ------------ | ----------------------- | ----------------------- | ---- |
+| **gp2**      | Burstable, 3 IOPS/GB    | General purpose         | $    |
+| **gp3**      | Configurable baseline   | General purpose (newer) | $    |
+| **io1/io2**  | Provisioned, up to 256K | High performance        | $$$  |
+| **magnetic** | Legacy                  | Don't use               | $    |
 
 **WHY gp3 over gp2:**
+
 - gp3: 3,000 IOPS baseline regardless of size
 - gp2: 100 IOPS for 33GB, need 1TB for 3,000 IOPS
 - gp3 is cheaper and more predictable
@@ -533,20 +556,21 @@ flowchart TB
 
 ### Backup Configuration
 
-| Setting | Our Choice | WHY |
-|---------|-----------|-----|
-| **Retention Period** | 7 days | Balance cost vs recovery options |
-| **Backup Window** | 03:00-04:00 UTC | Low traffic period |
-| **Multi-AZ** | No (Phase 2) | Cost savings for now |
+| Setting              | Our Choice      | WHY                              |
+| -------------------- | --------------- | -------------------------------- |
+| **Retention Period** | 7 days          | Balance cost vs recovery options |
+| **Backup Window**    | 03:00-04:00 UTC | Low traffic period               |
+| **Multi-AZ**         | No (Phase 2)    | Cost savings for now             |
 
 ### Recovery Concepts (Exam Important!)
 
-| Term | Definition | Example |
-|------|------------|---------|
+| Term                               | Definition               | Example                               |
+| ---------------------------------- | ------------------------ | ------------------------------------- |
 | **RPO** (Recovery Point Objective) | Max acceptable data loss | "We can lose up to 5 minutes of data" |
-| **RTO** (Recovery Time Objective) | Max acceptable downtime | "We need to be back up in 1 hour" |
+| **RTO** (Recovery Time Objective)  | Max acceptable downtime  | "We need to be back up in 1 hour"     |
 
 **TechBooks RPO/RTO:**
+
 - RPO: 5 minutes (transaction log frequency)
 - RTO: ~30 minutes (time to restore from snapshot)
 
@@ -608,21 +632,25 @@ flowchart TB
 ### Must-Know Topics
 
 1. **RDS Fundamentals**
+
    - Managed service reduces operational overhead
    - Cannot SSH into RDS instances
    - DB Subnet Group requires 2+ AZs
 
 2. **Private Subnets**
+
    - No route to IGW = private
    - Use for databases, internal services
    - NAT Gateway for outbound internet (if needed)
 
 3. **Security Groups**
+
    - Reference other security groups (not just IPs)
    - Stateful - return traffic auto-allowed
    - RDS SG should only allow app tier
 
 4. **Storage**
+
    - gp3 > gp2 for most cases
    - io1/io2 for high-performance needs
 
@@ -638,6 +666,7 @@ flowchart TB
 **Business trigger:** TechBooks is featured on a tech podcast! Traffic spikes to 5,000 visitors/day. Your single EC2 can't keep up, and you're terrified of downtime.
 
 **Next decisions:**
+
 - Enable RDS Multi-AZ for database high availability
 - Prepare for EC2 redundancy
 - Understand Availability Zones deeply
