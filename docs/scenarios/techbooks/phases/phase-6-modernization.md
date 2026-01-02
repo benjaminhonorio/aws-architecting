@@ -990,10 +990,10 @@ Official AWS documentation used to validate this content:
 
 ### AWS Lambda
 
-- [Lambda Quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) -
-  Memory (128 MB - 10,240 MB), timeout (15 minutes), concurrent executions (1000 default)
-- [Lambda in VPC](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html) -
-  VPC configuration, NAT Gateway requirement for internet access
+- [Lambda Quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) - Memory
+  (128 MB - 10,240 MB), timeout (15 minutes), concurrent executions (1000 default)
+- [Lambda in VPC](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html) - VPC
+  configuration, NAT Gateway requirement for internet access
 
 ### Amazon SQS
 
