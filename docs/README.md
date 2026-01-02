@@ -53,3 +53,29 @@ flowchart LR
     style P5 fill:#c8e6c9,color:#000
     style P6 fill:#bbdefb,color:#000
 ```
+
+---
+
+### [MedVault: Secure by Design](scenarios/medvault/00-overview.md)
+
+Learn AWS security and compliance through the journey of a healthcare startup building a
+HIPAA-compliant patient records platform.
+
+**Covers**: IAM, KMS, Secrets Manager, VPC Endpoints, WAF, Shield, CloudTrail, Config,
+Organizations, SCPs, GuardDuty, Security Hub, Macie
+
+```mermaid
+flowchart LR
+    P1["Phase 1<br>Identity"] --> P2["Phase 2<br>Encryption"]
+    P2 --> P3["Phase 3<br>Network"]
+    P3 --> P4["Phase 4<br>Logging"]
+    P4 --> P5["Phase 5<br>Multi-Acct"]
+    P5 --> P6["Phase 6<br>Detection"]
+
+    style P1 fill:#e8eaf6,color:#000
+    style P2 fill:#e8eaf6,color:#000
+    style P3 fill:#fff3e0,color:#000
+    style P4 fill:#fff3e0,color:#000
+    style P5 fill:#e8f5e9,color:#000
+    style P6 fill:#ffebee,color:#000
+```

@@ -15,3 +15,11 @@
   - [Phase 4: Database Migration](scenarios/shipfast/phases/phase-4-database-migration.md)
   - [Phase 5: Hybrid Storage](scenarios/shipfast/phases/phase-5-hybrid-storage.md)
   - [Phase 6: Workload Migration](scenarios/shipfast/phases/phase-6-workload-migration.md)
+- **MedVault Security Scenario**
+  - [Overview](scenarios/medvault/00-overview.md)
+  - [Phase 1: Identity Foundation](scenarios/medvault/phases/phase-1-identity-foundation.md)
+  - [Phase 2: Data Protection](scenarios/medvault/phases/phase-2-data-protection.md)
+  - [Phase 3: Network Security](scenarios/medvault/phases/phase-3-network-security.md)
+  - [Phase 4: Logging & Monitoring](scenarios/medvault/phases/phase-4-logging-monitoring.md)
+  - [Phase 5: Multi-Account Strategy](scenarios/medvault/phases/phase-5-multi-account.md)
+  - [Phase 6: Threat Detection](scenarios/medvault/phases/phase-6-threat-detection.md)
