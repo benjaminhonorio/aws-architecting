@@ -5,6 +5,7 @@ Learn AWS Solutions Architect concepts through realistic, evolving business scen
 ## How It Works
 
 Each scenario starts with a **simple Day 1 MVP** and evolves naturally through:
+
 - Growth pains
 - Reliability requirements
 - Scaling challenges
@@ -15,9 +16,19 @@ Every architectural decision explains the **WHY** - mapping directly to SAA exam
 
 ## Scenarios
 
-| Scenario | Description | Status |
-|----------|-------------|--------|
-| [TechBooks](./techbooks/) | Online bookstore for technical books | Complete (6 phases) |
+| Scenario                  | Description                          | Status              |
+| ------------------------- | ------------------------------------ | ------------------- |
+| [TechBooks](./docs/scenarios/techbooks/) | Online bookstore for technical books | Complete (6 phases) |
+
+## View Online
+
+**[Live Site](https://benjaminhonorio.github.io/aws-architecting/)**
+
+Or run locally:
+
+```bash
+cd docs && npx serve .
+```
 
 ## Getting Started
 
@@ -26,10 +37,7 @@ Every architectural decision explains the **WHY** - mapping directly to SAA exam
 3. Work through each phase sequentially
 4. Focus on understanding the **business trigger** for each evolution
 
-## Creating New Scenarios
+## Contributing
 
-See [SCENARIO-GUIDELINES.md](./SCENARIO-GUIDELINES.md) for the template and best practices.
-
-## Diagram Styling
-
-All Mermaid diagrams follow consistent styling. See [mermaid-style-guide.md](./mermaid-style-guide.md).
+See [.claude/SCENARIO-GUIDELINES.md](./.claude/SCENARIO-GUIDELINES.md) for creating new scenarios and
+[.claude/mermaid-style-guide.md](./.claude/mermaid-style-guide.md) for diagram styling.

@@ -1,0 +1,12 @@
+{
+  "name": "aws-architecting",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write \"**/*.md\"",
+    "format:check": "prettier --check \"**/*.md\"",
+    "serve": "npx serve docs"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2"
+  }
+}

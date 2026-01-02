@@ -11,21 +11,22 @@ Reference for consistent diagram styling across all TechBooks architecture docum
 
 ## Color Palette
 
-| Purpose | Fill Color | With Text | Example |
-|---------|------------|-----------|---------|
-| **VPC / Container** | `#e3f2fd` | `fill:#e3f2fd,color:#000` | Light blue |
-| **Public Subnet** | `#c8e6c9` | `fill:#c8e6c9,color:#000` | Light green |
-| **Private Subnet** | `#fff9c4` | `fill:#fff9c4,color:#000` | Light yellow |
-| **Database / RDS** | `#bbdefb` | `fill:#bbdefb,color:#000` | Blue |
-| **Warning / Problem** | `#ffcdd2` | `fill:#ffcdd2,color:#000` | Light red |
-| **Success / Good** | `#c8e6c9` | `fill:#c8e6c9,color:#000` | Light green |
-| **Neutral / Future** | `#f5f5f5` | `fill:#f5f5f5,color:#000` | Light gray |
-| **Highlight** | `#fff3e0` | `fill:#fff3e0,color:#000` | Light orange |
-| **Info** | `#e8f5e9` | `fill:#e8f5e9,color:#000` | Very light green |
+| Purpose               | Fill Color | With Text                 | Example          |
+| --------------------- | ---------- | ------------------------- | ---------------- |
+| **VPC / Container**   | `#e3f2fd`  | `fill:#e3f2fd,color:#000` | Light blue       |
+| **Public Subnet**     | `#c8e6c9`  | `fill:#c8e6c9,color:#000` | Light green      |
+| **Private Subnet**    | `#fff9c4`  | `fill:#fff9c4,color:#000` | Light yellow     |
+| **Database / RDS**    | `#bbdefb`  | `fill:#bbdefb,color:#000` | Blue             |
+| **Warning / Problem** | `#ffcdd2`  | `fill:#ffcdd2,color:#000` | Light red        |
+| **Success / Good**    | `#c8e6c9`  | `fill:#c8e6c9,color:#000` | Light green      |
+| **Neutral / Future**  | `#f5f5f5`  | `fill:#f5f5f5,color:#000` | Light gray       |
+| **Highlight**         | `#fff3e0`  | `fill:#fff3e0,color:#000` | Light orange     |
+| **Info**              | `#e8f5e9`  | `fill:#e8f5e9,color:#000` | Very light green |
 
 ## Style Syntax Examples
 
 ### Basic node with color
+
 ```mermaid
 flowchart LR
     A["Node Label"] --> B["Another Node"]
@@ -34,6 +35,7 @@ flowchart LR
 ```
 
 ### Multi-line labels
+
 ```mermaid
 flowchart TB
     EC2["EC2 Instance<br>t3.micro<br>Public Subnet"]
@@ -41,6 +43,7 @@ flowchart TB
 ```
 
 ### Dashed border (for future/placeholder items)
+
 ```mermaid
 flowchart LR
     Future["Reserved for<br>Future Use"]
@@ -48,6 +51,7 @@ flowchart LR
 ```
 
 ### Subgraph styling
+
 ```mermaid
 flowchart TB
     subgraph VPC["VPC: 10.0.0.0/16"]
@@ -71,6 +75,7 @@ flowchart LR
 ```
 
 **Styling specific links (by index):**
+
 ```mermaid
 flowchart LR
     A --> B
@@ -84,25 +89,26 @@ flowchart LR
 ```
 
 **Link style options:**
-| Property | Example | Description |
-|----------|---------|-------------|
-| `stroke` | `stroke:#000` | Line color |
-| `stroke-width` | `stroke-width:2px` | Line thickness |
-| `stroke-dasharray` | `stroke-dasharray:5,5` | Dashed line |
+
+| Property           | Example                 | Description    |
+| ------------------ | ----------------------- | -------------- |
+| `stroke`           | `stroke:#000`           | Line color     |
+| `stroke-width`     | `stroke-width:2px`      | Line thickness |
+| `stroke-dasharray` | `stroke-dasharray:5,5`  | Dashed line    |
 
 ## AWS Component Colors
 
-| Component | Recommended Style |
-|-----------|-------------------|
-| VPC | `fill:#e3f2fd,color:#000` |
-| Public Subnet | `fill:#c8e6c9,color:#000` |
+| Component      | Recommended Style         |
+| -------------- | ------------------------- |
+| VPC            | `fill:#e3f2fd,color:#000` |
+| Public Subnet  | `fill:#c8e6c9,color:#000` |
 | Private Subnet | `fill:#fff9c4,color:#000` |
-| EC2 | `fill:#fff9c4,color:#000` |
-| RDS | `fill:#bbdefb,color:#000` |
-| S3 | `fill:#c8e6c9,color:#000` |
-| Load Balancer | `fill:#e1f5fe,color:#000` |
+| EC2            | `fill:#fff9c4,color:#000` |
+| RDS            | `fill:#bbdefb,color:#000` |
+| S3             | `fill:#c8e6c9,color:#000` |
+| Load Balancer  | `fill:#e1f5fe,color:#000` |
 | Security Group | `fill:#e8f5e9,color:#000` |
-| Error/Problem | `fill:#ffcdd2,color:#000` |
+| Error/Problem  | `fill:#ffcdd2,color:#000` |
 
 ## Template
 

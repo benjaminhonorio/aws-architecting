@@ -1,8 +1,0 @@
-- [Overview](00-scenario-overview.md)
-- **Phases**
-  - [Phase 1: MVP Launch](phases/phase-1-mvp-launch.md)
-  - [Phase 2: Database Separation](phases/phase-2-database-separation.md)
-  - [Phase 3: High Availability](phases/phase-3-high-availability.md)
-  - [Phase 4: Auto Scaling](phases/phase-4-auto-scaling.md)
-  - [Phase 5: Going Global](phases/phase-5-going-global.md)
-  - [Phase 6: Modernization](phases/phase-6-modernization.md)

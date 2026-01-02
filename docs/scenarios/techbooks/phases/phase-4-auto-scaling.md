@@ -2,17 +2,21 @@
 
 ## Business Context
 
-**Situation:** TechBooks is booming! Traffic has reached 10,000 visitors/day. But problems are mounting.
+**Situation:** TechBooks is booming! Traffic has reached 10,000 visitors/day. But problems are
+mounting.
 
 **Recent incidents:**
+
 - Site slowed to a crawl during a flash sale
 - Deployment caused 5-minute outage (customers complained on Twitter)
 - CPU hits 100% during peak hours
 - You manually upgraded to t3.small, but it's still not enough
 
-**The founder asks:** "Why can't the site just... handle more traffic automatically? Netflix does it!"
+**The founder asks:** "Why can't the site just... handle more traffic automatically? Netflix does
+it!"
 
-**Your decision:** Implement Auto Scaling with a Load Balancer for true fault tolerance and elasticity.
+**Your decision:** Implement Auto Scaling with a Load Balancer for true fault tolerance and
+elasticity.
 
 ---
 
@@ -49,25 +53,26 @@ flowchart TB
 
 ### Comparison
 
-| Aspect | Vertical (Scale Up) | Horizontal (Scale Out) |
-|--------|---------------------|------------------------|
-| **How** | Bigger instance | More instances |
-| **Downtime** | Yes (stop, resize, start) | No (add instances live) |
+| Aspect              | Vertical (Scale Up)        | Horizontal (Scale Out)             |
+| ------------------- | -------------------------- | ---------------------------------- |
+| **How**             | Bigger instance            | More instances                     |
+| **Downtime**        | Yes (stop, resize, start)  | No (add instances live)            |
 | **Cost efficiency** | Linear (2x size ≈ 2x cost) | Better (smaller instances cheaper) |
-| **Limit** | Max instance size | Virtually unlimited |
-| **Fault tolerance** | No (still single point) | Yes (instances can fail) |
-| **Complexity** | Simple | Requires load balancer |
+| **Limit**           | Max instance size          | Virtually unlimited                |
+| **Fault tolerance** | No (still single point)    | Yes (instances can fail)           |
+| **Complexity**      | Simple                     | Requires load balancer             |
 
 ### WHY Horizontal Scaling for TechBooks
 
-| Problem | Vertical Solution | Horizontal Solution |
-|---------|-------------------|---------------------|
-| Peak traffic | Buy biggest instance 24/7 | Add instances during peak |
-| Deployment | Downtime while restarting | Rolling update, zero downtime |
-| Instance failure | Site down | Other instances handle traffic |
-| Cost | Pay for peak capacity always | Pay for what you need |
+| Problem          | Vertical Solution            | Horizontal Solution            |
+| ---------------- | ---------------------------- | ------------------------------ |
+| Peak traffic     | Buy biggest instance 24/7    | Add instances during peak      |
+| Deployment       | Downtime while restarting    | Rolling update, zero downtime  |
+| Instance failure | Site down                    | Other instances handle traffic |
+| Cost             | Pay for peak capacity always | Pay for what you need          |
 
-> **SAA Exam Tip:** "Scalable and highly available" almost always means horizontal scaling with Auto Scaling and Load Balancer. Vertical scaling has hard limits and causes downtime.
+> **SAA Exam Tip:** "Scalable and highly available" almost always means horizontal scaling with Auto
+> Scaling and Load Balancer. Vertical scaling has hard limits and causes downtime.
 
 ---
 
@@ -77,12 +82,12 @@ flowchart TB
 
 AWS offers four types of load balancers:
 
-| Type | Layer | Use Case | Protocol |
-|------|-------|----------|----------|
-| **ALB** (Application) | Layer 7 | HTTP/HTTPS, microservices | HTTP, HTTPS, gRPC |
-| **NLB** (Network) | Layer 4 | Ultra-low latency, TCP/UDP | TCP, UDP, TLS |
-| **GLB** (Gateway) | Layer 3 | Third-party appliances | IP |
-| **CLB** (Classic) | Layer 4/7 | Legacy (don't use for new) | HTTP, HTTPS, TCP |
+| Type                  | Layer     | Use Case                   | Protocol          |
+| --------------------- | --------- | -------------------------- | ----------------- |
+| **ALB** (Application) | Layer 7   | HTTP/HTTPS, microservices  | HTTP, HTTPS, gRPC |
+| **NLB** (Network)     | Layer 4   | Ultra-low latency, TCP/UDP | TCP, UDP, TLS     |
+| **GLB** (Gateway)     | Layer 3   | Third-party appliances     | IP                |
+| **CLB** (Classic)     | Layer 4/7 | Legacy (don't use for new) | HTTP, HTTPS, TCP  |
 
 ```mermaid
 flowchart TB
@@ -107,16 +112,17 @@ flowchart TB
 
 ### WHY ALB for TechBooks
 
-| Requirement | ALB Feature |
-|-------------|-------------|
-| Web application (HTTP/HTTPS) | Layer 7 - understands HTTP |
-| Route `/api/*` to API servers | Path-based routing |
-| Route `admin.techbooks.com` differently | Host-based routing |
-| Health check on `/health` endpoint | HTTP health checks |
-| SSL termination | HTTPS listener with ACM cert |
-| WebSocket support (future chat) | Native WebSocket support |
+| Requirement                             | ALB Feature                  |
+| --------------------------------------- | ---------------------------- |
+| Web application (HTTP/HTTPS)            | Layer 7 - understands HTTP   |
+| Route `/api/*` to API servers           | Path-based routing           |
+| Route `admin.techbooks.com` differently | Host-based routing           |
+| Health check on `/health` endpoint      | HTTP health checks           |
+| SSL termination                         | HTTPS listener with ACM cert |
+| WebSocket support (future chat)         | Native WebSocket support     |
 
-> **SAA Exam Tip:** ALB for HTTP/HTTPS applications. NLB for extreme performance, static IPs, or non-HTTP protocols. CLB is legacy - don't choose for new architectures.
+> **SAA Exam Tip:** ALB for HTTP/HTTPS applications. NLB for extreme performance, static IPs, or
+> non-HTTP protocols. CLB is legacy - don't choose for new architectures.
 
 ---
 
@@ -151,15 +157,18 @@ flowchart TB
 ### Component Breakdown
 
 **1. Listener**
+
 - Checks for connection requests on a port/protocol
 - Example: HTTPS on port 443
 
 **2. Rules**
+
 - Determine how to route requests
 - Conditions: path, host header, HTTP headers, query strings
 - Actions: forward, redirect, fixed response
 
 **3. Target Group**
+
 - Group of targets (EC2, Lambda, IP)
 - Health check configuration
 - Load balancing algorithm
@@ -186,12 +195,14 @@ flowchart LR
 ### WHY This Matters for TechBooks
 
 For now, we route everything to one target group. But this architecture allows us to:
+
 - Add separate API servers later
 - Route admin traffic to specific instances
 - A/B test with weighted routing
 - Implement blue-green deployments
 
-> **SAA Exam Tip:** ALB can route based on path (`/api/*`), host (`api.example.com`), HTTP headers, query strings, and source IP. Know these routing options!
+> **SAA Exam Tip:** ALB can route based on path (`/api/*`), host (`api.example.com`), HTTP headers,
+> query strings, and source IP. Know these routing options!
 
 ---
 
@@ -223,49 +234,51 @@ flowchart LR
 
 ### Health Check Types
 
-| Type | Performed By | Checks | Action on Failure |
-|------|--------------|--------|-------------------|
-| **ELB Health Check** | Load Balancer | HTTP request to `/health` | Stop sending traffic |
-| **EC2 Health Check** | Auto Scaling | Instance status | Terminate and replace |
-| **Custom Health Check** | Your code | Application logic | Report to Auto Scaling |
+| Type                    | Performed By  | Checks                    | Action on Failure      |
+| ----------------------- | ------------- | ------------------------- | ---------------------- |
+| **ELB Health Check**    | Load Balancer | HTTP request to `/health` | Stop sending traffic   |
+| **EC2 Health Check**    | Auto Scaling  | Instance status           | Terminate and replace  |
+| **Custom Health Check** | Your code     | Application logic         | Report to Auto Scaling |
 
 ### ELB Health Check Configuration
 
-| Setting | Our Value | WHY |
-|---------|-----------|-----|
-| **Protocol** | HTTP | App serves HTTP |
-| **Path** | `/health` | Dedicated health endpoint |
-| **Port** | 80 | Application port |
-| **Healthy threshold** | 2 | 2 consecutive successes = healthy |
-| **Unhealthy threshold** | 3 | 3 consecutive failures = unhealthy |
-| **Timeout** | 5 seconds | Max wait for response |
-| **Interval** | 30 seconds | Time between checks |
+| Setting                 | Our Value  | WHY                                |
+| ----------------------- | ---------- | ---------------------------------- |
+| **Protocol**            | HTTP       | App serves HTTP                    |
+| **Path**                | `/health`  | Dedicated health endpoint          |
+| **Port**                | 80         | Application port                   |
+| **Healthy threshold**   | 2          | 2 consecutive successes = healthy  |
+| **Unhealthy threshold** | 3          | 3 consecutive failures = unhealthy |
+| **Timeout**             | 5 seconds  | Max wait for response              |
+| **Interval**            | 30 seconds | Time between checks                |
 
 ### What Should `/health` Return?
 
 ```javascript
 // Good health check endpoint
-app.get('/health', async (req, res) => {
+app.get("/health", async (req, res) => {
   try {
     // Check database connection
-    await db.query('SELECT 1');
+    await db.query("SELECT 1");
 
     // Check critical dependencies
     // await redis.ping();
 
-    res.status(200).json({ status: 'healthy' });
+    res.status(200).json({ status: "healthy" });
   } catch (error) {
-    res.status(500).json({ status: 'unhealthy', error: error.message });
+    res.status(500).json({ status: "unhealthy", error: error.message });
   }
 });
 ```
 
 **WHY check dependencies:**
+
 - Instance might be running but database connection lost
 - Deep health check catches more failures
 - ALB routes away from instances with dependency issues
 
-> **SAA Exam Tip:** ELB health checks determine traffic routing. Auto Scaling uses health checks to replace instances. Both should be configured for robust HA.
+> **SAA Exam Tip:** ELB health checks determine traffic routing. Auto Scaling uses health checks to
+> replace instances. Both should be configured for robust HA.
 
 ---
 
@@ -273,7 +286,8 @@ app.get('/health', async (req, res) => {
 
 ### What is an Auto Scaling Group?
 
-An **Auto Scaling Group** automatically adjusts the number of EC2 instances based on demand or schedule.
+An **Auto Scaling Group** automatically adjusts the number of EC2 instances based on demand or
+schedule.
 
 ```mermaid
 flowchart TB
@@ -304,18 +318,21 @@ flowchart TB
 ### ASG Components
 
 **1. Launch Template**
+
 - Blueprint for new instances
 - AMI, instance type, security groups, user data
 - Replaces older "Launch Configuration"
 
 **2. Capacity Settings**
-| Setting | Description | Our Value |
-|---------|-------------|-----------|
-| **Minimum** | Never go below this | 2 (HA requirement) |
+
+| Setting     | Description             | Our Value          |
+| ----------- | ----------------------- | ------------------ |
+| **Minimum** | Never go below this     | 2 (HA requirement) |
 | **Desired** | Target number to maintain | 2 (normal traffic) |
-| **Maximum** | Never exceed this | 6 (cost control) |
+| **Maximum** | Never exceed this       | 6 (cost control)   |
 
 **3. Scaling Policies**
+
 - When and how to scale
 - Target tracking, step scaling, scheduled
 
@@ -343,7 +360,8 @@ flowchart LR
 
 **Rule:** For high availability, minimum should be at least 2, spread across AZs.
 
-> **SAA Exam Tip:** ASG spreads instances across AZs in the subnet configuration. With 2 AZs and min=2, you get one instance per AZ automatically.
+> **SAA Exam Tip:** ASG spreads instances across AZs in the subnet configuration. With 2 AZs and
+> min=2, you get one instance per AZ automatically.
 
 ---
 
@@ -393,15 +411,16 @@ cd /opt/app && npm start
 
 ### AMI Strategy: Golden AMI vs User Data
 
-| Approach | Pros | Cons |
-|----------|------|------|
-| **Golden AMI** | Fast boot, consistent | Must rebuild for updates |
-| **User Data** | Always latest code | Slower boot, potential failures |
-| **Hybrid** | Best of both | More complex |
+| Approach       | Pros                  | Cons                            |
+| -------------- | --------------------- | ------------------------------- |
+| **Golden AMI** | Fast boot, consistent | Must rebuild for updates        |
+| **User Data**  | Always latest code    | Slower boot, potential failures |
+| **Hybrid**     | Best of both          | More complex                    |
 
 **TechBooks approach:** Golden AMI with base software, User Data pulls latest code.
 
-> **SAA Exam Tip:** Launch Templates are the modern replacement for Launch Configurations. Templates support versioning and can be updated without recreating the ASG.
+> **SAA Exam Tip:** Launch Templates are the modern replacement for Launch Configurations. Templates
+> support versioning and can be updated without recreating the ASG.
 
 ---
 
@@ -450,6 +469,7 @@ flowchart LR
 ```
 
 **Available target metrics:**
+
 - `ASGAverageCPUUtilization` - Average CPU
 - `ASGAverageNetworkIn` - Network bytes in
 - `ASGAverageNetworkOut` - Network bytes out
@@ -459,12 +479,12 @@ flowchart LR
 
 Define exact actions for specific thresholds:
 
-| CPU Range | Action |
-|-----------|--------|
-| 0-40% | Remove 1 instance |
-| 40-60% | Do nothing |
-| 60-80% | Add 1 instance |
-| 80-100% | Add 2 instances |
+| CPU Range | Action            |
+| --------- | ----------------- |
+| 0-40%     | Remove 1 instance |
+| 40-60%    | Do nothing        |
+| 60-80%    | Add 1 instance    |
+| 80-100%   | Add 2 instances   |
 
 ### Scheduled Scaling (Known Patterns)
 
@@ -488,13 +508,15 @@ flowchart LR
 
 ### TechBooks Scaling Configuration
 
-| Policy | Type | Configuration |
-|--------|------|---------------|
-| **Primary** | Target Tracking | CPU at 50% |
-| **Backup** | Scheduled | Min 4 during business hours |
-| **Cooldown** | - | 300 seconds (prevent flapping) |
+| Policy       | Type            | Configuration                  |
+| ------------ | --------------- | ------------------------------ |
+| **Primary**  | Target Tracking | CPU at 50%                     |
+| **Backup**   | Scheduled       | Min 4 during business hours    |
+| **Cooldown** | -               | 300 seconds (prevent flapping) |
 
-> **SAA Exam Tip:** Target tracking is the simplest and recommended for most cases. Step scaling provides more control. Scheduled scaling is for predictable patterns. You can combine multiple policies.
+> **SAA Exam Tip:** Target tracking is the simplest and recommended for most cases. Step scaling
+> provides more control. Scheduled scaling is for predictable patterns. You can combine multiple
+> policies.
 
 ---
 
@@ -524,12 +546,13 @@ flowchart TB
 ```
 
 **Changes:**
-| Aspect | Before (EIP) | After (ALB) |
-|--------|--------------|-------------|
-| **DNS points to** | Elastic IP | ALB DNS name |
-| **SSL termination** | EC2 instance | ALB |
-| **Instance replacement** | Must reassign EIP | Automatic |
-| **Cost** | Free if attached | ALB hourly + LCU |
+
+| Aspect                  | Before (EIP)       | After (ALB)      |
+| ----------------------- | ------------------ | ---------------- |
+| **DNS points to**       | Elastic IP         | ALB DNS name     |
+| **SSL termination**     | EC2 instance       | ALB              |
+| **Instance replacement**| Must reassign EIP  | Automatic        |
+| **Cost**                | Free if attached   | ALB hourly + LCU |
 
 ### Updating DNS
 
@@ -539,7 +562,8 @@ techbooks.com → techbooks-alb-123456.us-east-1.elb.amazonaws.com
 
 Use a CNAME or Route 53 Alias record (Alias is better - no charge for queries).
 
-> **SAA Exam Tip:** Route 53 Alias records to ALB are free and support zone apex (naked domain). CNAME records don't work for zone apex and incur query charges.
+> **SAA Exam Tip:** Route 53 Alias records to ALB are free and support zone apex (naked domain).
+> CNAME records don't work for zone apex and incur query charges.
 
 ---
 
@@ -606,12 +630,13 @@ flowchart TB
 **Cross-zone load balancing:** Distributes traffic evenly across ALL instances in ALL AZs.
 
 | Load Balancer | Cross-Zone Default | Data Transfer Cost |
-|---------------|-------------------|-------------------|
-| ALB | Always enabled | No charge |
-| NLB | Disabled | Charged if enabled |
-| CLB | Disabled | No charge |
+| ------------- | ------------------ | ------------------ |
+| ALB           | Always enabled     | No charge          |
+| NLB           | Disabled           | Charged if enabled |
+| CLB           | Disabled           | No charge          |
 
-> **SAA Exam Tip:** ALB always has cross-zone load balancing enabled and doesn't charge for cross-AZ data transfer. NLB charges for cross-AZ if enabled.
+> **SAA Exam Tip:** ALB always has cross-zone load balancing enabled and doesn't charge for cross-AZ
+> data transfer. NLB charges for cross-AZ if enabled.
 
 ---
 
@@ -647,14 +672,15 @@ sequenceDiagram
 
 ### Configuration
 
-| Setting | Value | WHY |
-|---------|-------|-----|
-| **Deregistration delay** | 300 seconds | Allow requests to complete |
-| **For TechBooks** | 60 seconds | Most requests finish quickly |
+| Setting                  | Value       | WHY                          |
+| ------------------------ | ----------- | ---------------------------- |
+| **Deregistration delay** | 300 seconds | Allow requests to complete   |
+| **For TechBooks**        | 60 seconds  | Most requests finish quickly |
 
 **Trade-off:** Longer delay = safer but slower scaling.
 
-> **SAA Exam Tip:** Connection draining / deregistration delay ensures in-flight requests complete before an instance is removed. Default is 300 seconds.
+> **SAA Exam Tip:** Connection draining / deregistration delay ensures in-flight requests complete
+> before an instance is removed. Default is 300 seconds.
 
 ---
 
@@ -692,6 +718,7 @@ flowchart TB
 ### Security Group Rules
 
 **ALB Security Group (sg-techbooks-alb):**
+
 ```
 Inbound:
 - HTTPS (443) from 0.0.0.0/0    # Public traffic
@@ -701,6 +728,7 @@ Outbound:
 ```
 
 **EC2 Security Group (sg-techbooks-web):**
+
 ```
 Inbound:
 - HTTP (80) from sg-techbooks-alb  # Only from ALB!
@@ -713,7 +741,8 @@ Outbound:
 
 **Key change:** EC2 no longer accepts traffic from internet directly - only from ALB.
 
-> **SAA Exam Tip:** Reference security groups instead of IPs. EC2 instances should only accept traffic from ALB, not directly from the internet.
+> **SAA Exam Tip:** Reference security groups instead of IPs. EC2 instances should only accept
+> traffic from ALB, not directly from the internet.
 
 ---
 
@@ -814,16 +843,17 @@ flowchart TB
 
 ## Cost Analysis
 
-| Component | Phase 3 Cost | Phase 4 Cost | Notes |
-|-----------|--------------|--------------|-------|
-| EC2 (t3.micro x2) | ~$8/month | ~$16/month | Min 2 instances |
-| RDS Multi-AZ | ~$24/month | ~$24/month | No change |
-| ALB | $0 | ~$20/month | Hourly + LCU |
-| Data Transfer | ~$2/month | ~$5/month | More traffic |
-| Elastic IP | ~$0 | $0 | Removed! |
-| **Total** | ~$36/month | ~$65/month | +$29 |
+| Component         | Phase 3 Cost | Phase 4 Cost | Notes           |
+| ----------------- | ------------ | ------------ | --------------- |
+| EC2 (t3.micro x2) | ~$8/month    | ~$16/month   | Min 2 instances |
+| RDS Multi-AZ      | ~$24/month   | ~$24/month   | No change       |
+| ALB               | $0           | ~$20/month   | Hourly + LCU    |
+| Data Transfer     | ~$2/month    | ~$5/month    | More traffic    |
+| Elastic IP        | ~$0          | $0           | Removed!        |
+| **Total**         | ~$36/month   | ~$65/month   | +$29            |
 
 **WHY it's worth it:**
+
 - Zero-downtime deployments
 - Automatic scaling for traffic spikes
 - Fault tolerance (instance failures don't cause outage)
@@ -833,9 +863,11 @@ flowchart TB
 
 ## What's Coming in Phase 5?
 
-**Business trigger:** TechBooks is going international! Customers in Europe and Asia complain about slow load times. The founder wants to expand globally.
+**Business trigger:** TechBooks is going international! Customers in Europe and Asia complain about
+slow load times. The founder wants to expand globally.
 
 **Next decisions:**
+
 - CloudFront CDN for static assets and caching
 - Route 53 for DNS and geo-routing
 - Multi-region considerations
@@ -856,6 +888,7 @@ Before moving to Phase 5:
 7. Release the Elastic IP
 
 **Verification:**
+
 - ALB DNS resolves and shows your site
 - Terminate one EC2 instance - another should launch automatically
 - Run a load test - watch instances scale out

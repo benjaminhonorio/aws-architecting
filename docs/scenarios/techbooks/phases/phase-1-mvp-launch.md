@@ -2,7 +2,8 @@
 
 ## Business Context
 
-**Situation:** TechBooks just got seed funding. The founder needs a working website in 2 weeks to demo to investors.
+**Situation:** TechBooks just got seed funding. The founder needs a working website in 2 weeks to
+demo to investors.
 
 **Requirements:**
 
@@ -19,7 +20,8 @@
 
 ### What is a VPC?
 
-A **Virtual Private Cloud (VPC)** is your isolated network within AWS. Think of it as your own private data center in the cloud.
+A **Virtual Private Cloud (VPC)** is your isolated network within AWS. Think of it as your own
+private data center in the cloud.
 
 ```mermaid
 flowchart TB
@@ -57,7 +59,8 @@ flowchart TB
 | **Learning**             | Hides complexity       | Forces understanding           | You'll need this knowledge for the exam and real jobs           |
 | **Production readiness** | Not recommended        | Industry standard              | Default VPC is for quick demos only                             |
 
-> **SAA Exam Tip:** Questions often test whether you understand that resources in private subnets can't be accessed directly from the internet - this is a security best practice.
+> **SAA Exam Tip:** Questions often test whether you understand that resources in private subnets
+> can't be accessed directly from the internet - this is a security best practice.
 
 ---
 
@@ -65,7 +68,8 @@ flowchart TB
 
 ### What is CIDR?
 
-**CIDR (Classless Inter-Domain Routing)** defines your IP address range using notation like `10.0.0.0/16`.
+**CIDR (Classless Inter-Domain Routing)** defines your IP address range using notation like
+`10.0.0.0/16`.
 
 The number after `/` tells you how many IP addresses you get:
 
@@ -163,7 +167,8 @@ flowchart TB
 | **Public**  | Via Internet Gateway    | Web servers, bastion hosts | Lower (exposed) |
 | **Private** | Via NAT Gateway or none | Databases, app servers     | Higher (hidden) |
 
-> **SAA Exam Tip:** "How do you make a subnet public?" Answer: Add a route to an Internet Gateway in its route table + assign public IPs to instances.
+> **SAA Exam Tip:** "How do you make a subnet public?" Answer: Add a route to an Internet Gateway in
+> its route table + assign public IPs to instances.
 
 ---
 
@@ -171,7 +176,8 @@ flowchart TB
 
 ### What is it?
 
-An **Internet Gateway** is a horizontally scaled, redundant, highly available VPC component that allows communication between your VPC and the internet.
+An **Internet Gateway** is a horizontally scaled, redundant, highly available VPC component that
+allows communication between your VPC and the internet.
 
 ### WHY Do You Need It?
 
@@ -198,7 +204,8 @@ flowchart LR
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
-> **SAA Exam Tip:** IGW performs NAT (Network Address Translation) for instances with public IPs. It translates between public and private IPs.
+> **SAA Exam Tip:** IGW performs NAT (Network Address Translation) for instances with public IPs. It
+> translates between public and private IPs.
 
 ---
 
@@ -206,7 +213,8 @@ flowchart LR
 
 ### What Are They?
 
-**Security Groups** are virtual firewalls that control inbound and outbound traffic at the **instance level**.
+**Security Groups** are virtual firewalls that control inbound and outbound traffic at the
+**instance level**.
 
 ### Key Characteristics (Exam Favorites!)
 
@@ -234,7 +242,8 @@ sequenceDiagram
     SG->>User: Response delivered
 ```
 
-If security groups were **stateless** (like NACLs), you'd need to explicitly allow the response traffic on ephemeral ports (1024-65535).
+If security groups were **stateless** (like NACLs), you'd need to explicitly allow the response
+traffic on ephemeral ports (1024-65535).
 
 ### Our TechBooks Security Group
 
@@ -242,11 +251,11 @@ For Phase 1, our EC2 needs:
 
 **Inbound Rules:**
 
-| Type  | Port | Source      | WHY                      |
-| ----- | ---- | ----------- | ------------------------ |
-| HTTP  | 80   | 0.0.0.0/0   | Web traffic              |
-| HTTPS | 443  | 0.0.0.0/0   | Secure web traffic       |
-| SSH   | 22   | YOUR_IP/32  | Admin access (restrict!) |
+| Type  | Port | Source     | WHY                      |
+| ----- | ---- | ---------- | ------------------------ |
+| HTTP  | 80   | 0.0.0.0/0  | Web traffic              |
+| HTTPS | 443  | 0.0.0.0/0  | Secure web traffic       |
+| SSH   | 22   | YOUR_IP/32 | Admin access (restrict!) |
 
 **Outbound Rules:**
 
@@ -254,7 +263,8 @@ For Phase 1, our EC2 needs:
 | ---- | ---- | ----------- | ------------------ |
 | All  | All  | 0.0.0.0/0   | Updates, API calls |
 
-> **SAA Exam Tip:** Never allow SSH from 0.0.0.0/0 in production. This is a common "what's wrong with this architecture?" question.
+> **SAA Exam Tip:** Never allow SSH from 0.0.0.0/0 in production. This is a common "what's wrong
+> with this architecture?" question.
 
 ---
 
@@ -309,7 +319,8 @@ flowchart LR
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
-> **SAA Exam Tip:** T instances can have "unlimited" mode (default for t3) - they can burst beyond credits but you pay for extra usage.
+> **SAA Exam Tip:** T instances can have "unlimited" mode (default for t3) - they can burst beyond
+> credits but you pay for extra usage.
 
 ### WHY Elastic IP Instead of Auto-Assigned Public IP?
 
@@ -322,7 +333,9 @@ When you launch an EC2 instance, you can get a public IP two ways:
 | **DNS**          | Changes with IP          | Can stay consistent        |
 | **Reassignment** | Not possible             | Can move between instances |
 
-> **Note (Feb 2024 Change):** AWS now charges $0.005/hour for ALL public IPv4 addresses, whether auto-assigned or Elastic IP, attached or not. This was a significant pricing change to encourage IPv6 adoption.
+> **Note (Feb 2024 Change):** AWS now charges $0.005/hour for ALL public IPv4 addresses, whether
+> auto-assigned or Elastic IP, attached or not. This was a significant pricing change to encourage
+> IPv6 adoption.
 
 **The Problem with Auto-Assigned IPs:**
 
@@ -346,8 +359,10 @@ flowchart LR
 
 **WHY This Matters for TechBooks:**
 
-1. **DNS Records** - If you point `techbooks.com` to your EC2's IP and restart the instance, your site breaks
-2. **API Integrations** - Payment processors, shipping APIs that whitelist your IP would need updating
+1. **DNS Records** - If you point `techbooks.com` to your EC2's IP and restart the instance, your
+   site breaks
+2. **API Integrations** - Payment processors, shipping APIs that whitelist your IP would need
+   updating
 3. **SSL Certificates** - Some configurations tie to specific IPs
 4. **Customer Bookmarks** - Anyone who bookmarked the IP directly loses access
 
@@ -384,9 +399,13 @@ flowchart LR
 | EIP **not** attached to any instance           | ~$3.60/month ($0.005/hr) |
 | EIP attached to stopped instance               | ~$3.60/month ($0.005/hr) |
 
-**Free Tier Exception:** For accounts in their first 12 months, the Free Tier includes **750 hours/month of in-use public IPv4 addresses** for EC2. This covers approximately one public IP running 24/7. Usage beyond 750 hours is charged at $0.005/hr.
+**Free Tier Exception:** For accounts in their first 12 months, the Free Tier includes **750
+hours/month of in-use public IPv4 addresses** for EC2. This covers approximately one public IP
+running 24/7. Usage beyond 750 hours is charged at $0.005/hr.
 
-> **SAA Exam Tip:** AWS charges for ALL public IPv4 addresses to discourage IPv4 usage and encourage IPv6 adoption. Common exam questions: "How do you reduce costs?" → Release unused EIPs, use private IPs with NAT Gateway, or adopt IPv6.
+> **SAA Exam Tip:** AWS charges for ALL public IPv4 addresses to discourage IPv4 usage and encourage
+> IPv6 adoption. Common exam questions: "How do you reduce costs?" → Release unused EIPs, use
+> private IPs with NAT Gateway, or adopt IPv6.
 
 **When NOT to use Elastic IP:**
 
@@ -394,7 +413,8 @@ flowchart LR
 - Using Route 53 with health checks (can auto-failover)
 - Auto Scaling groups (instances are disposable)
 
-For our Phase 1 single-instance MVP, Elastic IP is the right choice. In Phase 4, when we add a Load Balancer, we'll remove it.
+For our Phase 1 single-instance MVP, Elastic IP is the right choice. In Phase 4, when we add a Load
+Balancer, we'll remove it.
 
 ---
 
@@ -435,24 +455,20 @@ flowchart TB
 ### Must-Know Topics
 
 1. **VPC Fundamentals**
-
    - VPC is region-scoped
    - Subnets are AZ-scoped
    - One IGW per VPC
 
 2. **CIDR Calculations**
-
    - /16 = 65,536 IPs
    - /24 = 256 IPs (251 usable in AWS)
    - Always subtract 5 for AWS reserved
 
 3. **Public vs Private**
-
    - Public subnet = route to IGW
    - Private subnet = no direct internet route
 
 4. **Security Groups**
-
    - Stateful
    - Allow rules only
    - Instance level
@@ -466,7 +482,8 @@ flowchart TB
 
 ## What's Coming in Phase 2?
 
-**Business trigger:** TechBooks is getting 500 visitors/day! The single MySQL database on EC2 is showing strain, and you're nervous about losing data.
+**Business trigger:** TechBooks is getting 500 visitors/day! The single MySQL database on EC2 is
+showing strain, and you're nervous about losing data.
 
 **Next decisions:**
 
@@ -498,21 +515,28 @@ Official AWS documentation used to validate this content:
 ### VPC & Networking
 
 - [What is Amazon VPC?](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)
-- [Subnet CIDR blocks](https://docs.aws.amazon.com/vpc/latest/userguide/subnet-sizing.html) - Reserved IPs per subnet
-- [Internet Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html) - IGW characteristics and NAT behavior
-- [Amazon VPC Quotas](https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html) - One IGW per VPC limit
+- [Subnet CIDR blocks](https://docs.aws.amazon.com/vpc/latest/userguide/subnet-sizing.html) -
+  Reserved IPs per subnet
+- [Internet Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html) -
+  IGW characteristics and NAT behavior
+- [Amazon VPC Quotas](https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html) - One
+  IGW per VPC limit
 - [Infrastructure Security - Compare Security Groups and Network ACLs](https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)
 
 ### Security
 
 - [Security Groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html)
-- [Network ACLs](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) - Stateless behavior
+- [Network ACLs](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) - Stateless
+  behavior
 
 ### EC2 & Compute
 
-- [Burstable Performance Instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html) - CPU credits and unlimited mode
-- [EC2 Free Tier Usage](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-free-tier-usage.html) - t3.micro eligibility
-- [EBS General Purpose SSD Volumes](https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html) - gp3 vs gp2 comparison
+- [Burstable Performance Instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html) -
+  CPU credits and unlimited mode
+- [EC2 Free Tier Usage](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-free-tier-usage.html) -
+  t3.micro eligibility
+- [EBS General Purpose SSD Volumes](https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html) -
+  gp3 vs gp2 comparison
 
 ### Pricing
 
