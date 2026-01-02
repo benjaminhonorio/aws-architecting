@@ -6,9 +6,11 @@ A collection of hands-on learning scenarios for AWS Solutions Architect certific
 
 ### [TechBooks: Scale or Fail](scenarios/techbooks/00-overview.md)
 
-Learn AWS architecture through the journey of an online bookstore that evolves from a simple MVP to a modern, globally-distributed application.
+Learn AWS architecture through the journey of an online bookstore that evolves from a simple MVP to
+a modern, globally-distributed application.
 
-**Covers**: VPC, EC2, RDS, Multi-AZ, Auto Scaling, ALB, CloudFront, Route 53, Lambda, SQS, ElastiCache
+**Covers**: VPC, EC2, RDS, Multi-AZ, Auto Scaling, ALB, CloudFront, Route 53, Lambda, SQS,
+ElastiCache
 
 ```mermaid
 flowchart LR
@@ -28,4 +30,4 @@ flowchart LR
 
 ---
 
-*More scenarios coming soon...*
+_More scenarios coming soon..._

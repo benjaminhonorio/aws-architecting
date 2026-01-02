@@ -2,15 +2,19 @@
 
 ## Business Context
 
-**Situation:** TechBooks is now profitable! Monthly revenue has grown 5x since launch. The founder wants to reduce AWS costs and add new features. The development team has grown from 1 to 5 engineers.
+**Situation:** TechBooks is now profitable! Monthly revenue has grown 5x since launch. The founder
+wants to reduce AWS costs and add new features. The development team has grown from 1 to 5
+engineers.
 
 **New feature requests:**
+
 - User book reviews with image uploads
 - Email notifications (order confirmation, shipping updates)
 - "Customers also bought" recommendations
 - Search autocomplete
 
 **Problems identified:**
+
 - EC2 instances run 24/7 but traffic is spiky (80% idle at night)
 - Database queries are slow during traffic spikes
 - Session data lost when instances scale down
@@ -45,7 +49,8 @@ flowchart TB
 
 ### The Modernization Approach
 
-We won't rewrite everything. We'll **extract specific functions** to serverless while keeping the core application on EC2.
+We won't rewrite everything. We'll **extract specific functions** to serverless while keeping the
+core application on EC2.
 
 ```mermaid
 flowchart TB
@@ -67,7 +72,9 @@ flowchart TB
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
-> **SAA Exam Tip:** Modernization doesn't mean "rewrite in serverless." It means using the right service for each workload. Keep steady-state workloads on EC2, move event-driven workloads to Lambda.
+> **SAA Exam Tip:** Modernization doesn't mean "rewrite in serverless." It means using the right
+> service for each workload. Keep steady-state workloads on EC2, move event-driven workloads to
+> Lambda.
 
 ---
 
@@ -98,14 +105,14 @@ flowchart LR
 
 ### Lambda Key Concepts
 
-| Concept | Description | Limit |
-|---------|-------------|-------|
-| **Function** | Your code + configuration | N/A |
-| **Runtime** | Language (Python, Node.js, etc.) | 12+ supported |
-| **Handler** | Entry point function | N/A |
-| **Memory** | Allocated RAM (CPU scales with it) | 128 MB - 10 GB |
-| **Timeout** | Maximum execution time | 15 minutes |
-| **Concurrency** | Parallel executions | 1000 default (soft) |
+| Concept         | Description                        | Limit               |
+| --------------- | ---------------------------------- | ------------------- |
+| **Function**    | Your code + configuration          | N/A                 |
+| **Runtime**     | Language (Python, Node.js, etc.)   | 12+ supported       |
+| **Handler**     | Entry point function               | N/A                 |
+| **Memory**      | Allocated RAM (CPU scales with it) | 128 MB - 10 GB      |
+| **Timeout**     | Maximum execution time             | 15 minutes          |
+| **Concurrency** | Parallel executions                | 1000 default (soft) |
 
 ### Lambda Execution Model
 
@@ -132,14 +139,16 @@ sequenceDiagram
 
 ### Cold Starts
 
-| Factor | Impact on Cold Start |
-|--------|---------------------|
-| **Memory size** | More memory = faster init |
-| **Code size** | Smaller = faster download |
-| **Runtime** | Python/Node.js faster than Java |
-| **VPC** | VPC adds 1-2 seconds (improved but still slower) |
+| Factor          | Impact on Cold Start                             |
+| --------------- | ------------------------------------------------ |
+| **Memory size** | More memory = faster init                        |
+| **Code size**   | Smaller = faster download                        |
+| **Runtime**     | Python/Node.js faster than Java                  |
+| **VPC**         | VPC adds 1-2 seconds (improved but still slower) |
 
-> **SAA Exam Tip:** Lambda in VPC used to have significant cold start penalties. AWS improved this with Hyperplane ENIs, but there's still some overhead. Only put Lambda in VPC if it needs to access VPC resources.
+> **SAA Exam Tip:** Lambda in VPC used to have significant cold start penalties. AWS improved this
+> with Hyperplane ENIs, but there's still some overhead. Only put Lambda in VPC if it needs to
+> access VPC resources.
 
 ---
 
@@ -163,6 +172,7 @@ flowchart LR
 ```
 
 **WHY Lambda for this?**
+
 - Event-driven (triggered by upload)
 - Variable traffic (depends on reviews)
 - Stateless (each image is independent)
@@ -186,6 +196,7 @@ flowchart LR
 ```
 
 **WHY Lambda + SQS?**
+
 - Decoupled (app doesn't wait for email to send)
 - Retries built-in (SQS retries on failure)
 - Scalable (handles Black Friday spike)
@@ -209,15 +220,16 @@ flowchart LR
 
 ### Lambda vs EC2 Decision Framework
 
-| Characteristic | Use Lambda | Use EC2 |
-|----------------|-----------|---------|
-| Execution time | < 15 minutes | > 15 minutes |
-| Traffic pattern | Spiky, unpredictable | Steady, predictable |
-| State | Stateless | Stateful |
-| Startup time | Tolerant of cold starts | Needs instant response |
-| Cost at high volume | Expensive | Cheaper |
+| Characteristic      | Use Lambda              | Use EC2                |
+| ------------------- | ----------------------- | ---------------------- |
+| Execution time      | < 15 minutes            | > 15 minutes           |
+| Traffic pattern     | Spiky, unpredictable    | Steady, predictable    |
+| State               | Stateless               | Stateful               |
+| Startup time        | Tolerant of cold starts | Needs instant response |
+| Cost at high volume | Expensive               | Cheaper                |
 
-> **SAA Exam Tip:** Lambda is cost-effective for variable workloads. For steady, high-volume workloads (millions of requests/hour), EC2 or Fargate may be cheaper.
+> **SAA Exam Tip:** Lambda is cost-effective for variable workloads. For steady, high-volume
+> workloads (millions of requests/hour), EC2 or Fargate may be cheaper.
 
 ---
 
@@ -260,11 +272,11 @@ flowchart TB
 
 ### Lambda VPC Configuration
 
-| Setting | Purpose |
-|---------|---------|
-| **Subnets** | Lambda runs ENIs in these subnets |
-| **Security Groups** | Controls Lambda's network access |
-| **NAT Gateway** | Required for internet access from private subnet |
+| Setting             | Purpose                                          |
+| ------------------- | ------------------------------------------------ |
+| **Subnets**         | Lambda runs ENIs in these subnets                |
+| **Security Groups** | Controls Lambda's network access                 |
+| **NAT Gateway**     | Required for internet access from private subnet |
 
 ### Internet Access from VPC Lambda
 
@@ -288,7 +300,8 @@ flowchart LR
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
-> **SAA Exam Tip:** Lambda in VPC needs NAT Gateway for internet access. This adds cost (~$32/month per NAT Gateway). Consider VPC endpoints for AWS services instead.
+> **SAA Exam Tip:** Lambda in VPC needs NAT Gateway for internet access. This adds cost (~$32/month
+> per NAT Gateway). Consider VPC endpoints for AWS services instead.
 
 ---
 
@@ -296,7 +309,8 @@ flowchart LR
 
 ### What is SQS?
 
-**Simple Queue Service (SQS)** is a fully managed message queue. It decouples components so they can fail independently.
+**Simple Queue Service (SQS)** is a fully managed message queue. It decouples components so they can
+fail independently.
 
 ```mermaid
 flowchart LR
@@ -320,19 +334,19 @@ flowchart LR
 
 ### SQS Queue Types
 
-| Type | Use Case | Ordering | Throughput |
-|------|----------|----------|------------|
-| **Standard** | High throughput, at-least-once | Best effort | Unlimited |
-| **FIFO** | Strict order required | Guaranteed | 3000 msg/sec (with batching) |
+| Type         | Use Case                       | Ordering    | Throughput                   |
+| ------------ | ------------------------------ | ----------- | ---------------------------- |
+| **Standard** | High throughput, at-least-once | Best effort | Unlimited                    |
+| **FIFO**     | Strict order required          | Guaranteed  | 3000 msg/sec (with batching) |
 
 ### SQS Key Concepts
 
-| Concept | Description | Default |
-|---------|-------------|---------|
-| **Visibility Timeout** | Time message is hidden after read | 30 seconds |
-| **Retention Period** | How long messages are kept | 4 days (max 14) |
-| **Dead Letter Queue** | Queue for failed messages | Optional |
-| **Long Polling** | Wait for messages (reduces API calls) | 0 seconds |
+| Concept                | Description                           | Default         |
+| ---------------------- | ------------------------------------- | --------------- |
+| **Visibility Timeout** | Time message is hidden after read     | 30 seconds      |
+| **Retention Period**   | How long messages are kept            | 4 days (max 14) |
+| **Dead Letter Queue**  | Queue for failed messages             | Optional        |
+| **Long Polling**       | Wait for messages (reduces API calls) | 0 seconds       |
 
 ### TechBooks Email Flow with SQS
 
@@ -365,7 +379,8 @@ flowchart TB
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
-> **SAA Exam Tip:** Always configure Dead Letter Queues for SQS. They capture failed messages for debugging. Set `maxReceiveCount` to define retry attempts before moving to DLQ.
+> **SAA Exam Tip:** Always configure Dead Letter Queues for SQS. They capture failed messages for
+> debugging. Set `maxReceiveCount` to define retry attempts before moving to DLQ.
 
 ---
 
@@ -394,14 +409,14 @@ flowchart LR
 
 ### Redis vs Memcached
 
-| Feature | Redis | Memcached |
-|---------|-------|-----------|
-| **Data structures** | Strings, lists, sets, hashes | Strings only |
-| **Persistence** | Yes (snapshots, AOF) | No |
-| **Replication** | Yes (read replicas) | No |
-| **Multi-AZ** | Yes (automatic failover) | No |
-| **Pub/Sub** | Yes | No |
-| **Use case** | Complex caching, sessions | Simple caching |
+| Feature             | Redis                        | Memcached      |
+| ------------------- | ---------------------------- | -------------- |
+| **Data structures** | Strings, lists, sets, hashes | Strings only   |
+| **Persistence**     | Yes (snapshots, AOF)         | No             |
+| **Replication**     | Yes (read replicas)          | No             |
+| **Multi-AZ**        | Yes (automatic failover)     | No             |
+| **Pub/Sub**         | Yes                          | No             |
+| **Use case**        | Complex caching, sessions    | Simple caching |
 
 ### TechBooks Caching Strategy
 
@@ -490,7 +505,8 @@ flowchart TB
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
-> **SAA Exam Tip:** For stateless applications with Auto Scaling, externalize session storage to ElastiCache Redis or DynamoDB. This enables seamless scale-in/out.
+> **SAA Exam Tip:** For stateless applications with Auto Scaling, externalize session storage to
+> ElastiCache Redis or DynamoDB. This enables seamless scale-in/out.
 
 ---
 
@@ -552,11 +568,12 @@ flowchart LR
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
-| Security Group | Direction | Port | Source/Dest | Purpose |
-|----------------|-----------|------|-------------|---------|
-| sg-techbooks-cache | Inbound | 6379 | sg-techbooks-app | Redis from EC2 |
+| Security Group     | Direction | Port | Source/Dest      | Purpose        |
+| ------------------ | --------- | ---- | ---------------- | -------------- |
+| sg-techbooks-cache | Inbound   | 6379 | sg-techbooks-app | Redis from EC2 |
 
-> **SAA Exam Tip:** ElastiCache is VPC-only. It has no public endpoints. Always reference Security Groups instead of IP addresses for dynamic environments.
+> **SAA Exam Tip:** ElastiCache is VPC-only. It has no public endpoints. Always reference Security
+> Groups instead of IP addresses for dynamic environments.
 
 ---
 
@@ -584,12 +601,12 @@ flowchart TB
 
 ### WHY Presigned URLs?
 
-| Direct to EC2 | Presigned URL to S3 |
-|---------------|---------------------|
-| EC2 handles upload | S3 handles upload |
-| Limited bandwidth | Unlimited bandwidth |
-| Pay for EC2 time | Pay only S3 storage |
-| Complex to scale | Auto-scales |
+| Direct to EC2      | Presigned URL to S3 |
+| ------------------ | ------------------- |
+| EC2 handles upload | S3 handles upload   |
+| Limited bandwidth  | Unlimited bandwidth |
+| Pay for EC2 time   | Pay only S3 storage |
+| Complex to scale   | Auto-scales         |
 
 ### Presigned URL Flow
 
@@ -610,15 +627,16 @@ sequenceDiagram
 
 ### S3 Bucket Configuration
 
-| Setting | Value | Purpose |
-|---------|-------|---------|
-| **Bucket name** | techbooks-user-uploads | User-uploaded content |
-| **Versioning** | Enabled | Recovery from accidental deletes |
-| **Encryption** | SSE-S3 | Encrypt at rest |
-| **Lifecycle** | Move to IA after 90 days | Cost optimization |
-| **CORS** | Allow *.techbooks.com | Browser uploads |
+| Setting         | Value                    | Purpose                          |
+| --------------- | ------------------------ | -------------------------------- |
+| **Bucket name** | techbooks-user-uploads   | User-uploaded content            |
+| **Versioning**  | Enabled                  | Recovery from accidental deletes |
+| **Encryption**  | SSE-S3                   | Encrypt at rest                  |
+| **Lifecycle**   | Move to IA after 90 days | Cost optimization                |
+| **CORS**        | Allow \*.techbooks.com   | Browser uploads                  |
 
-> **SAA Exam Tip:** Presigned URLs allow secure, temporary access to private S3 objects. They can be for upload (PUT) or download (GET). Expiration time is configurable.
+> **SAA Exam Tip:** Presigned URLs allow secure, temporary access to private S3 objects. They can be
+> for upload (PUT) or download (GET). Expiration time is configurable.
 
 ---
 
@@ -662,12 +680,12 @@ flowchart TB
 
 ### Benefits of Event-Driven
 
-| Benefit | How |
-|---------|-----|
-| **Resilience** | Failed email doesn't break checkout |
-| **Scalability** | Lambda auto-scales with queue depth |
-| **Cost** | Pay only when processing |
-| **Speed** | User doesn't wait for background tasks |
+| Benefit         | How                                    |
+| --------------- | -------------------------------------- |
+| **Resilience**  | Failed email doesn't break checkout    |
+| **Scalability** | Lambda auto-scales with queue depth    |
+| **Cost**        | Pay only when processing               |
+| **Speed**       | User doesn't wait for background tasks |
 
 ---
 
@@ -677,15 +695,15 @@ flowchart TB
 
 After Phase 5, TechBooks spends approximately:
 
-| Component | Monthly Cost | Usage Pattern |
-|-----------|--------------|---------------|
-| EC2 (t3.small x2) | ~$30 | On-Demand, 24/7 |
-| RDS Multi-AZ | ~$50 | On-Demand, 24/7 |
-| ALB | ~$20 | 24/7 |
-| CloudFront | ~$15 | Variable |
-| S3 | ~$5 | Variable |
-| NAT Gateway | ~$35 | 24/7 |
-| **Total** | ~$155 | |
+| Component         | Monthly Cost | Usage Pattern   |
+| ----------------- | ------------ | --------------- |
+| EC2 (t3.small x2) | ~$30         | On-Demand, 24/7 |
+| RDS Multi-AZ      | ~$50         | On-Demand, 24/7 |
+| ALB               | ~$20         | 24/7            |
+| CloudFront        | ~$15         | Variable        |
+| S3                | ~$5          | Variable        |
+| NAT Gateway       | ~$35         | 24/7            |
+| **Total**         | ~$155        |                 |
 
 ### Savings Opportunities
 
@@ -707,34 +725,36 @@ flowchart TB
 
 ### Reserved Instances vs Savings Plans
 
-| Feature | Reserved Instances | Savings Plans |
-|---------|-------------------|---------------|
-| **Commitment** | Specific instance type | $/hour spend |
-| **Flexibility** | Limited (RI exchange) | High (any instance) |
-| **Services** | EC2, RDS, ElastiCache | EC2, Fargate, Lambda |
-| **Discount** | Up to 72% | Up to 66% |
-| **Best for** | Predictable workloads | Changing workloads |
+| Feature         | Reserved Instances     | Savings Plans        |
+| --------------- | ---------------------- | -------------------- |
+| **Commitment**  | Specific instance type | $/hour spend         |
+| **Flexibility** | Limited (RI exchange)  | High (any instance)  |
+| **Services**    | EC2, RDS, ElastiCache  | EC2, Fargate, Lambda |
+| **Discount**    | Up to 72%              | Up to 66%            |
+| **Best for**    | Predictable workloads  | Changing workloads   |
 
 ### TechBooks Optimization Plan
 
-| Component | Current | Optimized | Savings |
-|-----------|---------|-----------|---------|
-| EC2 | On-Demand $30 | 1yr RI $15 | 50% |
-| RDS | On-Demand $50 | 1yr RI $30 | 40% |
-| ElastiCache | On-Demand $25 | 1yr RI $15 | 40% |
-| **Compute Total** | $105 | $60 | ~$45/month |
+| Component         | Current       | Optimized  | Savings    |
+| ----------------- | ------------- | ---------- | ---------- |
+| EC2               | On-Demand $30 | 1yr RI $15 | 50%        |
+| RDS               | On-Demand $50 | 1yr RI $30 | 40%        |
+| ElastiCache       | On-Demand $25 | 1yr RI $15 | 40%        |
+| **Compute Total** | $105          | $60        | ~$45/month |
 
 ### Additional Optimizations
 
-| Optimization | Potential Savings |
-|--------------|-------------------|
-| **S3 Intelligent-Tiering** | Auto-moves cold data |
-| **S3 Lifecycle policies** | Delete old versions |
-| **CloudFront caching** | Reduce origin requests |
-| **Lambda right-sizing** | Match memory to needs |
-| **NAT Gateway review** | Use VPC endpoints |
+| Optimization               | Potential Savings      |
+| -------------------------- | ---------------------- |
+| **S3 Intelligent-Tiering** | Auto-moves cold data   |
+| **S3 Lifecycle policies**  | Delete old versions    |
+| **CloudFront caching**     | Reduce origin requests |
+| **Lambda right-sizing**    | Match memory to needs  |
+| **NAT Gateway review**     | Use VPC endpoints      |
 
-> **SAA Exam Tip:** For steady-state workloads, Reserved Instances provide the best savings. For flexible/changing workloads, use Savings Plans. Spot Instances are best for fault-tolerant, stateless workloads.
+> **SAA Exam Tip:** For steady-state workloads, Reserved Instances provide the best savings. For
+> flexible/changing workloads, use Savings Plans. Spot Instances are best for fault-tolerant,
+> stateless workloads.
 
 ---
 
@@ -785,12 +805,14 @@ flowchart LR
 
 ### Endpoint Types
 
-| Type | Services | Cost | How It Works |
-|------|----------|------|--------------|
-| **Gateway** | S3, DynamoDB | Free | Route table entry |
-| **Interface** | Most others | ~$7/month | ENI in subnet |
+| Type          | Services     | Cost      | How It Works      |
+| ------------- | ------------ | --------- | ----------------- |
+| **Gateway**   | S3, DynamoDB | Free      | Route table entry |
+| **Interface** | Most others  | ~$7/month | ENI in subnet     |
 
-> **SAA Exam Tip:** Gateway endpoints are FREE for S3 and DynamoDB. Always create them to avoid NAT Gateway data charges. Interface endpoints cost money but may still be cheaper than NAT for high-traffic services.
+> **SAA Exam Tip:** Gateway endpoints are FREE for S3 and DynamoDB. Always create them to avoid NAT
+> Gateway data charges. Interface endpoints cost money but may still be cheaper than NAT for
+> high-traffic services.
 
 ---
 
@@ -894,15 +916,15 @@ flowchart TB
 
 ## Final Cost Comparison
 
-| Phase | Monthly Cost | What's Included |
-|-------|--------------|-----------------|
-| Phase 1 (MVP) | ~$15 | 1 EC2, EIP |
-| Phase 2 (RDS) | ~$45 | + RDS, NAT Gateway |
-| Phase 3 (HA) | ~$70 | + Multi-AZ RDS |
-| Phase 4 (Scaling) | ~$85 | + ALB, ASG |
-| Phase 5 (Global) | ~$105 | + CloudFront, S3 |
-| Phase 6 (Modern) | ~$130 | + ElastiCache, Lambda, SQS |
-| Phase 6 (Optimized) | ~$95 | With Reserved Instances |
+| Phase               | Monthly Cost | What's Included            |
+| ------------------- | ------------ | -------------------------- |
+| Phase 1 (MVP)       | ~$15         | 1 EC2, EIP                 |
+| Phase 2 (RDS)       | ~$45         | + RDS, NAT Gateway         |
+| Phase 3 (HA)        | ~$70         | + Multi-AZ RDS             |
+| Phase 4 (Scaling)   | ~$85         | + ALB, ASG                 |
+| Phase 5 (Global)    | ~$105        | + CloudFront, S3           |
+| Phase 6 (Modern)    | ~$130        | + ElastiCache, Lambda, SQS |
+| Phase 6 (Optimized) | ~$95         | With Reserved Instances    |
 
 ---
 
@@ -927,29 +949,30 @@ flowchart LR
 
 ### What We Learned
 
-| Phase | Key Services | Key Concepts |
-|-------|--------------|--------------|
-| 1 | VPC, EC2, SG | Networking, compute basics |
-| 2 | RDS, NAT GW | Managed services, private subnets |
-| 3 | Multi-AZ | High availability, failover |
-| 4 | ALB, ASG | Horizontal scaling, load balancing |
-| 5 | CloudFront, Route 53 | CDN, DNS, global distribution |
-| 6 | Lambda, SQS, ElastiCache | Serverless, decoupling, caching |
+| Phase | Key Services             | Key Concepts                       |
+| ----- | ------------------------ | ---------------------------------- |
+| 1     | VPC, EC2, SG             | Networking, compute basics         |
+| 2     | RDS, NAT GW              | Managed services, private subnets  |
+| 3     | Multi-AZ                 | High availability, failover        |
+| 4     | ALB, ASG                 | Horizontal scaling, load balancing |
+| 5     | CloudFront, Route 53     | CDN, DNS, global distribution      |
+| 6     | Lambda, SQS, ElastiCache | Serverless, decoupling, caching    |
 
 ### SAA Exam Domains Covered
 
-| Domain | Topics |
-|--------|--------|
-| **Secure Architectures** | VPC, Security Groups, OAC, private subnets |
-| **Resilient Architectures** | Multi-AZ, Auto Scaling, SQS decoupling |
-| **High-Performing** | CloudFront, ElastiCache, Lambda |
-| **Cost-Optimized** | Reserved Instances, Savings Plans, VPC Endpoints |
+| Domain                      | Topics                                           |
+| --------------------------- | ------------------------------------------------ |
+| **Secure Architectures**    | VPC, Security Groups, OAC, private subnets       |
+| **Resilient Architectures** | Multi-AZ, Auto Scaling, SQS decoupling           |
+| **High-Performing**         | CloudFront, ElastiCache, Lambda                  |
+| **Cost-Optimized**          | Reserved Instances, Savings Plans, VPC Endpoints |
 
 ---
 
 ## What's Next?
 
-TechBooks is now a modern, scalable, globally distributed e-commerce platform. Future enhancements could include:
+TechBooks is now a modern, scalable, globally distributed e-commerce platform. Future enhancements
+could include:
 
 - **Multi-Region**: Active-active across regions (DynamoDB Global Tables, Route 53 failover)
 - **Containers**: Migrate to ECS/EKS for better deployment consistency

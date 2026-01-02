@@ -2,7 +2,8 @@
 
 ## Business Context
 
-**Situation:** TechBooks is growing! You're now seeing 500 visitors/day. The founder is thrilled, but you're worried.
+**Situation:** TechBooks is growing! You're now seeing 500 visitors/day. The founder is thrilled,
+but you're worried.
 
 **Problems emerging:**
 
@@ -83,13 +84,13 @@ flowchart TB
 
 **Benefits:**
 
-| Benefit                   | WHY It Matters                        |
-| ------------------------- | ------------------------------------- |
-| Independent scaling       | Scale web tier without touching DB    |
-| Managed backups           | AWS handles automated backups         |
-| High availability options | Multi-AZ with one click               |
+| Benefit                   | WHY It Matters                         |
+| ------------------------- | -------------------------------------- |
+| Independent scaling       | Scale web tier without touching DB     |
+| Managed backups           | AWS handles automated backups          |
+| High availability options | Multi-AZ with one click                |
 | Security isolation        | DB in private subnet, no public access |
-| Maintenance flexibility   | Patch EC2 without DB downtime         |
+| Maintenance flexibility   | Patch EC2 without DB downtime          |
 
 ---
 
@@ -97,9 +98,11 @@ flowchart TB
 
 ### What is RDS?
 
-**Amazon RDS (Relational Database Service)** is a managed database service. AWS handles the undifferentiated heavy lifting.
+**Amazon RDS (Relational Database Service)** is a managed database service. AWS handles the
+undifferentiated heavy lifting.
 
-**Critical clarification:** RDS is **NOT a different database**. It runs the actual database engine you choose:
+**Critical clarification:** RDS is **NOT a different database**. It runs the actual database engine
+you choose:
 
 ```mermaid
 flowchart TB
@@ -125,7 +128,8 @@ flowchart TB
 
 - RDS MySQL **IS** MySQL - same engine, same port (3306), same SQL
 - Your app connects to RDS MySQL exactly like it connected to MySQL on EC2
-- Only the connection string changes: `localhost` → `techbooks-db.abc123.us-east-1.rds.amazonaws.com`
+- Only the connection string changes: `localhost` →
+  `techbooks-db.abc123.us-east-1.rds.amazonaws.com`
 - All your MySQL knowledge, queries, and tools work exactly the same
 
 ### Self-Managed vs RDS Comparison
@@ -174,7 +178,9 @@ flowchart LR
 - Need reliable backups - customer orders are critical
 - Future HA needs - Multi-AZ will be easy to enable
 
-> **SAA Exam Tip:** RDS questions often ask "which option reduces operational overhead?" RDS is almost always the answer for relational databases unless you need OS-level access or unsupported database engines.
+> **SAA Exam Tip:** RDS questions often ask "which option reduces operational overhead?" RDS is
+> almost always the answer for relational databases unless you need OS-level access or unsupported
+> database engines.
 
 ---
 
@@ -182,7 +188,8 @@ flowchart LR
 
 ### WHY Put the Database in a Private Subnet?
 
-**Security principle:** Minimize attack surface. The database doesn't need to talk to the internet - only your application needs to reach it.
+**Security principle:** Minimize attack surface. The database doesn't need to talk to the internet -
+only your application needs to reach it.
 
 ```mermaid
 flowchart TB
@@ -226,7 +233,8 @@ Even within the private subnet, we add more protection:
 | **RDS Settings**   | "Publicly Accessible" = No                     |
 | **Encryption**     | Encryption at rest + in transit                |
 
-> **SAA Exam Tip:** "Defense in depth" is a common theme. Multiple layers of security is always better than relying on one.
+> **SAA Exam Tip:** "Defense in depth" is a common theme. Multiple layers of security is always
+> better than relying on one.
 
 ---
 
@@ -234,7 +242,8 @@ Even within the private subnet, we add more protection:
 
 ### The Problem
 
-Your RDS instance is in a private subnet (good for security), but what if it needs to reach the internet?
+Your RDS instance is in a private subnet (good for security), but what if it needs to reach the
+internet?
 
 **Use cases:**
 
@@ -244,7 +253,8 @@ Your RDS instance is in a private subnet (good for security), but what if it nee
 
 ### What is a NAT Gateway?
 
-**NAT (Network Address Translation) Gateway** allows resources in private subnets to initiate outbound connections to the internet while preventing inbound connections.
+**NAT (Network Address Translation) Gateway** allows resources in private subnets to initiate
+outbound connections to the internet while preventing inbound connections.
 
 ```mermaid
 flowchart TB
@@ -296,7 +306,8 @@ flowchart TB
 - Automatically scales bandwidth
 - Highly available within an AZ
 
-> **SAA Exam Tip:** NAT Gateway is the recommended approach. NAT Instance is legacy but may appear in exam questions about cost optimization (NAT Instance can be cheaper for very low traffic).
+> **SAA Exam Tip:** NAT Gateway is the recommended approach. NAT Instance is legacy but may appear
+> in exam questions about cost optimization (NAT Instance can be cheaper for very low traffic).
 
 ### Cost Consideration
 
@@ -305,7 +316,9 @@ NAT Gateway is one of the more expensive networking components:
 - **Hourly charge:** ~$0.045/hour (~$32/month)
 - **Data processing:** $0.045/GB
 
-**For Phase 2:** We'll create the private subnet but won't deploy NAT Gateway yet since RDS doesn't need internet access. We'll add it in a later phase when we have Lambda or other private resources that need outbound internet.
+**For Phase 2:** We'll create the private subnet but won't deploy NAT Gateway yet since RDS doesn't
+need internet access. We'll add it in a later phase when we have Lambda or other private resources
+that need outbound internet.
 
 ---
 
@@ -347,7 +360,8 @@ flowchart TB
 - Future Multi-AZ enablement requires subnets in multiple AZs
 - AWS places your DB in one of the subnets you specify
 
-> **SAA Exam Tip:** You cannot create an RDS instance without a DB Subnet Group spanning at least 2 AZs. This is a common "why did my deployment fail?" troubleshooting question.
+> **SAA Exam Tip:** You cannot create an RDS instance without a DB Subnet Group spanning at least 2
+> AZs. This is a common "why did my deployment fail?" troubleshooting question.
 
 ---
 
@@ -355,7 +369,8 @@ flowchart TB
 
 ### Referencing Security Groups
 
-Instead of allowing specific IP addresses, we reference the EC2's security group. This is more maintainable and secure.
+Instead of allowing specific IP addresses, we reference the EC2's security group. This is more
+maintainable and secure.
 
 ```mermaid
 flowchart LR
@@ -407,19 +422,20 @@ Outbound:
 
 Inbound:
 
-| Type  | Port | Source            |
-| ----- | ---- | ----------------- |
-| MySQL | 3306 | sg-techbooks-web  |
+| Type  | Port | Source           |
+| ----- | ---- | ---------------- |
+| MySQL | 3306 | sg-techbooks-web |
 
 Outbound:
 
-| Type | Port | Destination                                |
-| ---- | ---- | ------------------------------------------ |
-| None | -    | Not needed (stateful - responses allowed)  |
+| Type | Port | Destination                               |
+| ---- | ---- | ----------------------------------------- |
+| None | -    | Not needed (stateful - responses allowed) |
 
 ### WHY Port 3306?
 
-Each database engine has its standard port. RDS uses the same ports because it runs the actual engine:
+Each database engine has its standard port. RDS uses the same ports because it runs the actual
+engine:
 
 | RDS Engine     | Default Port | WHY This Port                    |
 | -------------- | ------------ | -------------------------------- |
@@ -476,9 +492,11 @@ const db = mysql.createConnection({
 });
 ```
 
-The application code barely changes - you're still talking to MySQL, just running on AWS-managed infrastructure instead of your EC2.
+The application code barely changes - you're still talking to MySQL, just running on AWS-managed
+infrastructure instead of your EC2.
 
-> **SAA Exam Tip:** Security groups are stateful. If you allow inbound traffic, the response is automatically allowed outbound. This is different from NACLs which are stateless.
+> **SAA Exam Tip:** Security groups are stateful. If you allow inbound traffic, the response is
+> automatically allowed outbound. This is different from NACLs which are stateless.
 
 ---
 
@@ -496,13 +514,9 @@ db.t3.micro
 └───────── Family: T = burstable
 ```
 
-**Common RDS families:**
-| Family | Use Case |
-|--------|----------|
-| **db.t3/t4g** | Burstable, dev/test, small production |
-| **db.m5/m6g** | General purpose production |
-| **db.r5/r6g** | Memory optimized (large datasets) |
-| **db.x1/x2** | Extreme memory |
+**Common RDS families:** | Family | Use Case | |--------|----------| | **db.t3/t4g** | Burstable,
+dev/test, small production | | **db.m5/m6g** | General purpose production | | **db.r5/r6g** | Memory
+optimized (large datasets) | | **db.x1/x2** | Extreme memory |
 
 **For TechBooks Phase 2:** `db.t3.micro` (Free Tier eligible)
 
@@ -521,7 +535,8 @@ db.t3.micro
 - gp2: 100 IOPS for 33GB, need 1TB for 3,000 IOPS
 - gp3 is cheaper and more predictable
 
-> **SAA Exam Tip:** gp3 is the recommended default for new deployments. Questions about "cost-effective storage with consistent performance" → gp3.
+> **SAA Exam Tip:** gp3 is the recommended default for new deployments. Questions about
+> "cost-effective storage with consistent performance" → gp3.
 
 ---
 
@@ -574,7 +589,8 @@ flowchart TB
 - RPO: 5 minutes (transaction log frequency)
 - RTO: ~30 minutes (time to restore from snapshot)
 
-> **SAA Exam Tip:** Automated backups allow point-in-time recovery. Manual snapshots only restore to the exact snapshot time. Know the difference!
+> **SAA Exam Tip:** Automated backups allow point-in-time recovery. Manual snapshots only restore to
+> the exact snapshot time. Know the difference!
 
 ---
 
@@ -632,25 +648,21 @@ flowchart TB
 ### Must-Know Topics
 
 1. **RDS Fundamentals**
-
    - Managed service reduces operational overhead
    - Cannot SSH into RDS instances
    - DB Subnet Group requires 2+ AZs
 
 2. **Private Subnets**
-
    - No route to IGW = private
    - Use for databases, internal services
    - NAT Gateway for outbound internet (if needed)
 
 3. **Security Groups**
-
    - Reference other security groups (not just IPs)
    - Stateful - return traffic auto-allowed
    - RDS SG should only allow app tier
 
 4. **Storage**
-
    - gp3 > gp2 for most cases
    - io1/io2 for high-performance needs
 
@@ -663,7 +675,8 @@ flowchart TB
 
 ## What's Coming in Phase 3?
 
-**Business trigger:** TechBooks is featured on a tech podcast! Traffic spikes to 5,000 visitors/day. Your single EC2 can't keep up, and you're terrified of downtime.
+**Business trigger:** TechBooks is featured on a tech podcast! Traffic spikes to 5,000 visitors/day.
+Your single EC2 can't keep up, and you're terrified of downtime.
 
 **Next decisions:**
 
@@ -684,4 +697,5 @@ Before moving to Phase 3:
 5. Update your application to connect to RDS instead of local MySQL
 6. Verify automated backups are enabled
 
-**Verification:** Connect to your EC2 and run `mysql -h <rds-endpoint> -u admin -p` to verify connectivity.
+**Verification:** Connect to your EC2 and run `mysql -h <rds-endpoint> -u admin -p` to verify
+connectivity.
