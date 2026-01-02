@@ -19,6 +19,15 @@ Every architectural decision explains the **WHY** - mapping directly to SAA exam
 |----------|-------------|--------|
 | [TechBooks](./techbooks/) | Online bookstore for technical books | Complete (6 phases) |
 
+## View Online
+
+**[Live Site](https://benjaminhonorio.github.io/aws-architecting/)**
+
+Or run locally:
+```bash
+cd techbooks && npx serve .
+```
+
 ## Getting Started
 
 1. Pick a scenario
