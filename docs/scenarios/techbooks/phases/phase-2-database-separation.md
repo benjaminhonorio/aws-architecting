@@ -705,3 +705,40 @@ Before moving to Phase 3:
 
 **Verification:** Connect to your EC2 and run `mysql -h <rds-endpoint> -u admin -p` to verify
 connectivity.
+
+---
+
+## References
+
+Official AWS documentation used to validate this content:
+
+### RDS Fundamentals
+
+- [What is Amazon RDS?](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html)
+- [Working with a DB instance in a VPC](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html) -
+  DB subnet group requirements
+- [DB instance class types](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.Types.html) -
+  Instance families and generations
+
+### RDS Storage
+
+- [Amazon RDS DB instance storage](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html) -
+  gp2, gp3, io1, io2 comparison
+- [General Purpose SSD (gp3) storage](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIOPS.gp3.html) -
+  Baseline IOPS and striping behavior
+
+### RDS Backups
+
+- [Introduction to backups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html) -
+  Automated backups and PITR
+
+### NAT Gateway
+
+- [NAT gateway basics](https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html) -
+  Bandwidth scaling, connection limits
+- [NAT gateway pricing](https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-pricing.html)
+
+### Security
+
+- [Security Groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) -
+  Stateful behavior, referencing other security groups
