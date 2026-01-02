@@ -11,9 +11,14 @@ and Asia, and orders are coming in from around the world.
 - Asian customers: "Images load slowly, checkout times out"
 - US customers: "Site is fine for me" (origin is in us-east-1)
 
-**Data you gathered:** | Region | Latency to us-east-1 | User Experience |
-|--------|---------------------|-----------------| | US East | ~20ms | Great | | US West | ~80ms |
-Good | | Europe | ~120ms | Acceptable | | Asia | ~250ms | Poor |
+**Data you gathered:**
+
+| Region  | Latency to us-east-1 | User Experience |
+| ------- | -------------------- | --------------- |
+| US East | ~20ms                | Great           |
+| US West | ~80ms                | Good            |
+| Europe  | ~120ms               | Acceptable      |
+| Asia    | ~250ms               | Poor            |
 
 **The founder asks:** "Can we make the site fast for everyone, everywhere?"
 

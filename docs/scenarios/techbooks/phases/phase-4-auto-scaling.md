@@ -323,9 +323,13 @@ flowchart TB
 - AMI, instance type, security groups, user data
 - Replaces older "Launch Configuration"
 
-**2. Capacity Settings** | Setting | Description | Our Value | |---------|-------------|-----------|
-| **Minimum** | Never go below this | 2 (HA requirement) | | **Desired** | Target number to maintain
-| 2 (normal traffic) | | **Maximum** | Never exceed this | 6 (cost control) |
+**2. Capacity Settings**
+
+| Setting     | Description             | Our Value          |
+| ----------- | ----------------------- | ------------------ |
+| **Minimum** | Never go below this     | 2 (HA requirement) |
+| **Desired** | Target number to maintain | 2 (normal traffic) |
+| **Maximum** | Never exceed this       | 6 (cost control)   |
 
 **3. Scaling Policies**
 
@@ -541,9 +545,14 @@ flowchart TB
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
-**Changes:** | Aspect | Before (EIP) | After (ALB) | |--------|--------------|-------------| | **DNS
-points to** | Elastic IP | ALB DNS name | | **SSL termination** | EC2 instance | ALB | | **Instance
-replacement** | Must reassign EIP | Automatic | | **Cost** | Free if attached | ALB hourly + LCU |
+**Changes:**
+
+| Aspect                  | Before (EIP)       | After (ALB)      |
+| ----------------------- | ------------------ | ---------------- |
+| **DNS points to**       | Elastic IP         | ALB DNS name     |
+| **SSL termination**     | EC2 instance       | ALB              |
+| **Instance replacement**| Must reassign EIP  | Automatic        |
+| **Cost**                | Free if attached   | ALB hourly + LCU |
 
 ### Updating DNS
 
