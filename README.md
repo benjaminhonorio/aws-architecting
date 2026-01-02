@@ -37,11 +37,7 @@ cd docs && npx serve .
 3. Work through each phase sequentially
 4. Focus on understanding the **business trigger** for each evolution
 
-## Creating New Scenarios
+## Contributing
 
-See [SCENARIO-GUIDELINES.md](./SCENARIO-GUIDELINES.md) for the template and best practices.
-
-## Diagram Styling
-
-All Mermaid diagrams follow consistent styling. See
-[mermaid-style-guide.md](./mermaid-style-guide.md).
+See [.claude/SCENARIO-GUIDELINES.md](./.claude/SCENARIO-GUIDELINES.md) for creating new scenarios and
+[.claude/mermaid-style-guide.md](./.claude/mermaid-style-guide.md) for diagram styling.

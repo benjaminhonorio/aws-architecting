@@ -50,16 +50,20 @@ Ensure scenarios cover these exam domains:
 
 ```
 aws-architecting/
-├── SCENARIO-GUIDELINES.md          # This file
-├── mermaid-style-guide.md          # Diagram styling reference
-└── {scenario-name}/
-    ├── docs/
-    │   ├── 00-scenario-overview.md
-    │   └── phases/
-    │       ├── phase-1-*.md
-    │       ├── phase-2-*.md
-    │       └── ...
-    └── diagrams/                    # Optional: generated images
+├── .claude/
+│   ├── CLAUDE.md                   # AI instructions
+│   ├── SCENARIO-GUIDELINES.md      # This file
+│   └── mermaid-style-guide.md      # Diagram styling reference
+└── docs/                           # Docsify site (GitHub Pages)
+    ├── index.html
+    ├── README.md                   # Landing page
+    ├── _sidebar.md
+    └── scenarios/
+        └── {scenario-name}/
+            ├── 00-overview.md
+            └── phases/
+                ├── phase-1-*.md
+                └── ...
 ```
 
 ### Phase Document Template
