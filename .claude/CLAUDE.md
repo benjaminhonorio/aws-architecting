@@ -2,6 +2,10 @@
 
 AWS Architecture learning scenarios for Solutions Architect certification prep.
 
+## Exam Reference
+
+[AWS Certified Solutions Architect - Associate (SAA-C03) Exam Guide](https://docs.aws.amazon.com/aws-certification/latest/examguides/solutions-architect-associate-03.html)
+
 ## Creating Content
 
 ### Mermaid Diagrams
