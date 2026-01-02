@@ -516,29 +516,30 @@ db.t3.micro
 
 **Common RDS families:**
 
-| Family        | Use Case                         |
-| ------------- | -------------------------------- |
-| **db.t3/t4g** | Burstable, dev/test, small prod  |
-| **db.m5/m6g** | General purpose production       |
-| **db.r5/r6g** | Memory optimized (large datasets)|
-| **db.x1/x2**  | Extreme memory                   |
+| Family            | Use Case                          |
+| ----------------- | --------------------------------- |
+| **db.t3/t4g**     | Burstable, dev/test, small prod   |
+| **db.m5/m6g/m7g** | General purpose production        |
+| **db.r5/r6g/r7g** | Memory optimized (large datasets) |
+| **db.x2idn/x2g**  | Extreme memory                    |
 
 **For TechBooks Phase 2:** `db.t3.micro` (Free Tier eligible)
 
 ### Storage
 
-| Type         | IOPS                    | Use Case                | Cost |
-| ------------ | ----------------------- | ----------------------- | ---- |
-| **gp2**      | Burstable, 3 IOPS/GB    | General purpose         | $    |
-| **gp3**      | Configurable baseline   | General purpose (newer) | $    |
-| **io1/io2**  | Provisioned, up to 256K | High performance        | $$$  |
-| **magnetic** | Legacy                  | Don't use               | $    |
+| Type         | IOPS                    | Use Case                      | Cost |
+| ------------ | ----------------------- | ----------------------------- | ---- |
+| **gp2**      | Burstable, 3 IOPS/GB    | General purpose (legacy)      | $    |
+| **gp3**      | 3,000 baseline          | General purpose (recommended) | $    |
+| **io2**      | Provisioned, up to 256K | High performance              | $$$  |
+| **io1**      | Provisioned (prev gen)  | Legacy, use io2 instead       | $$$  |
+| **magnetic** | Legacy                  | Don't use                     | $    |
 
 **WHY gp3 over gp2:**
 
-- gp3: 3,000 IOPS baseline regardless of size
-- gp2: 100 IOPS for 33GB, need 1TB for 3,000 IOPS
-- gp3 is cheaper and more predictable
+- gp3: 3,000 IOPS baseline (12,000 IOPS for volumes ≥400 GiB due to striping)
+- gp2: 3 IOPS/GB with 100 IOPS minimum - need 1TB to reach 3,000 IOPS
+- gp3 is cheaper and more predictable for most workloads
 
 > **SAA Exam Tip:** gp3 is the recommended default for new deployments. Questions about
 > "cost-effective storage with consistent performance" → gp3.
