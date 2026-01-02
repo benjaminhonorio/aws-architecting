@@ -325,11 +325,11 @@ flowchart TB
 
 **2. Capacity Settings**
 
-| Setting     | Description             | Our Value          |
-| ----------- | ----------------------- | ------------------ |
-| **Minimum** | Never go below this     | 2 (HA requirement) |
+| Setting     | Description               | Our Value          |
+| ----------- | ------------------------- | ------------------ |
+| **Minimum** | Never go below this       | 2 (HA requirement) |
 | **Desired** | Target number to maintain | 2 (normal traffic) |
-| **Maximum** | Never exceed this       | 6 (cost control)   |
+| **Maximum** | Never exceed this         | 6 (cost control)   |
 
 **3. Scaling Policies**
 
@@ -547,12 +547,12 @@ flowchart TB
 
 **Changes:**
 
-| Aspect                  | Before (EIP)       | After (ALB)      |
-| ----------------------- | ------------------ | ---------------- |
-| **DNS points to**       | Elastic IP         | ALB DNS name     |
-| **SSL termination**     | EC2 instance       | ALB              |
-| **Instance replacement**| Must reassign EIP  | Automatic        |
-| **Cost**                | Free if attached   | ALB hourly + LCU |
+| Aspect                   | Before (EIP)      | After (ALB)      |
+| ------------------------ | ----------------- | ---------------- |
+| **DNS points to**        | Elastic IP        | ALB DNS name     |
+| **SSL termination**      | EC2 instance      | ALB              |
+| **Instance replacement** | Must reassign EIP | Automatic        |
+| **Cost**                 | Free if attached  | ALB hourly + LCU |
 
 ### Updating DNS
 
@@ -892,3 +892,30 @@ Before moving to Phase 5:
 - ALB DNS resolves and shows your site
 - Terminate one EC2 instance - another should launch automatically
 - Run a load test - watch instances scale out
+
+---
+
+## References
+
+Official AWS documentation used to validate this content:
+
+### Elastic Load Balancing
+
+- [How ELB Works](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html) -
+  Cross-zone load balancing and load balancer nodes
+- [What is an Application Load Balancer?](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) -
+  ALB Layer 7, path/host-based routing
+- [Edit Target Group Attributes](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/edit-target-group-attributes.html) -
+  Deregistration delay (default 300 seconds)
+
+### Auto Scaling
+
+- [Auto Scaling Launch Templates](https://docs.aws.amazon.com/autoscaling/ec2/userguide/launch-templates.html) -
+  Launch Templates vs Launch Configurations
+- [Auto Scaling Group Availability Zone Distribution](https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-availability-zone-balanced.html) -
+  Instance distribution across AZs
+
+### Route 53
+
+- [Choosing Between Alias and Non-Alias Records](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html) -
+  Zone apex support for Alias records, CNAME limitations

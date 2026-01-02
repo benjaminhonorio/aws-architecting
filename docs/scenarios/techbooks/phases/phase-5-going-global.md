@@ -817,3 +817,30 @@ Before moving to Phase 6:
 - `techbooks.com/` serves from ALB via CloudFront
 - Check CloudFront cache hit rate in CloudWatch
 - Verify HTTPS works with your domain
+
+---
+
+## References
+
+Official AWS documentation used to validate this content:
+
+### CloudFront
+
+- [How CloudFront Delivers Content](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/HowCloudFrontWorks.html) -
+  Edge locations and regional edge caches
+- [Manage How Long Content Stays in Cache](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Expiration.html) -
+  TTL settings and cache duration
+- [Restrict Access to an Amazon S3 Origin](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) -
+  OAC recommended over OAI
+
+### SSL/TLS & ACM
+
+- [Requirements for Using SSL/TLS Certificates with CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html) -
+  ACM certificates must be in us-east-1 for CloudFront
+
+### Route 53
+
+- [Choosing a Routing Policy](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html) -
+  Simple, weighted, latency, failover, geolocation, geoproximity, multivalue, IP-based routing
+- [Choosing Between Alias and Non-Alias Records](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html) -
+  Alias records for zone apex and AWS resources

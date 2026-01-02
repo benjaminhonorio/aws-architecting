@@ -578,3 +578,35 @@ Before moving to Phase 4:
 - RDS console shows "Multi-AZ: Yes"
 - Forced failover completes in ~60-120 seconds
 - Application recovers without manual intervention
+
+---
+
+## References
+
+Official AWS documentation used to validate this content:
+
+### Availability Zones & Regions
+
+- [AWS Regions and Availability Zones](https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions-availability-zones.html) -
+  AZ physical separation, data centers, and low-latency connectivity
+
+### RDS Multi-AZ
+
+- [Multi-AZ DB Instance Deployments](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZSingleStandby.html) -
+  Synchronous replication and standby behavior
+- [Failing Over a Multi-AZ DB Instance](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.Failover.html) -
+  Failover time (60-120 seconds) and triggers
+- [Working with DB Instance Read Replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html) -
+  Asynchronous replication for read replicas
+
+### Availability & Reliability
+
+- [Reliability Pillar - Availability](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/availability.html) -
+  The "nines" of availability and calculation formulas
+- [Fault Tolerance and Fault Isolation](https://docs.aws.amazon.com/whitepapers/latest/availability-and-beyond-improving-resilience/fault-tolerance-and-fault-isolation.html) -
+  HA vs FT concepts
+
+### SLA
+
+- [Amazon RDS Service Level Agreement](https://aws.amazon.com/rds/sla/) - 99.95% Monthly Uptime
+  Percentage for Multi-AZ deployments

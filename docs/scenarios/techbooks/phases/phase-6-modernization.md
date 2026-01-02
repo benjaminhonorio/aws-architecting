@@ -711,7 +711,7 @@ After Phase 5, TechBooks spends approximately:
 flowchart TB
     subgraph Savings["Cost Optimization Options"]
         RI["Reserved Instances<br>1-3 year commitment<br>Up to 72% savings"]
-        SP["Savings Plans<br>Flexible commitment<br>Up to 66% savings"]
+        SP["Savings Plans<br>Flexible commitment<br>Up to 72% savings"]
         Spot["Spot Instances<br>For non-critical workloads<br>Up to 90% savings"]
         Right["Right-sizing<br>Match instance to workload<br>Variable savings"]
     end
@@ -730,7 +730,7 @@ flowchart TB
 | **Commitment**  | Specific instance type | $/hour spend         |
 | **Flexibility** | Limited (RI exchange)  | High (any instance)  |
 | **Services**    | EC2, RDS, ElastiCache  | EC2, Fargate, Lambda |
-| **Discount**    | Up to 72%              | Up to 66%            |
+| **Discount**    | Up to 72%              | Up to 72%            |
 | **Best for**    | Predictable workloads  | Changing workloads   |
 
 ### TechBooks Optimization Plan
@@ -981,3 +981,42 @@ could include:
 - **Security**: AWS WAF, Shield Advanced, GuardDuty
 
 But that's for another scenario!
+
+---
+
+## References
+
+Official AWS documentation used to validate this content:
+
+### AWS Lambda
+
+- [Lambda Quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) -
+  Memory (128 MB - 10,240 MB), timeout (15 minutes), concurrent executions (1000 default)
+- [Lambda in VPC](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html) -
+  VPC configuration, NAT Gateway requirement for internet access
+
+### Amazon SQS
+
+- [High Throughput for FIFO Queues](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/high-throughput-fifo.html) -
+  3,000 messages per second with batching, partitions, and message group distribution
+- [SQS FIFO Queues](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fifo-queues.html) -
+  Ordered delivery, deduplication, message groups
+
+### Amazon ElastiCache
+
+- [Comparing Valkey, Memcached, and Redis OSS](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/SelectEngine.html) -
+  Redis vs Memcached features (replication, persistence, Multi-AZ, pub/sub)
+
+### VPC Endpoints
+
+- [Gateway Endpoints for Amazon S3](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html) -
+  No additional charge for gateway endpoints, route table configuration
+- [Access AWS Services Using Interface Endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html) -
+  Interface endpoint configuration and ENI-based connectivity
+
+### Cost Optimization
+
+- [What are Savings Plans?](https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html) -
+  Up to 72% savings on compute workloads with 1 or 3 year commitment
+- [Savings Plans and Reserved Instances](https://docs.aws.amazon.com/savingsplans/latest/userguide/sp-ris.html) -
+  Comparison of commitment options and discount levels
