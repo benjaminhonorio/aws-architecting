@@ -26,6 +26,11 @@ Follow [SCENARIO-GUIDELINES.md](./SCENARIO-GUIDELINES.md) for creating new learn
 - Map to SAA exam domains
 - Use realistic business triggers
 
+**When adding a new scenario, update:**
+
+1. `docs/_sidebar.md` - Add navigation links
+2. `docs/README.md` - Add scenario card to Home page
+
 ## Project Structure
 
 ```

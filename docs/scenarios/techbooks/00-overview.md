@@ -10,12 +10,18 @@ books. The founder just secured seed funding and needs to launch fast.
 This evolving scenario will teach you AWS Solutions Architect concepts through realistic business
 decisions:
 
-- [**Phase 1**: MVP Launch](scenarios/techbooks/phases/phase-1-mvp-launch.md) (VPC, EC2, Security Groups)
-- [**Phase 2**: First Growth Pains](scenarios/techbooks/phases/phase-2-database-separation.md) (RDS, DB separation, backups)
-- [**Phase 3**: Going Multi-AZ](scenarios/techbooks/phases/phase-3-high-availability.md) (High Availability, failover)
-- [**Phase 4**: Scaling for Success](scenarios/techbooks/phases/phase-4-auto-scaling.md) (ALB, Auto Scaling Groups)
-- [**Phase 5**: Going Global](scenarios/techbooks/phases/phase-5-going-global.md) (CloudFront, Route 53, S3)
-- [**Phase 6**: Modernization](scenarios/techbooks/phases/phase-6-modernization.md) (Lambda, SQS, ElastiCache)
+- [**Phase 1**: MVP Launch](scenarios/techbooks/phases/phase-1-mvp-launch.md) (VPC, EC2, Security
+  Groups)
+- [**Phase 2**: First Growth Pains](scenarios/techbooks/phases/phase-2-database-separation.md) (RDS,
+  DB separation, backups)
+- [**Phase 3**: Going Multi-AZ](scenarios/techbooks/phases/phase-3-high-availability.md) (High
+  Availability, failover)
+- [**Phase 4**: Scaling for Success](scenarios/techbooks/phases/phase-4-auto-scaling.md) (ALB, Auto
+  Scaling Groups)
+- [**Phase 5**: Going Global](scenarios/techbooks/phases/phase-5-going-global.md) (CloudFront, Route
+  53, S3)
+- [**Phase 6**: Modernization](scenarios/techbooks/phases/phase-6-modernization.md) (Lambda, SQS,
+  ElastiCache)
 
 ## Architecture Evolution Map
 

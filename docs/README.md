@@ -30,4 +30,26 @@ flowchart LR
 
 ---
 
-_More scenarios coming soon..._
+### [ShipFast Logistics: Migrate or Die](scenarios/shipfast/00-overview.md)
+
+Learn AWS migration and hybrid architecture through the journey of a logistics company migrating
+from an on-premises datacenter to AWS.
+
+**Covers**: Site-to-Site VPN, Direct Connect, DMS, SCT, Storage Gateway, FSx, DataSync, MGN, Snow
+Family
+
+```mermaid
+flowchart LR
+    P1["Phase 1<br>On-Prem"] --> P2["Phase 2<br>VPN"]
+    P2 --> P3["Phase 3<br>DX"]
+    P3 --> P4["Phase 4<br>DB Mig"]
+    P4 --> P5["Phase 5<br>Storage"]
+    P5 --> P6["Phase 6<br>Workload"]
+
+    style P1 fill:#ffcdd2,color:#000
+    style P2 fill:#fff9c4,color:#000
+    style P3 fill:#fff9c4,color:#000
+    style P4 fill:#c8e6c9,color:#000
+    style P5 fill:#c8e6c9,color:#000
+    style P6 fill:#bbdefb,color:#000
+```

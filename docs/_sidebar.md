@@ -7,3 +7,11 @@
   - [Phase 4: Auto Scaling](scenarios/techbooks/phases/phase-4-auto-scaling.md)
   - [Phase 5: Going Global](scenarios/techbooks/phases/phase-5-going-global.md)
   - [Phase 6: Modernization](scenarios/techbooks/phases/phase-6-modernization.md)
+- **ShipFast Logistics Scenario**
+  - [Overview](scenarios/shipfast/00-overview.md)
+  - [Phase 1: On-Premises Baseline](scenarios/shipfast/phases/phase-1-on-premises-baseline.md)
+  - [Phase 2: VPN Connection](scenarios/shipfast/phases/phase-2-vpn-connection.md)
+  - [Phase 3: Direct Connect](scenarios/shipfast/phases/phase-3-direct-connect.md)
+  - [Phase 4: Database Migration](scenarios/shipfast/phases/phase-4-database-migration.md)
+  - [Phase 5: Hybrid Storage](scenarios/shipfast/phases/phase-5-hybrid-storage.md)
+  - [Phase 6: Workload Migration](scenarios/shipfast/phases/phase-6-workload-migration.md)

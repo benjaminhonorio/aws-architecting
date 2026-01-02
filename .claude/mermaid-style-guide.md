@@ -90,11 +90,11 @@ flowchart LR
 
 **Link style options:**
 
-| Property           | Example                 | Description    |
-| ------------------ | ----------------------- | -------------- |
-| `stroke`           | `stroke:#000`           | Line color     |
-| `stroke-width`     | `stroke-width:2px`      | Line thickness |
-| `stroke-dasharray` | `stroke-dasharray:5,5`  | Dashed line    |
+| Property           | Example                | Description    |
+| ------------------ | ---------------------- | -------------- |
+| `stroke`           | `stroke:#000`          | Line color     |
+| `stroke-width`     | `stroke-width:2px`     | Line thickness |
+| `stroke-dasharray` | `stroke-dasharray:5,5` | Dashed line    |
 
 ## AWS Component Colors
 

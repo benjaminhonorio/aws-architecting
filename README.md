@@ -16,8 +16,8 @@ Every architectural decision explains the **WHY** - mapping directly to SAA exam
 
 ## Scenarios
 
-| Scenario                  | Description                          | Status              |
-| ------------------------- | ------------------------------------ | ------------------- |
+| Scenario                                 | Description                          | Status              |
+| ---------------------------------------- | ------------------------------------ | ------------------- |
 | [TechBooks](./docs/scenarios/techbooks/) | Online bookstore for technical books | Complete (6 phases) |
 
 ## View Online
@@ -39,5 +39,5 @@ cd docs && npx serve .
 
 ## Contributing
 
-See [.claude/SCENARIO-GUIDELINES.md](./.claude/SCENARIO-GUIDELINES.md) for creating new scenarios and
-[.claude/mermaid-style-guide.md](./.claude/mermaid-style-guide.md) for diagram styling.
+See [.claude/SCENARIO-GUIDELINES.md](./.claude/SCENARIO-GUIDELINES.md) for creating new scenarios
+and [.claude/mermaid-style-guide.md](./.claude/mermaid-style-guide.md) for diagram styling.
