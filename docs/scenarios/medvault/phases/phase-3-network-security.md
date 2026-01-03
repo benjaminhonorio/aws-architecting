@@ -532,6 +532,11 @@ Time to implement logging and monitoring.
 - **Shield Advanced for DRT and cost protection** - $3K/month
 - **Network Firewall for VPC inspection** - Domain filtering, IPS
 
+## See Also
+
+> **Related Learning:** For VPC fundamentals including CIDR planning, subnets, and Security Groups
+> basics, see [TechBooks Phase 1: MVP Launch](/scenarios/techbooks/phases/phase-1-mvp-launch.md).
+
 ## SAA Exam Concepts
 
 ### Must-Know for This Phase

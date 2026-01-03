@@ -445,6 +445,14 @@ Time to tackle hybrid storage.
 
 ---
 
+## See Also
+
+> **Related Learning:** For RDS fundamentals and Multi-AZ high availability patterns, see
+> [TechBooks Phase 2: Database Separation](/scenarios/techbooks/phases/phase-2-database-separation.md)
+> and [Phase 3: High Availability](/scenarios/techbooks/phases/phase-3-high-availability.md).
+
+---
+
 ## References
 
 Official AWS documentation used to validate this content:

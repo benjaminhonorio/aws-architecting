@@ -805,6 +805,14 @@ flowchart TB
 
 ---
 
+## See Also
+
+> **Related Learning:** For a deep dive into IAM roles and how EC2 instances assume roles securely,
+> see
+> [MedVault Phase 1: Identity Foundation](/scenarios/medvault/phases/phase-1-identity-foundation.md).
+
+---
+
 ## Key SAA Exam Concepts from Phase 4
 
 ### Must-Know Topics

@@ -450,6 +450,14 @@ flowchart TB
 
 ---
 
+## See Also
+
+> **Related Learning:** For a security-focused approach to VPC design with VPC endpoints,
+> PrivateLink, and defense in depth, see
+> [MedVault Phase 3: Network Security](/scenarios/medvault/phases/phase-3-network-security.md).
+
+---
+
 ## Key SAA Exam Concepts from Phase 1
 
 ### Must-Know Topics

@@ -418,6 +418,11 @@ Time to implement data protection.
 - **Access Analyzer** - Finds unintended external access
 - **Resource-based policies allow cross-account** - Without assuming a role
 
+## See Also
+
+> **Related Learning:** For IAM roles in practice with EC2 Auto Scaling Groups and Launch Templates,
+> see [TechBooks Phase 4: Auto Scaling](/scenarios/techbooks/phases/phase-4-auto-scaling.md).
+
 ## SAA Exam Concepts
 
 ### Must-Know for This Phase

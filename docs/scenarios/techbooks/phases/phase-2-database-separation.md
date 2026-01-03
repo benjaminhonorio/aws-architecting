@@ -649,6 +649,14 @@ flowchart TB
 
 ---
 
+## See Also
+
+> **Related Learning:** For database migration strategies from on-premises SQL Server to RDS,
+> including DMS and SCT tooling, see
+> [ShipFast Phase 4: Database Migration](/scenarios/shipfast/phases/phase-4-database-migration.md).
+
+---
+
 ## Key SAA Exam Concepts from Phase 2
 
 ### Must-Know Topics

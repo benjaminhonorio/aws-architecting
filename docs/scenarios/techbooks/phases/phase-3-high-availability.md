@@ -499,6 +499,14 @@ flowchart TB
 
 ---
 
+## See Also
+
+> **Related Learning:** For implementing high availability at the web tier with ALB and Auto Scaling
+> Groups, continue to
+> [TechBooks Phase 4: Auto Scaling](/scenarios/techbooks/phases/phase-4-auto-scaling.md).
+
+---
+
 ## Key SAA Exam Concepts from Phase 3
 
 ### Must-Know Topics

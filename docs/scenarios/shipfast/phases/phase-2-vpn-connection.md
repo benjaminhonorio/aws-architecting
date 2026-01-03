@@ -280,6 +280,13 @@ For production migration, you'll need something more reliable. Time for Direct C
 
 ---
 
+## See Also
+
+> **Related Learning:** For VPC fundamentals and subnet design that the VPN connects to, see
+> [TechBooks Phase 1: MVP Launch](/scenarios/techbooks/phases/phase-1-mvp-launch.md).
+
+---
+
 ## References
 
 Official AWS documentation used to validate this content:

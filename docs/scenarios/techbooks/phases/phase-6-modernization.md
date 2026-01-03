@@ -881,6 +881,17 @@ flowchart TB
 
 ---
 
+## See Also
+
+> **Related Learning:** For securing Lambda secrets with Secrets Manager and KMS encryption
+> strategies, see
+> [MedVault Phase 2: Data Protection](/scenarios/medvault/phases/phase-2-data-protection.md).
+>
+> For VPC Endpoints as a security pattern (not just cost optimization), see
+> [MedVault Phase 3: Network Security](/scenarios/medvault/phases/phase-3-network-security.md).
+
+---
+
 ## Key SAA Exam Concepts from Phase 6
 
 ### Lambda

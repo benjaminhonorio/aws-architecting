@@ -719,6 +719,13 @@ flowchart TB
 
 ---
 
+## See Also
+
+> **Related Learning:** For hybrid storage patterns using S3 with Storage Gateway and DataSync, see
+> [ShipFast Phase 5: Hybrid Storage](/scenarios/shipfast/phases/phase-5-hybrid-storage.md).
+
+---
+
 ## Key SAA Exam Concepts from Phase 5
 
 ### Must-Know Topics

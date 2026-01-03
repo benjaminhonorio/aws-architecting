@@ -1,4 +1,5 @@
 - [Home](README.md)
+- [Exam Coverage](exam-coverage.md)
 - **TechBooks Scenario**
   - [Overview](scenarios/techbooks/00-overview.md)
   - [Phase 1: MVP Launch](scenarios/techbooks/phases/phase-1-mvp-launch.md)
