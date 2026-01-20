@@ -24,3 +24,11 @@
   - [Phase 4: Logging & Monitoring](scenarios/medvault/phases/phase-4-logging-monitoring.md)
   - [Phase 5: Multi-Account Strategy](scenarios/medvault/phases/phase-5-multi-account.md)
   - [Phase 6: Threat Detection](scenarios/medvault/phases/phase-6-threat-detection.md)
+- **EventPro Event-Driven Scenario**
+  - [Overview](scenarios/eventpro/00-overview.md)
+  - [Phase 1: The Crashing Monolith](scenarios/eventpro/phases/phase-1-crashing-monolith.md)
+  - [Phase 2: SQS Traffic Absorption](scenarios/eventpro/phases/phase-2-sqs-traffic-absorption.md)
+  - [Phase 3: API Gateway Protection](scenarios/eventpro/phases/phase-3-api-gateway-protection.md)
+  - [Phase 4: Step Functions Workflows](scenarios/eventpro/phases/phase-4-step-functions-workflows.md)
+  - [Phase 5: EventBridge Routing](scenarios/eventpro/phases/phase-5-eventbridge-routing.md)
+  - [Phase 6: Event-Driven Observability](scenarios/eventpro/phases/phase-6-observability.md)

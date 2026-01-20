@@ -79,3 +79,29 @@ flowchart LR
     style P5 fill:#e8f5e9,color:#000
     style P6 fill:#ffebee,color:#000
 ```
+
+---
+
+### [EventPro: Tickets Without Crashes](scenarios/eventpro/00-overview.md)
+
+Learn event-driven architecture through the journey of a ticket sales platform that evolves from a
+crashing monolith to handling 100K+ concurrent users during flash sales.
+
+**Covers**: SQS, DynamoDB, API Gateway, CloudFront, Step Functions, SNS, EventBridge, X-Ray,
+CloudWatch, Lambda
+
+```mermaid
+flowchart LR
+    P1["Phase 1<br>Monolith"] --> P2["Phase 2<br>SQS"]
+    P2 --> P3["Phase 3<br>API GW"]
+    P3 --> P4["Phase 4<br>Step Fn"]
+    P4 --> P5["Phase 5<br>Events"]
+    P5 --> P6["Phase 6<br>Observe"]
+
+    style P1 fill:#ffcdd2,color:#000
+    style P2 fill:#fff9c4,color:#000
+    style P3 fill:#fff9c4,color:#000
+    style P4 fill:#c8e6c9,color:#000
+    style P5 fill:#c8e6c9,color:#000
+    style P6 fill:#bbdefb,color:#000
+```
