@@ -10,7 +10,7 @@ prevent privilege escalation.
 
 The compliance consultant reviews your IAM setup and moves to the next item:
 
-> "HIPAA requires encryption of Protected Health Information (PHI) at rest and in transit. Show me
+> "HIPAA requires encryption of PHI (Protected Health Information) at rest and in transit. Show me
 > your encryption strategy."
 
 The CTO adds technical requirements:
@@ -25,12 +25,15 @@ with automatic rotation, and enforce TLS for all data in transit.
 
 ### Data Protection Layers
 
-| Layer             | Protection     | AWS Service                 |
-| ----------------- | -------------- | --------------------------- |
-| At rest (storage) | Encryption     | KMS + S3/EBS/RDS encryption |
-| In transit        | TLS/SSL        | ACM, ALB, CloudFront        |
-| Secrets           | Secure storage | Secrets Manager             |
-| Keys              | Management     | KMS                         |
+Comprehensive data protection requires encryption at multiple layers. This defense-in-depth approach
+ensures data is protected whether stored, transmitted, or accessed:
+
+| Layer             | Protection     | AWS Service                                          |
+| ----------------- | -------------- | ---------------------------------------------------- |
+| At rest (storage) | Encryption     | KMS (Key Management Service) + S3/EBS/RDS encryption |
+| In transit        | TLS/SSL        | ACM (AWS Certificate Manager), ALB, CloudFront       |
+| Secrets           | Secure storage | Secrets Manager                                      |
+| Keys              | Management     | KMS                                                  |
 
 ## Key Concepts for SAA Exam
 
@@ -65,6 +68,9 @@ flowchart TB
 ```
 
 ### KMS Key Types Comparison
+
+KMS offers three key types with different levels of control and cost. Customer managed keys (CMK)
+provide the most control but require more management. Choose based on your compliance requirements:
 
 | Key Type                | Management | Rotation           | Cost                 | Use Case            |
 | ----------------------- | ---------- | ------------------ | -------------------- | ------------------- |
@@ -103,8 +109,9 @@ flowchart LR
 
 **Why envelope encryption?**
 
-- CMK never leaves KMS (FIPS 140-2 validated)
-- Only small DEK is encrypted by CMK (fast)
+- CMK (Customer Master Key) never leaves KMS (FIPS 140-2 validated - Federal Information Processing
+  Standard)
+- Only small DEK (Data Encryption Key) is encrypted by CMK (fast)
 - Large data encrypted locally by DEK (efficient)
 
 > **Exam Tip**: The CMK encrypts the data key, not the data itself. This is more efficient and
@@ -161,6 +168,9 @@ flowchart TB
     style CSE fill:#fff,color:#000
     linkStyle default stroke:#000,stroke-width:2px
 ```
+
+S3 offers multiple encryption options. SSE-KMS (Server-Side Encryption with KMS) is typically the
+best choice for compliance because it provides full audit trails via CloudTrail:
 
 | Option          | Key Management           | Audit Trail         | Use Case          |
 | --------------- | ------------------------ | ------------------- | ----------------- |
@@ -266,6 +276,10 @@ flowchart LR
 ```
 
 ### Secrets Manager vs Parameter Store
+
+Both services store secrets, but they have different strengths. Choose Secrets Manager when
+automatic rotation is critical (like database passwords); choose Parameter Store for configuration
+values and cost-sensitive scenarios:
 
 | Feature          | Secrets Manager                | Parameter Store                     |
 | ---------------- | ------------------------------ | ----------------------------------- |
@@ -386,6 +400,10 @@ flowchart TB
 ```
 
 ### MedVault Encryption Decisions
+
+MedVault uses different encryption approaches based on data sensitivity. PHI requires customer
+managed keys for audit control, while less sensitive data can use AWS managed keys to reduce
+operational overhead:
 
 | Data                  | Encryption      | Key Type         | Rationale                |
 | --------------------- | --------------- | ---------------- | ------------------------ |

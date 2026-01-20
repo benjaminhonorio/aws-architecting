@@ -26,6 +26,10 @@ between human users, application workloads, and external partners.
 
 ### Identity Types at MedVault
 
+Different types of identities require different IAM (Identity and Access Management) solutions.
+Human users should use SSO (Single Sign-On) for convenience, while applications should use IAM roles
+for temporary credentials:
+
 | Identity Type      | Example            | AWS Solution                      |
 | ------------------ | ------------------ | --------------------------------- |
 | Employees (humans) | Developers, admins | IAM Identity Center (SSO)         |
@@ -43,11 +47,11 @@ flowchart TB
         ROOT["Root User<br>(avoid using)"]
         USER["IAM Users<br>(long-term credentials)"]
         ROLE["IAM Roles<br>(temporary credentials)"]
-        FED["Federated Users<br>(external IdP)"]
+        FED["Federated Users<br>(external IdP - Identity Provider)"]
     end
 
     subgraph BestPractice["Best Practices"]
-        BP1["Root: MFA + emergency only"]
+        BP1["Root: MFA (Multi-Factor Authentication) + emergency only"]
         BP2["Users: For exceptions only"]
         BP3["Roles: Preferred for everything"]
         BP4["Federation: For workforce"]
@@ -111,6 +115,10 @@ flowchart TB
 ```
 
 ### Identity-Based vs Resource-Based Policies
+
+Understanding the difference between these policy types is critical for the SAA exam. Identity-based
+policies define what an identity can do, while resource-based policies define who can access a
+resource:
 
 | Feature       | Identity-Based                   | Resource-Based                  |
 | ------------- | -------------------------------- | ------------------------------- |
@@ -323,13 +331,14 @@ flowchart LR
 **Key concepts**:
 
 - **Permission Sets**: Collections of policies assigned to users/groups
-- **SAML 2.0**: Protocol for SSO federation
-- **SCIM**: Automatic user/group provisioning
+- **SAML 2.0**: Protocol for SSO federation (Security Assertion Markup Language)
+- **SCIM**: Automatic user/group provisioning (System for Cross-domain Identity Management)
 - **Multi-account access**: Single sign-on to multiple AWS accounts
 
 ### IAM Access Analyzer
 
-Identifies resources shared externally:
+IAM Access Analyzer continuously monitors your resources to identify unintended external access. It
+helps maintain least-privilege by detecting resources shared outside your account or organization:
 
 | Finding Type | Example                                    |
 | ------------ | ------------------------------------------ |
@@ -389,6 +398,9 @@ flowchart TB
 ```
 
 ### MedVault IAM Decisions
+
+These decisions reflect security best practices for healthcare applications. Each choice prioritizes
+temporary credentials, auditability, and least privilege:
 
 | Decision           | Choice                | Rationale                            |
 | ------------------ | --------------------- | ------------------------------------ |

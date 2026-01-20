@@ -26,12 +26,16 @@ capabilities.
 
 ### Defense in Depth
 
+Security requires multiple layers working together. Prevention stops attacks, detection identifies
+breaches, response contains damage, and recovery restores operations. MedVault now completes the
+detection and response layers:
+
 | Layer      | Control                                  | Phase  |
 | ---------- | ---------------------------------------- | ------ |
 | Prevention | IAM, encryption, network                 | 1-3    |
 | Detection  | CloudTrail, Config, GuardDuty            | 4, 6   |
 | Response   | Automated remediation, incident response | 6      |
-| Recovery   | Backup, DR                               | Future |
+| Recovery   | Backup, DR (Disaster Recovery)           | Future |
 
 ## Key Concepts for SAA Exam
 
@@ -44,11 +48,11 @@ flowchart TB
         VPC["VPC Flow<br>Logs"]
         DNS["DNS Logs"]
         S3["S3 Data<br>Events"]
-        EKS["EKS Audit<br>Logs"]
+        EKS["EKS (Elastic<br>Kubernetes Service)<br>Audit Logs"]
     end
 
     subgraph GD["GuardDuty"]
-        ML["Machine Learning"]
+        ML["ML<br>(Machine Learning)"]
         TI["Threat Intelligence"]
         RULES["Anomaly Detection"]
     end
@@ -78,12 +82,15 @@ flowchart TB
 
 ### GuardDuty Features
 
-| Feature                  | Description                     |
-| ------------------------ | ------------------------------- |
-| **Threat Intelligence**  | Known malicious IPs, domains    |
-| **ML Anomaly Detection** | Unusual API calls, data access  |
-| **VPC Flow Analysis**    | Port scanning, C2 communication |
-| **DNS Analysis**         | DNS exfiltration, crypto mining |
+GuardDuty uses multiple detection methods to identify threats. It combines threat intelligence feeds
+with ML (Machine Learning) anomaly detection to catch both known and novel attacks:
+
+| Feature                  | Description                                           |
+| ------------------------ | ----------------------------------------------------- |
+| **Threat Intelligence**  | Known malicious IPs, domains                          |
+| **ML Anomaly Detection** | Unusual API calls, data access                        |
+| **VPC Flow Analysis**    | Port scanning, C2 (Command and Control) communication |
+| **DNS Analysis**         | DNS exfiltration, crypto mining                       |
 
 > **Exam Tip**: GuardDuty analyzes CloudTrail, VPC Flow Logs, and DNS automatically. You don't need
 > to enable these separately for GuardDuty.
@@ -189,12 +196,19 @@ flowchart TB
 
 ### Security Hub Standards
 
+Security Hub runs automated compliance checks against industry standards. Each standard includes
+dozens of controls that are continuously evaluated. Choose standards based on your compliance
+requirements:
+
 | Standard                                     | Focus                 |
 | -------------------------------------------- | --------------------- |
 | **AWS Foundational Security Best Practices** | AWS-specific security |
 | **CIS AWS Foundations Benchmark**            | Industry standard     |
 | **PCI DSS**                                  | Payment card security |
 | **NIST 800-53**                              | Government security   |
+
+> **Abbreviations**: CIS = Center for Internet Security, PCI DSS = Payment Card Industry Data
+> Security Standard, NIST = National Institute of Standards and Technology
 
 > **Exam Tip**: Security Hub provides a unified view of security findings AND runs compliance checks
 > against standards.
@@ -213,7 +227,7 @@ flowchart LR
 
     subgraph Output["Output"]
         CLASS["Data<br>Classification"]
-        PII["PII<br>Detection"]
+        PII["PII (Personally<br>Identifiable<br>Information)<br>Detection"]
         ALERT["Sensitive Data<br>Alerts"]
     end
 
@@ -232,6 +246,9 @@ flowchart LR
 ```
 
 ### Macie Capabilities
+
+Macie automates sensitive data discovery in S3. For healthcare organizations like MedVault, it can
+identify PHI (Protected Health Information) that may have been stored in the wrong location:
 
 | Capability                   | Description                        |
 | ---------------------------- | ---------------------------------- |
@@ -256,14 +273,14 @@ flowchart LR
 flowchart TB
     subgraph Targets["Assessment Targets"]
         EC2["EC2<br>Instances"]
-        ECR["ECR<br>Images"]
+        ECR["ECR (Elastic<br>Container Registry)<br>Images"]
         LAMBDA["Lambda<br>Functions"]
     end
 
     INSP["Amazon Inspector"]
 
     subgraph Checks["Vulnerability Checks"]
-        CVE["CVE<br>Database"]
+        CVE["CVE (Common<br>Vulnerabilities and<br>Exposures) Database"]
         NET["Network<br>Reachability"]
         PKG["Package<br>Vulnerabilities"]
     end
@@ -283,6 +300,9 @@ flowchart TB
 ```
 
 ### Security Service Comparison
+
+These four services work together but serve distinct purposes. This comparison helps you choose the
+right service for each security question on the exam:
 
 | Service          | What It Does             | Analyzes                  |
 | ---------------- | ------------------------ | ------------------------- |
@@ -420,6 +440,9 @@ flowchart TB
 ```
 
 ### MedVault Security Automation
+
+Each security finding type maps to a specific automated response. High-severity threats trigger
+immediate containment actions, while lower-severity findings create tickets for human review:
 
 | Trigger                                | Automated Response                |
 | -------------------------------------- | --------------------------------- |

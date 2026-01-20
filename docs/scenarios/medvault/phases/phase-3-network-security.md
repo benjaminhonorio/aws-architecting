@@ -10,8 +10,8 @@ with KMS and in transit with TLS. Database credentials rotate automatically via 
 During a security review, the network engineer raises a concern:
 
 > "I traced the network path for our S3 uploads. Even though we're using HTTPS, the traffic goes out
-> our NAT Gateway, over the internet, and back into AWS. That's adding latency and costs - plus it's
-> technically traversing the public internet."
+> our NAT (Network Address Translation) Gateway, over the internet, and back into AWS. That's adding
+> latency and costs - plus it's technically traversing the public internet."
 
 The compliance consultant adds:
 
@@ -20,8 +20,8 @@ The compliance consultant adds:
 
 The CISO also wants protection at the edge:
 
-> "We're exposing APIs to third-party healthcare systems. We need DDoS protection and the ability to
-> block malicious requests."
+> "We're exposing APIs to third-party healthcare systems. We need DDoS (Distributed Denial of
+> Service) protection and the ability to block malicious requests."
 
 ## Architecture Decision
 
@@ -67,6 +67,10 @@ flowchart TB
 ```
 
 ### Gateway vs Interface Endpoints
+
+VPC endpoints allow private access to AWS services without using the internet. Gateway endpoints are
+free but limited to S3 and DynamoDB; interface endpoints support 100+ services but cost money and
+require an ENI (Elastic Network Interface) in your subnet:
 
 | Feature            | Gateway Endpoint  | Interface Endpoint                  |
 | ------------------ | ----------------- | ----------------------------------- |
@@ -224,6 +228,10 @@ flowchart TB
     style N4 fill:#fff,color:#000
 ```
 
+Security groups and NACLs (Network Access Control Lists) provide defense at different layers.
+Understanding their differences is critical for the SAA exam - especially that security groups are
+stateful while NACLs are stateless:
+
 | Feature    | Security Groups                     | NACLs                         |
 | ---------- | ----------------------------------- | ----------------------------- |
 | Level      | Instance (ENI)                      | Subnet                        |
@@ -236,6 +244,9 @@ flowchart TB
 > automatic. NACLs are **stateless** - you must allow both directions.
 
 ### AWS WAF (Web Application Firewall)
+
+WAF protects web applications from common exploits by filtering HTTP/HTTPS traffic based on rules
+you define.
 
 ```mermaid
 flowchart LR
@@ -268,12 +279,15 @@ flowchart LR
 
 ### WAF Components
 
-| Component         | Description                                                 |
-| ----------------- | ----------------------------------------------------------- |
-| **Web ACL**       | Container for rules, attached to ALB/CloudFront/API Gateway |
-| **Rules**         | Conditions to match (IP, string, regex, rate)               |
-| **Rule Groups**   | Reusable collections of rules                               |
-| **Managed Rules** | Pre-built rules from AWS and partners                       |
+WAF uses a hierarchical structure. A Web ACL (Access Control List) contains rules that inspect
+incoming requests and take actions (allow, block, or count):
+
+| Component         | Description                                                               |
+| ----------------- | ------------------------------------------------------------------------- |
+| **Web ACL**       | Container for rules, attached to ALB/CloudFront/API Gateway               |
+| **Rules**         | Conditions to match (IP, string, regex, rate)                             |
+| **Rule Groups**   | Reusable collections of rules                                             |
+| **Managed Rules** | Pre-built rules from AWS and partners (including OWASP Top 10 protection) |
 
 ### WAF Rule Types
 
@@ -299,7 +313,8 @@ flowchart TB
 
 ### AWS Managed Rules
 
-Pre-configured rule groups:
+Pre-configured rule groups provide quick protection against common attacks. OWASP (Open Web
+Application Security Project) Top 10 covers the most critical web application security risks:
 
 | Rule Group              | Protection                   |
 | ----------------------- | ---------------------------- |
@@ -383,6 +398,10 @@ flowchart TB
 
 ### Shield Standard vs Advanced
 
+Shield Standard provides automatic protection against common DDoS attacks at no cost. Shield
+Advanced adds Layer 7 protection, access to the DRT (DDoS Response Team), and cost protection for
+scaling during attacks:
+
 | Feature                | Standard | Advanced                  |
 | ---------------------- | -------- | ------------------------- |
 | Cost                   | Free     | $3,000/month + data       |
@@ -430,7 +449,7 @@ flowchart TB
 
 - Stateful inspection
 - Domain filtering
-- IPS (Intrusion Prevention)
+- IPS (Intrusion Prevention System) - blocks malicious traffic in real-time
 - Custom Suricata rules
 
 > **Exam Tip**: Network Firewall is for VPC-level inspection. WAF is for HTTP/HTTPS application
@@ -502,6 +521,10 @@ flowchart TB
 ```
 
 ### MedVault Security Decisions
+
+These decisions ensure PHI never traverses the public internet while providing comprehensive
+protection against external threats. Shield Advanced is justified for healthcare due to the critical
+nature of the services:
 
 | Requirement         | Solution            | Rationale                      |
 | ------------------- | ------------------- | ------------------------------ |

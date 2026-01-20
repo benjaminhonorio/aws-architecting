@@ -20,10 +20,13 @@ The CISO adds:
 
 ## Architecture Decision
 
-**Decision**: Implement a multi-account strategy using AWS Organizations with Service Control
-Policies (SCPs) for guardrails, managed through AWS Control Tower.
+**Decision**: Implement a multi-account strategy using AWS Organizations with SCPs (Service Control
+Policies) for guardrails, managed through AWS Control Tower.
 
 ### Why Multi-Account?
+
+Multi-account architecture is a best practice for enterprise workloads. The key benefit is blast
+radius reduction - a mistake in one account can't affect others. This table compares the trade-offs:
 
 | Single Account            | Multi-Account              |
 | ------------------------- | -------------------------- |
@@ -46,7 +49,7 @@ flowchart TB
             BILLING["Consolidated Billing"]
         end
 
-        subgraph OUs["Organizational Units"]
+        subgraph OUs["OUs (Organizational Units)"]
             SECURITY["Security OU"]
             WORKLOADS["Workloads OU"]
         end
@@ -80,13 +83,16 @@ flowchart TB
 
 ### Organization Components
 
-| Component                    | Description                                      |
-| ---------------------------- | ------------------------------------------------ |
-| **Root**                     | Top of the OU hierarchy                          |
-| **Organizational Unit (OU)** | Container for accounts, can be nested            |
-| **Management Account**       | Creates org, manages billing (formerly "master") |
-| **Member Account**           | Regular accounts in the organization             |
-| **Service Control Policy**   | Permission guardrails for OUs/accounts           |
+Understanding these components is essential for designing multi-account architectures. The hierarchy
+flows from Root → OUs → Accounts, with SCPs applied at any level:
+
+| Component                        | Description                                      |
+| -------------------------------- | ------------------------------------------------ |
+| **Root**                         | Top of the OU hierarchy                          |
+| **Organizational Unit (OU)**     | Container for accounts, can be nested            |
+| **Management Account**           | Creates org, manages billing (formerly "master") |
+| **Member Account**               | Regular accounts in the organization             |
+| **SCP (Service Control Policy)** | Permission guardrails for OUs/accounts           |
 
 > **Exam Tip**: Management account should be used only for organization management, not workloads.
 
@@ -234,6 +240,9 @@ flowchart TB
 
 ### Control Tower Components
 
+Control Tower automates the setup of a secure multi-account environment. Instead of manually
+configuring Organizations, SCPs, and accounts, Control Tower provides these building blocks:
+
 | Component           | Description                              |
 | ------------------- | ---------------------------------------- |
 | **Landing Zone**    | Pre-configured multi-account environment |
@@ -243,15 +252,22 @@ flowchart TB
 
 ### Guardrail Types
 
-| Type           | Implementation       | Enforcement                      |
-| -------------- | -------------------- | -------------------------------- |
-| **Preventive** | SCP                  | Blocks non-compliant actions     |
-| **Detective**  | Config rules         | Alerts on non-compliance         |
-| **Proactive**  | CloudFormation hooks | Blocks non-compliant deployments |
+Guardrails enforce governance at different stages. Preventive guardrails stop actions before they
+happen, detective guardrails identify drift after the fact, and proactive guardrails validate
+infrastructure-as-code before deployment:
+
+| Type           | Implementation             | Enforcement                      |
+| -------------- | -------------------------- | -------------------------------- |
+| **Preventive** | SCP                        | Blocks non-compliant actions     |
+| **Detective**  | Config rules               | Alerts on non-compliance         |
+| **Proactive**  | CFN (CloudFormation) hooks | Blocks non-compliant deployments |
 
 > **Exam Tip**: Preventive = SCP (blocks). Detective = Config (alerts). Know the difference.
 
 ### Control Tower Accounts
+
+Control Tower automatically creates these foundational accounts. Each serves a specific purpose in
+the security architecture. The management account should never run workloads:
 
 | Account         | Purpose                                 |
 | --------------- | --------------------------------------- |
@@ -259,9 +275,9 @@ flowchart TB
 | **Log Archive** | Centralized CloudTrail and Config logs  |
 | **Audit**       | Security tools, cross-account access    |
 
-### AWS Resource Access Manager (RAM)
+### AWS RAM (Resource Access Manager)
 
-Share resources across accounts:
+Share resources across accounts without copying them:
 
 ```mermaid
 flowchart LR
@@ -402,6 +418,9 @@ flowchart TB
 
 ### MedVault SCPs
 
+SCPs are applied at different levels based on the security requirements of each OU. Root-level SCPs
+apply to all accounts, while OU-specific SCPs target particular environments:
+
 | OU         | SCP                   | Purpose                |
 | ---------- | --------------------- | ---------------------- |
 | Root       | DenyLeaveOrg          | Prevent account escape |
@@ -412,6 +431,9 @@ flowchart TB
 | Sandbox    | DenyExpensiveServices | Budget limits          |
 
 ### MedVault Account Strategy
+
+Each account has a clear purpose and access pattern. This separation ensures that developers can
+experiment in sandboxes without risking production PHI (Protected Health Information):
 
 | Account     | Purpose             | Access                |
 | ----------- | ------------------- | --------------------- |
@@ -447,12 +469,12 @@ Time for threat detection.
 
 ### Must-Know for This Phase
 
-| Concept            | Key Points                                            |
-| ------------------ | ----------------------------------------------------- |
-| Organizations      | Root, OUs, management account, member accounts        |
-| SCPs               | Limit permissions, don't grant, inherited down        |
-| SCP Evaluation     | Effective = SCP allows AND IAM allows                 |
-| Management Account | Not affected by SCPs, don't run workloads             |
-| Control Tower      | Landing zone, guardrails, account factory             |
-| Guardrails         | Preventive (SCP), Detective (Config), Proactive (CFN) |
-| RAM                | Share resources across accounts without copying       |
+| Concept            | Key Points                                                       |
+| ------------------ | ---------------------------------------------------------------- |
+| Organizations      | Root, OUs, management account, member accounts                   |
+| SCPs               | Limit permissions, don't grant, inherited down                   |
+| SCP Evaluation     | Effective = SCP allows AND IAM allows                            |
+| Management Account | Not affected by SCPs, don't run workloads                        |
+| Control Tower      | Landing zone, guardrails, account factory                        |
+| Guardrails         | Preventive (SCP), Detective (Config), Proactive (CloudFormation) |
+| RAM                | Share resources across accounts without copying                  |

@@ -20,10 +20,14 @@ The compliance consultant adds:
 
 ## Architecture Decision
 
-**Decision**: Implement comprehensive logging with CloudTrail for API activity, AWS Config for
-compliance monitoring, and CloudWatch for metrics and alerting.
+**Decision**: Implement comprehensive logging with CloudTrail for API (Application Programming
+Interface) activity, AWS Config for compliance monitoring, and CloudWatch for metrics and alerting.
 
 ### Logging Strategy
+
+Each logging requirement maps to a specific AWS service. Understanding which service answers which
+question is critical for the exam - CloudTrail tracks activity, Config tracks state, and CloudWatch
+handles metrics and application logs:
 
 | Requirement                 | AWS Service     |
 | --------------------------- | --------------- |
@@ -41,8 +45,8 @@ compliance monitoring, and CloudWatch for metrics and alerting.
 flowchart LR
     subgraph Sources["API Sources"]
         CONSOLE["Console"]
-        CLI["CLI"]
-        SDK["SDK"]
+        CLI["CLI<br>(Command Line Interface)"]
+        SDK["SDK<br>(Software Development Kit)"]
         SVC["AWS Services"]
     end
 
@@ -76,6 +80,10 @@ flowchart LR
 ```
 
 ### CloudTrail Event Types
+
+CloudTrail categorizes events by their scope and impact. Management events are logged by default
+because they represent control plane operations. Data events (data plane) generate high volume and
+cost extra, so enable them selectively:
 
 | Event Type            | What's Logged                                                | Default | Cost           |
 | --------------------- | ------------------------------------------------------------ | ------- | -------------- |
@@ -149,7 +157,7 @@ flowchart LR
 flowchart TB
     subgraph Org["AWS Organization"]
         MGMT["Management<br>Account"]
-        subgraph OUs["Organizational Units"]
+        subgraph OUs["OUs (Organizational Units)"]
             PROD["Prod OU"]
             DEV["Dev OU"]
         end
@@ -224,6 +232,10 @@ flowchart TB
 
 ### CloudTrail vs Config
 
+These two services complement each other but answer different questions. CloudTrail is verb-focused
+(what happened?), while Config is noun-focused (what exists?). For compliance, you typically need
+both:
+
 | Feature               | CloudTrail                | AWS Config                   |
 | --------------------- | ------------------------- | ---------------------------- |
 | **Question answered** | Who did what, when?       | What's the current state?    |
@@ -269,7 +281,9 @@ flowchart LR
 
 ### Conformance Packs
 
-Pre-built collections of Config rules for compliance:
+Conformance packs bundle multiple Config rules into a single deployment, aligned to specific
+compliance frameworks. Instead of configuring 50+ individual rules, deploy one pack that covers your
+regulatory requirements:
 
 | Pack                                       | Use Case         |
 | ------------------------------------------ | ---------------- |
@@ -277,6 +291,9 @@ Pre-built collections of Config rules for compliance:
 | **CIS AWS Foundations Benchmark**          | General security |
 | **Operational Best Practices for PCI-DSS** | Payment card     |
 | **NIST 800-53**                            | Government       |
+
+> **Abbreviations**: CIS = Center for Internet Security, PCI-DSS = Payment Card Industry Data
+> Security Standard, NIST = National Institute of Standards and Technology
 
 > **Exam Tip**: Conformance packs simplify compliance - one deployment covers many rules.
 
@@ -288,7 +305,7 @@ Automatically fix non-compliant resources:
 flowchart LR
     RESOURCE["S3 Bucket<br>(no encryption)"]
     RULE["Config Rule:<br>s3-bucket-encryption"]
-    SSM["SSM Automation<br>Document"]
+    SSM["SSM (Systems Manager)<br>Automation Document"]
     FIX["Enable<br>Encryption"]
 
     RESOURCE -->|"Evaluated"| RULE
@@ -487,6 +504,10 @@ flowchart TB
 ```
 
 ### MedVault Logging Decisions
+
+Each logging requirement has a specific configuration tailored to HIPAA compliance. Note that data
+events are enabled only for the PHI bucket (not all S3 buckets) to control costs while maintaining
+compliance:
 
 | Requirement           | Solution    | Configuration                            |
 | --------------------- | ----------- | ---------------------------------------- |

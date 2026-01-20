@@ -6,8 +6,8 @@ You're the founding Security Architect at **MedVault** - a healthcare startup bu
 records platform. Before writing a single line of application code, the founders made a commitment:
 **security first**.
 
-The CISO (who is also a co-founder) has a mandate: achieve HIPAA compliance and SOC 2 Type II
-certification within 12 months.
+The CISO (Chief Information Security Officer, who is also a co-founder) has a mandate: achieve HIPAA
+compliance and SOC 2 (System and Organization Controls 2) Type II certification within 12 months.
 
 ## The Challenge
 
@@ -64,21 +64,25 @@ Detection
 
 ## HIPAA on AWS - The Foundation
 
-MedVault must comply with HIPAA (Health Insurance Portability and Accountability Act). Key
-requirements:
+MedVault must comply with HIPAA (Health Insurance Portability and Accountability Act). This table
+maps HIPAA security requirements to AWS services. Understanding these mappings helps architects
+design compliant healthcare applications:
 
-| HIPAA Requirement     | AWS Implementation   |
-| --------------------- | -------------------- |
-| Access controls       | IAM, Identity Center |
-| Audit controls        | CloudTrail, Config   |
-| Integrity controls    | KMS, S3 versioning   |
-| Transmission security | TLS, VPC endpoints   |
-| Encryption            | KMS, SSE             |
+| HIPAA Requirement     | AWS Implementation                                    |
+| --------------------- | ----------------------------------------------------- |
+| Access controls       | IAM (Identity and Access Management), Identity Center |
+| Audit controls        | CloudTrail, Config                                    |
+| Integrity controls    | KMS (Key Management Service), S3 versioning           |
+| Transmission security | TLS (Transport Layer Security), VPC endpoints         |
+| Encryption            | KMS, SSE (Server-Side Encryption)                     |
 
 > **Note**: AWS provides a Business Associate Agreement (BAA) that covers many services for HIPAA
 > workloads.
 
 ## How This Differs from Other Scenarios
+
+Each scenario in this learning series focuses on different architectural challenges. This comparison
+helps you choose which scenario to study based on your learning goals:
 
 | Aspect               | TechBooks              | ShipFast              | MedVault                  |
 | -------------------- | ---------------------- | --------------------- | ------------------------- |
