@@ -237,7 +237,7 @@ Bundle multiple connections for higher bandwidth and redundancy:
 
 - Combine up to **4 connections** of the same speed
 - All connections must terminate at the same DX location
-- Uses LACP (Link Aggregation Control Protocol)
+- Uses LACP (Link Aggregation Control Protocol) for automatic failover
 - Example: 4 x 10 Gbps = 40 Gbps aggregate
 
 ### Resilience Patterns
@@ -354,6 +354,9 @@ If DX fails → BGP routes via VPN automatically
 
 ## Direct Connect vs VPN - Cost Comparison
 
+This comparison shows how DX (Direct Connect) can be more cost-effective for large data transfers
+despite higher monthly costs:
+
 For ShipFast's 50TB file migration:
 
 | Cost Factor              | VPN                 | Direct Connect           |
@@ -371,7 +374,7 @@ Direct Connect pays for itself in the first migration.
 Options for encryption:
 
 1. **VPN over Direct Connect** - IPsec tunnel over private VIF
-2. **MACsec** - Layer 2 encryption (10 Gbps and 100 Gbps dedicated only)
+2. **MACsec (MAC Security)** - Layer 2 encryption (10 Gbps and 100 Gbps dedicated only)
 3. **Application-level encryption** - TLS/HTTPS for data in transit
 
 ```mermaid

@@ -25,7 +25,7 @@ This evolving scenario teaches AWS migration and hybrid architecture concepts th
 business decisions:
 
 - [**Phase 1**: On-Premises Baseline](scenarios/shipfast/phases/phase-1-on-premises-baseline.md)
-  (Assessment, 6 Rs of Migration)
+  (Assessment, 7 Rs of Migration)
 - [**Phase 2**: First Cloud Connection](scenarios/shipfast/phases/phase-2-vpn-connection.md)
   (Site-to-Site VPN)
 - [**Phase 3**: Dedicated Connectivity](scenarios/shipfast/phases/phase-3-direct-connect.md) (Direct

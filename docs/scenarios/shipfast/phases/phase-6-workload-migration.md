@@ -35,6 +35,10 @@ servers to EC2, with minimal downtime cutover.
 
 ### Why MGN?
 
+MGN (Application Migration Service) is AWS's recommended tool for lift-and-shift migrations. It
+continuously replicates servers at the block level, allowing you to test the migration before
+cutting over with minimal downtime:
+
 | Requirement          | MGN Capability          |
 | -------------------- | ----------------------- |
 | Minimal code changes | Rehost (lift-and-shift) |
@@ -105,6 +109,10 @@ flowchart LR
 
 ### MGN Components
 
+MGN uses several components to orchestrate the migration. The agent runs on source servers,
+replication servers handle incoming data, and EBS (Elastic Block Store) volumes store the replicated
+disk data until cutover:
+
 | Component               | Description                                                       |
 | ----------------------- | ----------------------------------------------------------------- |
 | **Agent**               | Installed on source servers, performs block-level replication     |
@@ -144,6 +152,10 @@ sequenceDiagram
 
 ### Test vs Cutover Launch
 
+MGN provides two types of launches. Understanding the difference is critical - test launches let you
+validate the migration without impacting production, while cutover launches are the actual migration
+event:
+
 | Action             | Purpose                  | Source Impact                |
 | ------------------ | ------------------------ | ---------------------------- |
 | **Test Launch**    | Validate migration works | None - source keeps running  |
@@ -153,6 +165,10 @@ sequenceDiagram
 cutover.
 
 ### MGN vs Server Migration Service (SMS)
+
+AWS previously offered SMS (Server Migration Service) for migrations, but MGN has replaced it as the
+recommended solution. If you see SMS on the exam, know that it's deprecated and MGN is the current
+answer:
 
 | Feature     | MGN                      | SMS (Legacy)              |
 | ----------- | ------------------------ | ------------------------- |
@@ -210,12 +226,15 @@ flowchart TB
 
 ### Snow Family Selection
 
-| Device                    | Capacity      | Use Case                                |
-| ------------------------- | ------------- | --------------------------------------- |
-| **Snowcone**              | 8-14 TB       | Edge locations, IoT, small migrations   |
-| **Snowball Edge Storage** | 210 TB        | Data migration, edge storage            |
-| **Snowball Edge Compute** | 28 TB + vCPUs | Edge compute + storage                  |
-| **Snowmobile**            | 100 PB        | Datacenter migrations, massive datasets |
+Choosing the right Snow device depends on your data volume and compute requirements. The capacity
+ranges from portable Snowcone (8-14 TB) to massive Snowmobile (100 PB - Petabytes):
+
+| Device                    | Capacity      | Use Case                                                   |
+| ------------------------- | ------------- | ---------------------------------------------------------- |
+| **Snowcone**              | 8-14 TB       | Edge locations, IoT (Internet of Things), small migrations |
+| **Snowball Edge Storage** | 210 TB        | Data migration, edge storage                               |
+| **Snowball Edge Compute** | 28 TB + vCPUs | Edge compute + storage (vCPUs = virtual CPUs)              |
+| **Snowmobile**            | 100 PB        | Datacenter migrations, massive datasets                    |
 
 ### When to Use Snow vs Network
 
@@ -235,6 +254,10 @@ flowchart TB
 
 **Rule of thumb**: If transfer takes more than a week over your network, consider Snow.
 
+This table shows approximate transfer times at different network speeds. Compare these to Snowball
+shipping time (typically 1-2 weeks round-trip) to decide which approach is faster for your data
+volume:
+
 | Data Size | 100 Mbps | 1 Gbps  | 10 Gbps  |
 | --------- | -------- | ------- | -------- |
 | 10 TB     | 12 days  | 1 day   | 3 hours  |
@@ -246,12 +269,16 @@ flowchart TB
 
 ### Snow Family Features
 
-| Feature    | Snowcone      | Snowball Edge      | Snowmobile |
-| ---------- | ------------- | ------------------ | ---------- |
-| Compute    | Yes (2 vCPUs) | Yes (40-104 vCPUs) | No         |
-| Encryption | Yes (256-bit) | Yes (256-bit)      | Yes        |
-| Clustering | No            | Yes (5-10 devices) | N/A        |
-| AWS OpsHub | Yes           | Yes                | N/A        |
+Beyond storage, Snow devices offer compute capabilities and security features. All devices encrypt
+data, and Snowball Edge supports clustering multiple devices together for larger workloads. AWS
+OpsHub provides a GUI (Graphical User Interface) for managing Snow devices:
+
+| Feature    | Snowcone      | Snowball Edge                    | Snowmobile |
+| ---------- | ------------- | -------------------------------- | ---------- |
+| Compute    | Yes (2 vCPUs) | Yes (40-104 vCPUs, optional GPU) | No         |
+| Encryption | Yes (256-bit) | Yes (256-bit)                    | Yes        |
+| Clustering | No            | Yes (5-10 devices)               | N/A        |
+| AWS OpsHub | Yes           | Yes                              | N/A        |
 
 ## ShipFast Final Architecture
 
@@ -370,7 +397,7 @@ flowchart TB
 1. **Pre-cutover**
    - [ ] All servers replicating successfully
    - [ ] Test launches validated
-   - [ ] DNS TTL lowered (5 minutes)
+   - [ ] DNS TTL (Time to Live) lowered (5 minutes)
    - [ ] Rollback plan documented
 
 2. **Cutover**
@@ -378,7 +405,7 @@ flowchart TB
    - [ ] Stop application services on-prem
    - [ ] Wait for final sync (verify in MGN console)
    - [ ] Launch cutover instances
-   - [ ] Update ALB target group / Route 53 records
+   - [ ] Update ALB (Application Load Balancer) target group / Route 53 records
    - [ ] Verify application health
 
 3. **Post-cutover**
@@ -453,6 +480,10 @@ flowchart LR
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
+The migration transformed ShipFast from a capital-intensive on-premises operation to a scalable
+cloud infrastructure. RPO (Recovery Point Objective) measures potential data loss, while RTO
+(Recovery Time Objective) measures downtime - both improved dramatically:
+
 | Metric                     | Before                    | After                      |
 | -------------------------- | ------------------------- | -------------------------- |
 | Annual infrastructure cost | ~$500K                    | ~$180K                     |
@@ -500,7 +531,7 @@ service does, but WHEN to use it and WHY.
 
 ### Next Steps for SAA Prep
 
-1. Review the 6 Rs of Migration (Phase 1)
+1. Review the 7 Rs of Migration (Phase 1)
 2. Understand VPN vs Direct Connect trade-offs (Phases 2-3)
 3. Know DMS vs SCT usage (Phase 4)
 4. Memorize Storage Gateway types (Phase 5)

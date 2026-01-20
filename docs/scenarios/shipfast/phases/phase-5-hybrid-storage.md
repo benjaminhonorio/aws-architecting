@@ -15,8 +15,9 @@ The storage admin sends an alarming ticket:
 
 The Operations Director adds:
 
-> "Drivers access proof-of-delivery documents via mapped network drives (SMB shares). If we change
-> how they access files, we'll need to retrain 500 drivers and update all our mobile apps."
+> "Drivers access proof-of-delivery documents via mapped network drives (SMB (Server Message Block)
+> shares). If we change how they access files, we'll need to retrain 500 drivers and update all our
+> mobile apps."
 
 The compliance officer chimes in:
 
@@ -29,6 +30,11 @@ The compliance officer chimes in:
 while maintaining SMB access for users.
 
 ### Why Storage Gateway?
+
+Storage Gateway bridges on-premises storage with AWS cloud storage, allowing organizations to
+maintain familiar access methods (like SMB or NFS (Network File System) shares) while leveraging
+cloud scalability. For ShipFast, this means users can continue accessing files the same way, while
+the company gains unlimited capacity and lower costs:
 
 | Requirement                 | Solution                            |
 | --------------------------- | ----------------------------------- |
@@ -67,6 +73,9 @@ flowchart TB
         T3["Replace physical tape"]
     end
 
+    %% iSCSI = Internet Small Computer System Interface (block storage protocol)
+    %% VTL = Virtual Tape Library
+
     FILE --- FILE_DESC
     VOL --- VOL_DESC
     TAPE --- TAPE_DESC
@@ -83,12 +92,17 @@ flowchart TB
 
 ### Detailed Comparison
 
-| Gateway Type                | Protocol    | Backend           | Use Case                          |
-| --------------------------- | ----------- | ----------------- | --------------------------------- |
-| **File Gateway**            | NFS, SMB    | S3                | File shares, user directories     |
-| **Volume Gateway (Cached)** | iSCSI       | S3 + local cache  | Frequently accessed block data    |
-| **Volume Gateway (Stored)** | iSCSI       | Local + S3 backup | Full dataset on-prem, DR to cloud |
-| **Tape Gateway**            | iSCSI (VTL) | S3, S3 Glacier    | Backup/archive, replace tape      |
+Choosing the right Storage Gateway type depends on your access protocol and data location
+requirements. File Gateway is for file shares, Volume Gateway is for block storage (using iSCSI
+(Internet Small Computer System Interface)), and Tape Gateway replaces physical tape libraries with
+a VTL (Virtual Tape Library):
+
+| Gateway Type                | Protocol    | Backend           | Use Case                                              |
+| --------------------------- | ----------- | ----------------- | ----------------------------------------------------- |
+| **File Gateway**            | NFS, SMB    | S3                | File shares, user directories                         |
+| **Volume Gateway (Cached)** | iSCSI       | S3 + local cache  | Frequently accessed block data                        |
+| **Volume Gateway (Stored)** | iSCSI       | Local + S3 backup | Full dataset on-prem, DR (Disaster Recovery) to cloud |
+| **Tape Gateway**            | iSCSI (VTL) | S3, S3 Glacier    | Backup/archive, replace tape                          |
 
 ### File Gateway Deep Dive
 
@@ -132,6 +146,10 @@ flowchart LR
 > metadata.
 
 ### File Gateway Deployment Options
+
+File Gateway can be deployed in multiple ways depending on your infrastructure. Most organizations
+use a virtual machine on their existing hypervisor, but AWS also offers a hardware appliance for
+environments without virtualization:
 
 | Option                 | Where      | Best For                    |
 | ---------------------- | ---------- | --------------------------- |
@@ -228,7 +246,8 @@ flowchart TB
     style F5 fill:#fff,color:#000
 ```
 
-**Use when**: Windows applications need SMB, AD integration, or Windows-specific features.
+**Use when**: Windows applications need SMB, AD (Active Directory) integration, NTFS (NT File
+System) features, or DFS (Distributed File System) namespaces.
 
 ### FSx for Lustre
 
@@ -248,9 +267,13 @@ flowchart TB
     style L4 fill:#fff,color:#000
 ```
 
-**Use when**: HPC, ML training, video processing - workloads needing extreme throughput.
+**Use when**: HPC (High-Performance Computing), ML (Machine Learning) training, video processing -
+workloads needing extreme throughput.
 
 ### FSx Comparison
+
+AWS offers four FSx file system types, each optimized for different use cases. Choosing the right
+one depends on your protocol requirements, performance needs, and ecosystem integration:
 
 | Feature        | FSx Windows        | FSx Lustre      | FSx NetApp ONTAP | FSx OpenZFS     |
 | -------------- | ------------------ | --------------- | ---------------- | --------------- |
@@ -302,13 +325,16 @@ flowchart TB
 
 ### Backup Features
 
-| Feature                  | Description                                |
-| ------------------------ | ------------------------------------------ |
-| **Backup Plans**         | Automated schedules and retention policies |
-| **Backup Vault**         | Encrypted container for recovery points    |
-| **Cross-region copy**    | DR to another region                       |
-| **Cross-account backup** | Protect against account compromise         |
-| **Vault Lock**           | WORM compliance (immutable backups)        |
+AWS Backup provides a unified interface for managing backups across AWS services. Key features
+include automation, cross-region/cross-account protection, and compliance controls:
+
+| Feature                  | Description                                                |
+| ------------------------ | ---------------------------------------------------------- |
+| **Backup Plans**         | Automated schedules and retention policies                 |
+| **Backup Vault**         | Encrypted container for recovery points                    |
+| **Cross-region copy**    | DR to another region                                       |
+| **Cross-account backup** | Protect against account compromise                         |
+| **Vault Lock**           | WORM (Write Once Read Many) compliance - immutable backups |
 
 ## ShipFast Hybrid Storage Architecture
 
@@ -370,6 +396,10 @@ flowchart TB
 
 ### ShipFast Storage Strategy
 
+ShipFast uses S3 lifecycle policies to automatically transition documents to cheaper storage tiers
+as they age. This reduces costs while maintaining compliance with the 7-year retention requirement.
+S3 IA (Infrequent Access) offers lower storage costs for data accessed less frequently:
+
 | Data Type            | Solution                   | Retention         |
 | -------------------- | -------------------------- | ----------------- |
 | Active shipping docs | File Gateway → S3 Standard | 30 days hot       |
@@ -404,6 +434,10 @@ flowchart TB
 ```
 
 ### Cost Comparison
+
+The economics of cloud storage favor operational expense over capital expense. Instead of buying
+hardware upfront, ShipFast pays monthly based on actual usage. This comparison shows why Storage
+Gateway with S3 is more cost-effective for their growing storage needs:
 
 | Storage         | On-Prem NAS          | S3 + File Gateway        |
 | --------------- | -------------------- | ------------------------ |
@@ -440,10 +474,17 @@ flowchart LR
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
-**DataSync vs Storage Gateway**: | Feature | DataSync | Storage Gateway |
-|---------|----------|-----------------| | Purpose | Migration, sync | Hybrid access | | Direction |
-One-time or scheduled | Continuous | | Protocol | Agent-based | SMB/NFS | | Best for | Moving data |
-Ongoing hybrid |
+### DataSync vs Storage Gateway
+
+Both services move data to AWS, but they serve different purposes. DataSync is for migrations and
+scheduled synchronization jobs, while Storage Gateway provides continuous hybrid access:
+
+| Feature   | DataSync              | Storage Gateway |
+| --------- | --------------------- | --------------- |
+| Purpose   | Migration, sync       | Hybrid access   |
+| Direction | One-time or scheduled | Continuous      |
+| Protocol  | Agent-based           | SMB/NFS         |
+| Best for  | Moving data           | Ongoing hybrid  |
 
 > **Exam Tip**: Use DataSync for migration, Storage Gateway for ongoing hybrid access.
 

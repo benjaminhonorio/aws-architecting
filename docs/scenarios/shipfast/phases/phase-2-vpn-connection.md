@@ -2,7 +2,7 @@
 
 ## The Story So Far
 
-ShipFast has assessed their infrastructure and decided on a phased, hybrid-first migration. The 6 Rs
+ShipFast has assessed their infrastructure and decided on a phased, hybrid-first migration. The 7 Rs
 analysis identified which workloads to rehost, replatform, and retain. Now it's time to connect the
 datacenter to AWS.
 
@@ -214,7 +214,8 @@ flowchart TB
 
 ### VPN Setup Steps (Conceptual)
 
-1. **Create Customer Gateway** - Register your on-prem router's public IP and BGP ASN
+1. **Create Customer Gateway** - Register your on-prem router's public IP and BGP ASN (Autonomous
+   System Number)
 2. **Create Virtual Private Gateway** - Attach to your VPC
 3. **Create VPN Connection** - Links CGW to VGW, generates tunnel configurations
 4. **Download Configuration** - AWS provides config for your specific router model
@@ -236,15 +237,17 @@ Route Table:
 
 ## VPN vs Direct Connect Comparison
 
-| Feature        | Site-to-Site VPN               | Direct Connect                    |
-| -------------- | ------------------------------ | --------------------------------- |
-| **Connection** | Over public internet           | Dedicated private fiber           |
-| **Encryption** | IPsec (encrypted by default)   | Not encrypted (add MACsec or VPN) |
-| **Bandwidth**  | Up to 1.25 Gbps/tunnel         | 1, 10, 100, or 400 Gbps           |
-| **Latency**    | Variable (internet-dependent)  | Consistent, lower                 |
-| **Setup time** | Minutes to hours               | Weeks to months                   |
-| **Cost**       | ~$0.05/hr + data transfer      | Port fee + data transfer          |
-| **Use case**   | Backup, testing, low-bandwidth | Production, high-bandwidth        |
+This comparison helps you choose the right connectivity option based on your requirements:
+
+| Feature        | Site-to-Site VPN               | Direct Connect                            |
+| -------------- | ------------------------------ | ----------------------------------------- |
+| **Connection** | Over public internet           | Dedicated private fiber                   |
+| **Encryption** | IPsec (encrypted by default)   | Not encrypted (add MACsec or VPN overlay) |
+| **Bandwidth**  | Up to 1.25 Gbps/tunnel         | 1, 10, 100, or 400 Gbps                   |
+| **Latency**    | Variable (internet-dependent)  | Consistent, lower                         |
+| **Setup time** | Minutes to hours               | Weeks to months                           |
+| **Cost**       | ~$0.05/hr + data transfer      | Port fee + data transfer                  |
+| **Use case**   | Backup, testing, low-bandwidth | Production, high-bandwidth                |
 
 ## What Could Go Wrong?
 

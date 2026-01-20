@@ -16,7 +16,8 @@ The CFO sends an urgent email:
 The DBA adds context:
 
 > "Our SQL Server has 2TB of data. We also want proper disaster recovery - our current standby just
-> does log shipping and has a 1-hour RPO. One datacenter flood and we lose an hour of shipments."
+> does log shipping and has a 1-hour RPO (Recovery Point Objective). One datacenter flood and we
+> lose an hour of shipments."
 
 ## Architecture Decision
 
@@ -203,12 +204,12 @@ SCT provides an **Assessment Report** showing:
 
 ### Replication Instance Sizing
 
-| Factor               | Consideration                       |
-| -------------------- | ----------------------------------- |
-| Source database size | Larger = more memory needed         |
-| Number of tables     | More tables = more parallel threads |
-| Transaction rate     | High CDC rate = faster instance     |
-| LOB data             | Large objects need more memory      |
+| Factor               | Consideration                        |
+| -------------------- | ------------------------------------ |
+| Source database size | Larger = more memory needed          |
+| Number of tables     | More tables = more parallel threads  |
+| Transaction rate     | High CDC rate = faster instance      |
+| LOB data             | LOB (Large Objects) need more memory |
 
 > **Exam Tip**: Replication instance runs in a VPC. It needs connectivity to both source (on-prem)
 > and target (AWS).
@@ -371,6 +372,8 @@ flowchart TB
 
 ### Aurora vs RDS Multi-AZ
 
+Understanding the architectural differences helps explain Aurora's performance advantages:
+
 | Feature       | RDS Multi-AZ           | Aurora                    |
 | ------------- | ---------------------- | ------------------------- |
 | Replication   | Synchronous to standby | 6-way to shared storage   |
@@ -413,8 +416,8 @@ The database migration is complete. Aurora is running smoothly, SQL Server licen
 ($150K saved!). But now the storage team has a problem:
 
 > "Great, the database is migrated. But we still have 50TB of shipping documents on the NAS. Users
-> access them via SMB shares. We can't just shut that down - drivers need those proof-of-delivery
-> documents 24/7."
+> access them via SMB (Server Message Block) shares. We can't just shut that down - drivers need
+> those proof-of-delivery documents 24/7."
 
 Time to tackle hybrid storage.
 

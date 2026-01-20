@@ -15,8 +15,8 @@ The CFO drops by your desk with concerning news:
 
 You also hear from Operations:
 
-> "Last month's power outage took us down for 6 hours. We don't have a real DR site - just tape
-> backups stored off-site. If this building floods, we're done."
+> "Last month's power outage took us down for 6 hours. We don't have a real DR (Disaster Recovery)
+> site - just tape backups stored off-site. If this building floods, we're done."
 
 ## Current Architecture
 
@@ -98,7 +98,7 @@ Analyzes on-premises workloads and provides:
 
 ## Key Concepts for SAA Exam
 
-### The 6 Rs of Migration
+### The 7 Rs of Migration
 
 This framework appears constantly on the SAA exam. Know each strategy and when to use it:
 
@@ -108,6 +108,7 @@ This framework appears constantly on the SAA exam. Know each strategy and when t
 | **Replatform** | "Lift and reshape" - minor optimizations | Easy wins without rewriting       | SQL Server to RDS         |
 | **Repurchase** | Replace with SaaS                        | Commodity workloads               | Move to Salesforce        |
 | **Refactor**   | Re-architect for cloud-native            | Strategic apps needing scale      | Future: containerize apps |
+| **Relocate**   | Move to AWS with minimal changes         | VMware workloads, rapid migration | VMware Cloud on AWS       |
 | **Retire**     | Decommission                             | Unused or redundant systems       | Legacy reporting server   |
 | **Retain**     | Keep on-premises                         | Compliance, latency, or not ready | (none for ShipFast)       |
 
@@ -121,7 +122,7 @@ flowchart LR
         SLOW["Slowest"]
     end
 
-    subgraph Strategies["The 6 Rs"]
+    subgraph Strategies["The 7 Rs"]
         R1["Rehost<br>'Lift & Shift'"]
         R2["Replatform<br>'Lift & Reshape'"]
         R3["Repurchase<br>'Drop & Shop'"]
@@ -229,8 +230,8 @@ Good question. That's exactly what we'll solve in Phase 2.
 
 ## Exam Tips
 
-- **6 Rs appear frequently** - Know the difference between Rehost (no changes) and Replatform (minor
-  changes)
+- **7 Rs appear frequently** - Know the difference between Rehost (no changes), Replatform (minor
+  changes), and Relocate (VMware Cloud on AWS)
 - **Migration Hub** - Central place to track migration progress across tools
 - **Application Discovery Service** - Two modes: agentless (VMware) and agent-based (deeper data)
 - **Hybrid is usually the answer** - SAA rarely asks about big-bang migrations
@@ -241,12 +242,12 @@ Good question. That's exactly what we'll solve in Phase 2.
 
 ### Must-Know for This Phase
 
-| Concept               | Key Points                                                |
-| --------------------- | --------------------------------------------------------- |
-| 6 Rs of Migration     | Rehost, Replatform, Repurchase, Refactor, Retire, Retain  |
-| AWS Migration Hub     | Centralized tracking, integrates with discovery tools     |
-| Application Discovery | Agentless (vCenter) vs Agent-based (installed on servers) |
-| Migration Evaluator   | Business case, TCO analysis, right-sizing                 |
+| Concept               | Key Points                                                          |
+| --------------------- | ------------------------------------------------------------------- |
+| 7 Rs of Migration     | Rehost, Replatform, Repurchase, Refactor, Relocate, Retire, Retain  |
+| AWS Migration Hub     | Centralized tracking, integrates with discovery tools               |
+| Application Discovery | Agentless (vCenter) vs Agent-based (installed on servers)           |
+| Migration Evaluator   | Business case, TCO (Total Cost of Ownership) analysis, right-sizing |
 
 ---
 
