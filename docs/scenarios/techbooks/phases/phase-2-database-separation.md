@@ -134,6 +134,9 @@ flowchart TB
 
 ### Self-Managed vs RDS Comparison
 
+Understanding the operational differences helps you decide when RDS is worth the cost vs managing
+your own database:
+
 | Task             | Self-Managed (EC2)      | RDS                                |
 | ---------------- | ----------------------- | ---------------------------------- |
 | **Installation** | You do it               | AWS handles                        |
@@ -291,6 +294,9 @@ flowchart TB
 
 ### NAT Gateway vs NAT Instance
 
+AWS offers two ways to provide outbound internet access from private subnets. This comparison helps
+you choose between the managed service and the self-managed approach:
+
 | Feature             | NAT Gateway            | NAT Instance             |
 | ------------------- | ---------------------- | ------------------------ |
 | **Managed by**      | AWS                    | You                      |
@@ -435,7 +441,7 @@ Outbound:
 ### WHY Port 3306?
 
 Each database engine has its standard port. RDS uses the same ports because it runs the actual
-engine:
+engine. Knowing these ports is useful for Security Group configuration and troubleshooting:
 
 | RDS Engine     | Default Port | WHY This Port                    |
 | -------------- | ------------ | -------------------------------- |
@@ -514,7 +520,7 @@ db.t3.micro
 └───────── Family: T = burstable
 ```
 
-**Common RDS families:**
+**Common RDS families** (similar to EC2, but prefixed with "db."):
 
 | Family            | Use Case                          |
 | ----------------- | --------------------------------- |
@@ -526,6 +532,9 @@ db.t3.micro
 **For TechBooks Phase 2:** `db.t3.micro` (Free Tier eligible)
 
 ### Storage
+
+RDS supports multiple storage types with different IOPS (Input/Output Operations Per Second)
+characteristics. Choose based on your performance and cost requirements:
 
 | Type         | IOPS                    | Use Case                      | Cost |
 | ------------ | ----------------------- | ----------------------------- | ---- |
@@ -563,7 +572,7 @@ flowchart TB
         OnDemand["On-demand<br>User initiated"]
     end
 
-    subgraph Recovery["Point-in-Time Recovery"]
+    subgraph Recovery["PITR (Point-in-Time Recovery)"]
         PITR["Restore to any second<br>within retention period"]
     end
 
@@ -652,7 +661,7 @@ flowchart TB
 ## See Also
 
 > **Related Learning:** For database migration strategies from on-premises SQL Server to RDS,
-> including DMS and SCT tooling, see
+> including DMS (Database Migration Service) and SCT (Schema Conversion Tool), see
 > [ShipFast Phase 4: Database Migration](/scenarios/shipfast/phases/phase-4-database-migration.md).
 
 ---

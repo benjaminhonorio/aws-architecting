@@ -53,6 +53,9 @@ flowchart TB
 
 ### Comparison
 
+Understanding these two scaling approaches is fundamental - the exam frequently tests when to use
+each:
+
 | Aspect              | Vertical (Scale Up)        | Horizontal (Scale Out)             |
 | ------------------- | -------------------------- | ---------------------------------- |
 | **How**             | Bigger instance            | More instances                     |
@@ -91,7 +94,7 @@ AWS offers four types of load balancers:
 
 ```mermaid
 flowchart TB
-    subgraph OSI["OSI Model"]
+    subgraph OSI["OSI Model (Open Systems Interconnection)"]
         L7["Layer 7: Application<br>HTTP headers, paths, hosts"]
         L4["Layer 4: Transport<br>TCP/UDP ports"]
         L3["Layer 3: Network<br>IP addresses"]
@@ -233,6 +236,9 @@ flowchart LR
 ```
 
 ### Health Check Types
+
+Multiple health check mechanisms work together. Understanding which one does what is important for
+troubleshooting:
 
 | Type                    | Performed By  | Checks                    | Action on Failure      |
 | ----------------------- | ------------- | ------------------------- | ---------------------- |
@@ -508,6 +514,8 @@ flowchart LR
 
 ### TechBooks Scaling Configuration
 
+For TechBooks, we combine multiple policies for comprehensive coverage:
+
 | Policy       | Type            | Configuration                  |
 | ------------ | --------------- | ------------------------------ |
 | **Primary**  | Target Tracking | CPU at 50%                     |
@@ -547,12 +555,12 @@ flowchart TB
 
 **Changes:**
 
-| Aspect                   | Before (EIP)      | After (ALB)      |
-| ------------------------ | ----------------- | ---------------- |
-| **DNS points to**        | Elastic IP        | ALB DNS name     |
-| **SSL termination**      | EC2 instance      | ALB              |
-| **Instance replacement** | Must reassign EIP | Automatic        |
-| **Cost**                 | Free if attached  | ALB hourly + LCU |
+| Aspect                   | Before (EIP)      | After (ALB)                                    |
+| ------------------------ | ----------------- | ---------------------------------------------- |
+| **DNS points to**        | Elastic IP        | ALB DNS name                                   |
+| **SSL termination**      | EC2 instance      | ALB                                            |
+| **Instance replacement** | Must reassign EIP | Automatic                                      |
+| **Cost**                 | Free if attached  | ALB hourly + LCU (Load Balancer Capacity Unit) |
 
 ### Updating DNS
 

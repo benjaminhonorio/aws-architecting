@@ -51,6 +51,9 @@ flowchart TB
 
 ### Key Characteristics
 
+Availability Zones provide the isolation needed to survive infrastructure failures while maintaining
+low-latency connectivity for replication:
+
 | Property                       | Description                                 | WHY It Matters                              |
 | ------------------------------ | ------------------------------------------- | ------------------------------------------- |
 | **Physical separation**        | AZs are miles apart                         | Natural disaster in one won't affect others |
@@ -166,6 +169,9 @@ flowchart TB
 ```
 
 ### WHY Synchronous Replication?
+
+The choice between synchronous and asynchronous replication determines your data loss risk during
+failover:
 
 | Replication Type | How It Works                                    | Data Loss Risk     | Use Case      |
 | ---------------- | ----------------------------------------------- | ------------------ | ------------- |
@@ -308,6 +314,10 @@ traffic becomes a bottleneck.
 
 ### The "Nines" of Availability
 
+Availability is commonly expressed in "nines" - each additional nine represents an order of
+magnitude less downtime. Understanding what each level means in real terms helps set realistic
+expectations:
+
 | Availability      | Downtime/Year | Downtime/Month | Downtime/Week |
 | ----------------- | ------------- | -------------- | ------------- |
 | 99% (two 9s)      | 3.65 days     | 7.2 hours      | 1.68 hours    |
@@ -318,7 +328,7 @@ traffic becomes a bottleneck.
 
 ### AWS RDS SLA
 
-AWS offers **99.95% availability** for Multi-AZ RDS deployments.
+AWS offers a SLA (Service Level Agreement) of **99.95% availability** for Multi-AZ RDS deployments.
 
 **What this means:**
 
@@ -564,7 +574,7 @@ During a deployment, the site went down for 5 minutes and customers complained.
 
 **Next decisions:**
 
-- Add Application Load Balancer (ALB)
+- Add ALB (Application Load Balancer)
 - Deploy EC2 instances in multiple AZs
 - Implement Auto Scaling
 - Achieve true fault tolerance for the web tier

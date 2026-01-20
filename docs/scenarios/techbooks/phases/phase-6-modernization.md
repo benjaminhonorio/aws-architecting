@@ -105,6 +105,9 @@ flowchart LR
 
 ### Lambda Key Concepts
 
+Understanding these Lambda limits is essential for the exam - they help you decide when Lambda is
+appropriate:
+
 | Concept         | Description                        | Limit               |
 | --------------- | ---------------------------------- | ------------------- |
 | **Function**    | Your code + configuration          | N/A                 |
@@ -139,6 +142,9 @@ sequenceDiagram
 
 ### Cold Starts
 
+Cold starts happen when Lambda creates a new execution environment. These factors affect cold start
+duration:
+
 | Factor          | Impact on Cold Start                             |
 | --------------- | ------------------------------------------------ |
 | **Memory size** | More memory = faster init                        |
@@ -147,8 +153,8 @@ sequenceDiagram
 | **VPC**         | VPC adds 1-2 seconds (improved but still slower) |
 
 > **SAA Exam Tip:** Lambda in VPC used to have significant cold start penalties. AWS improved this
-> with Hyperplane ENIs, but there's still some overhead. Only put Lambda in VPC if it needs to
-> access VPC resources.
+> with Hyperplane ENIs (Elastic Network Interfaces), but there's still some overhead. Only put
+> Lambda in VPC if it needs to access VPC resources.
 
 ---
 
@@ -186,7 +192,7 @@ Send order confirmations and shipping updates.
 flowchart LR
     App["EC2 App"] -->|"Publish event"| SQS["SQS Queue<br>email-requests"]
     SQS -->|"Trigger"| Lambda["Lambda<br>send-email"]
-    Lambda -->|"Send"| SES["Amazon SES"]
+    Lambda -->|"Send"| SES["Amazon SES<br>(Simple Email Service)"]
     SES -->|"Email"| User((Customer))
 
     style SQS fill:#fff9c4,color:#000
@@ -219,6 +225,8 @@ flowchart LR
 ```
 
 ### Lambda vs EC2 Decision Framework
+
+This decision matrix helps you choose between Lambda and EC2 based on workload characteristics:
 
 | Characteristic      | Use Lambda              | Use EC2                |
 | ------------------- | ----------------------- | ---------------------- |
@@ -334,12 +342,16 @@ flowchart LR
 
 ### SQS Queue Types
 
+SQS offers two queue types with different trade-offs between throughput and ordering guarantees:
+
 | Type         | Use Case                       | Ordering    | Throughput                   |
 | ------------ | ------------------------------ | ----------- | ---------------------------- |
 | **Standard** | High throughput, at-least-once | Best effort | Unlimited                    |
 | **FIFO**     | Strict order required          | Guaranteed  | 3000 msg/sec (with batching) |
 
 ### SQS Key Concepts
+
+These SQS settings control message handling behavior and are frequently tested on the exam:
 
 | Concept                | Description                           | Default         |
 | ---------------------- | ------------------------------------- | --------------- |
@@ -409,14 +421,16 @@ flowchart LR
 
 ### Redis vs Memcached
 
-| Feature             | Redis                        | Memcached      |
-| ------------------- | ---------------------------- | -------------- |
-| **Data structures** | Strings, lists, sets, hashes | Strings only   |
-| **Persistence**     | Yes (snapshots, AOF)         | No             |
-| **Replication**     | Yes (read replicas)          | No             |
-| **Multi-AZ**        | Yes (automatic failover)     | No             |
-| **Pub/Sub**         | Yes                          | No             |
-| **Use case**        | Complex caching, sessions    | Simple caching |
+Choosing between Redis and Memcached depends on your caching requirements:
+
+| Feature             | Redis                                   | Memcached      |
+| ------------------- | --------------------------------------- | -------------- |
+| **Data structures** | Strings, lists, sets, hashes            | Strings only   |
+| **Persistence**     | Yes (snapshots, AOF - Append Only File) | No             |
+| **Replication**     | Yes (read replicas)                     | No             |
+| **Multi-AZ**        | Yes (automatic failover)                | No             |
+| **Pub/Sub**         | Yes                                     | No             |
+| **Use case**        | Complex caching, sessions               | Simple caching |
 
 ### TechBooks Caching Strategy
 
@@ -627,13 +641,13 @@ sequenceDiagram
 
 ### S3 Bucket Configuration
 
-| Setting         | Value                    | Purpose                          |
-| --------------- | ------------------------ | -------------------------------- |
-| **Bucket name** | techbooks-user-uploads   | User-uploaded content            |
-| **Versioning**  | Enabled                  | Recovery from accidental deletes |
-| **Encryption**  | SSE-S3                   | Encrypt at rest                  |
-| **Lifecycle**   | Move to IA after 90 days | Cost optimization                |
-| **CORS**        | Allow \*.techbooks.com   | Browser uploads                  |
+| Setting         | Value                                        | Purpose                                                  |
+| --------------- | -------------------------------------------- | -------------------------------------------------------- |
+| **Bucket name** | techbooks-user-uploads                       | User-uploaded content                                    |
+| **Versioning**  | Enabled                                      | Recovery from accidental deletes                         |
+| **Encryption**  | SSE-S3 (Server-Side Encryption)              | Encrypt at rest                                          |
+| **Lifecycle**   | Move to IA (Infrequent Access) after 90 days | Cost optimization                                        |
+| **CORS**        | Allow \*.techbooks.com                       | CORS (Cross-Origin Resource Sharing) for browser uploads |
 
 > **SAA Exam Tip:** Presigned URLs allow secure, temporary access to private S3 objects. They can be
 > for upload (PUT) or download (GET). Expiration time is configurable.
@@ -725,6 +739,8 @@ flowchart TB
 
 ### Reserved Instances vs Savings Plans
 
+Both options offer significant discounts, but with different flexibility trade-offs:
+
 | Feature         | Reserved Instances     | Savings Plans        |
 | --------------- | ---------------------- | -------------------- |
 | **Commitment**  | Specific instance type | $/hour spend         |
@@ -804,6 +820,8 @@ flowchart LR
 ```
 
 ### Endpoint Types
+
+AWS offers two types of VPC endpoints - knowing which services support which type is exam-relevant:
 
 | Type          | Services     | Cost      | How It Works      |
 | ------------- | ------------ | --------- | ----------------- |

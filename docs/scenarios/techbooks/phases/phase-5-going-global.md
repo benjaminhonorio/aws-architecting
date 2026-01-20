@@ -22,7 +22,8 @@ and Asia, and orders are coming in from around the world.
 
 **The founder asks:** "Can we make the site fast for everyone, everywhere?"
 
-**Your decision:** Implement CloudFront CDN and optimize DNS with Route 53.
+**Your decision:** Implement CloudFront CDN (Content Delivery Network) and optimize DNS with
+Route 53.
 
 ---
 
@@ -183,6 +184,8 @@ flowchart TB
 
 ### Edge Locations vs Regional Edge Caches
 
+CloudFront uses a two-tier caching architecture to balance speed and storage capacity:
+
 | Component                | Count | Purpose                    |
 | ------------------------ | ----- | -------------------------- |
 | **Edge Locations**       | 450+  | Serve content to end users |
@@ -235,6 +238,8 @@ flowchart TB
 ```
 
 ### Origin Types
+
+CloudFront can pull content from various origin types. Choose based on where your content lives:
 
 | Origin Type       | Use Case        | Example                   |
 | ----------------- | --------------- | ------------------------- |
@@ -302,6 +307,8 @@ techbooks-static/
 ```
 
 ### S3 vs EC2 for Static Content
+
+This comparison shows why offloading static content to S3 is a best practice:
 
 | Aspect              | EC2                 | S3 + CloudFront       |
 | ------------------- | ------------------- | --------------------- |
@@ -384,16 +391,16 @@ flowchart LR
 ```
 
 > **SAA Exam Tip:** OAC (Origin Access Control) is the modern replacement for OAI (Origin Access
-> Identity). OAC supports more features including SSE-KMS encryption. Always use OAC for new
-> distributions.
+> Identity - legacy method). OAC supports more features including SSE-KMS encryption. Always use OAC
+> for new distributions.
 
 ---
 
 ## Step 7: Cache Behaviors and TTL
 
-### Time To Live (TTL)
+### TTL (Time To Live)
 
-**TTL** determines how long CloudFront caches content before checking the origin.
+**TTL (Time To Live)** determines how long CloudFront caches content before checking the origin.
 
 ```mermaid
 flowchart LR
@@ -415,6 +422,8 @@ flowchart LR
 ```
 
 ### TTL Settings
+
+CloudFront uses three TTL values that work together to control caching behavior:
 
 | Setting         | Description                    | Default           |
 | --------------- | ------------------------------ | ----------------- |
@@ -548,6 +557,8 @@ flowchart TB
 
 ### Routing Policies
 
+Route 53 offers multiple routing policies - knowing when to use each is important for the exam:
+
 | Policy           | Use Case                     | Example                 |
 | ---------------- | ---------------------------- | ----------------------- |
 | **Simple**       | Single resource              | One ALB                 |
@@ -632,13 +643,13 @@ flowchart LR
 
 ### Additional Security Options
 
-| Feature                    | What It Does              | Use Case                 |
-| -------------------------- | ------------------------- | ------------------------ |
-| **AWS WAF**                | Web Application Firewall  | Block SQL injection, XSS |
-| **Geo Restriction**        | Block/allow by country    | Compliance, licensing    |
-| **Signed URLs**            | Time-limited, secure URLs | Paid content, downloads  |
-| **Signed Cookies**         | Multiple file access      | Premium subscriptions    |
-| **Field-Level Encryption** | Encrypt specific fields   | Credit cards, PII        |
+| Feature                    | What It Does              | Use Case                                        |
+| -------------------------- | ------------------------- | ----------------------------------------------- |
+| **AWS WAF**                | Web Application Firewall  | Block SQL injection, XSS (Cross-Site Scripting) |
+| **Geo Restriction**        | Block/allow by country    | Compliance, licensing                           |
+| **Signed URLs**            | Time-limited, secure URLs | Paid content, downloads                         |
+| **Signed Cookies**         | Multiple file access      | Premium subscriptions                           |
+| **Field-Level Encryption** | Encrypt specific fields   | Credit cards, PII                               |
 
 ```mermaid
 flowchart TB

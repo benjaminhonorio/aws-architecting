@@ -52,6 +52,9 @@ flowchart TB
 
 ### WHY Custom VPC Instead of Default VPC?
 
+AWS provides a default VPC in every region, but understanding when to use a custom VPC is essential
+for production workloads and the exam:
+
 | Aspect                   | Default VPC            | Custom VPC                     | WHY It Matters                                                  |
 | ------------------------ | ---------------------- | ------------------------------ | --------------------------------------------------------------- |
 | **CIDR Block**           | Fixed 172.31.0.0/16    | You choose (e.g., 10.0.0.0/16) | Avoid IP conflicts when connecting to on-premises or other VPCs |
@@ -71,7 +74,8 @@ flowchart TB
 **CIDR (Classless Inter-Domain Routing)** defines your IP address range using notation like
 `10.0.0.0/16`.
 
-The number after `/` tells you how many IP addresses you get:
+The number after `/` tells you how many IP addresses you get. This table shows common CIDR sizes
+you'll encounter on the exam:
 
 | CIDR | IP Addresses | Use Case                     |
 | ---- | ------------ | ---------------------------- |
@@ -110,13 +114,15 @@ So a `/24` subnet gives you **251 usable IPs**, not 256.
 
 For Phase 1, we'll keep it simple but plan for growth:
 
-| Component             | CIDR         | Purpose                    |
-| --------------------- | ------------ | -------------------------- |
-| VPC                   | 10.0.0.0/16  | Room to grow               |
-| Public Subnet (AZ-a)  | 10.0.1.0/24  | Web servers, bastion hosts |
-| Public Subnet (AZ-b)  | 10.0.2.0/24  | Future HA                  |
-| Private Subnet (AZ-a) | 10.0.10.0/24 | Databases (future)         |
-| Private Subnet (AZ-b) | 10.0.20.0/24 | Future HA                  |
+| Component             | CIDR         | Purpose                       |
+| --------------------- | ------------ | ----------------------------- |
+| VPC                   | 10.0.0.0/16  | Room to grow                  |
+| Public Subnet (AZ-a)  | 10.0.1.0/24  | Web servers, bastion hosts    |
+| Public Subnet (AZ-b)  | 10.0.2.0/24  | Future HA (High Availability) |
+| Private Subnet (AZ-a) | 10.0.10.0/24 | Databases (future)            |
+| Private Subnet (AZ-b) | 10.0.20.0/24 | Future HA                     |
+
+> **Note:** AZ = Availability Zone (isolated data centers within a region).
 
 **WHY this design?**
 
@@ -242,8 +248,8 @@ sequenceDiagram
     SG->>User: Response delivered
 ```
 
-If security groups were **stateless** (like NACLs), you'd need to explicitly allow the response
-traffic on ephemeral ports (1024-65535).
+If security groups were **stateless** (like NACLs - Network Access Control Lists), you'd need to
+explicitly allow the response traffic on ephemeral ports (1024-65535).
 
 ### Our TechBooks Security Group
 
@@ -274,11 +280,11 @@ For Phase 1, our EC2 needs:
 
 For our MVP:
 
-| Decision          | Choice            | WHY                                                      |
-| ----------------- | ----------------- | -------------------------------------------------------- |
-| **Instance Type** | t3.micro          | Free tier eligible, burstable, enough for 100 users/day  |
-| **AMI**           | Amazon Linux 2023 | Free, optimized for AWS, long-term support               |
-| **Storage**       | 20GB gp3          | gp3 is cheaper than gp2 with better baseline performance |
+| Decision          | Choice            | WHY                                                                            |
+| ----------------- | ----------------- | ------------------------------------------------------------------------------ |
+| **Instance Type** | t3.micro          | Free tier eligible, burstable, enough for 100 users/day                        |
+| **AMI**           | Amazon Linux 2023 | AMI (Amazon Machine Image) - Free, optimized for AWS, long-term support        |
+| **Storage**       | 20GB gp3          | gp3 (General Purpose SSD) is cheaper than gp2 with better baseline performance |
 
 ### Instance Types Decoded
 
@@ -324,7 +330,8 @@ flowchart LR
 
 ### WHY Elastic IP Instead of Auto-Assigned Public IP?
 
-When you launch an EC2 instance, you can get a public IP two ways:
+When you launch an EC2 instance, you can get a public IP two ways. Understanding the difference is
+crucial for designing stable architectures:
 
 | Feature          | Auto-Assigned Public IP  | Elastic IP (EIP)           |
 | ---------------- | ------------------------ | -------------------------- |
@@ -409,7 +416,7 @@ running 24/7. Usage beyond 750 hours is charged at $0.005/hr.
 
 **When NOT to use Elastic IP:**
 
-- Behind a Load Balancer (the LB has its own DNS name)
+- Behind a Load Balancer (the Load Balancer has its own DNS name)
 - Using Route 53 with health checks (can auto-failover)
 - Auto Scaling groups (instances are disposable)
 
