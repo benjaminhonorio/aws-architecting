@@ -8,6 +8,7 @@
   - [Phase 4: Auto Scaling](scenarios/techbooks/phases/phase-4-auto-scaling.md)
   - [Phase 5: Going Global](scenarios/techbooks/phases/phase-5-going-global.md)
   - [Phase 6: Modernization](scenarios/techbooks/phases/phase-6-modernization.md)
+  - [Phase 7: Infrastructure as Code](scenarios/techbooks/phases/phase-7-infrastructure-as-code.md)
 - **ShipFast Logistics Scenario**
   - [Overview](scenarios/shipfast/00-overview.md)
   - [Phase 1: On-Premises Baseline](scenarios/shipfast/phases/phase-1-on-premises-baseline.md)
@@ -16,6 +17,7 @@
   - [Phase 4: Database Migration](scenarios/shipfast/phases/phase-4-database-migration.md)
   - [Phase 5: Hybrid Storage](scenarios/shipfast/phases/phase-5-hybrid-storage.md)
   - [Phase 6: Workload Migration](scenarios/shipfast/phases/phase-6-workload-migration.md)
+  - [Phase 7: Disaster Recovery](scenarios/shipfast/phases/phase-7-disaster-recovery.md)
 - **MedVault Security Scenario**
   - [Overview](scenarios/medvault/00-overview.md)
   - [Phase 1: Identity Foundation](scenarios/medvault/phases/phase-1-identity-foundation.md)
@@ -24,6 +26,7 @@
   - [Phase 4: Logging & Monitoring](scenarios/medvault/phases/phase-4-logging-monitoring.md)
   - [Phase 5: Multi-Account Strategy](scenarios/medvault/phases/phase-5-multi-account.md)
   - [Phase 6: Threat Detection](scenarios/medvault/phases/phase-6-threat-detection.md)
+  - [Phase 7: Data Immutability](scenarios/medvault/phases/phase-7-data-immutability.md)
 - **EventPro Event-Driven Scenario**
   - [Overview](scenarios/eventpro/00-overview.md)
   - [Phase 1: The Crashing Monolith](scenarios/eventpro/phases/phase-1-crashing-monolith.md)
@@ -32,3 +35,20 @@
   - [Phase 4: Step Functions Workflows](scenarios/eventpro/phases/phase-4-step-functions-workflows.md)
   - [Phase 5: EventBridge Routing](scenarios/eventpro/phases/phase-5-eventbridge-routing.md)
   - [Phase 6: Event-Driven Observability](scenarios/eventpro/phases/phase-6-observability.md)
+  - [Phase 7: Container Deployment](scenarios/eventpro/phases/phase-7-container-deployment.md)
+- **DataLake Corp Analytics Scenario**
+  - [Overview](scenarios/datalake/00-overview.md)
+  - [Phase 1: Data Lake Foundation](scenarios/datalake/phases/phase-1-data-lake-foundation.md)
+  - [Phase 2: Query Without Servers](scenarios/datalake/phases/phase-2-query-without-servers.md)
+  - [Phase 3: ETL Pipelines](scenarios/datalake/phases/phase-3-etl-pipelines.md)
+  - [Phase 4: Enterprise Warehouse](scenarios/datalake/phases/phase-4-enterprise-warehouse.md)
+  - [Phase 5: Real-Time Analytics](scenarios/datalake/phases/phase-5-real-time-analytics.md)
+  - [Phase 6: Data Governance](scenarios/datalake/phases/phase-6-data-governance.md)
+- **Cheat Sheets**
+  - [Exam Essentials](cheat-sheets/exam-essentials.md)
+  - [SSM Run Command](cheat-sheets/ssm-run-command.md)
+  - [AI/ML Services](cheat-sheets/ai-ml-services.md)
+  - [Redshift Spectrum](cheat-sheets/redshift-spectrum.md)
+  - [EBS Snapshots Archive](cheat-sheets/ebs-snapshots-archive.md)
+  - [QLDB Ledger Database](cheat-sheets/qldb-ledger-database.md)
+  - [FSx Comparison](cheat-sheets/fsx-comparison.md)

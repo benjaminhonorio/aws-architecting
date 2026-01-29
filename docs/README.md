@@ -105,3 +105,29 @@ flowchart LR
     style P5 fill:#c8e6c9,color:#000
     style P6 fill:#bbdefb,color:#000
 ```
+
+---
+
+### [DataLake Corp: Data at Scale](scenarios/datalake/00-overview.md)
+
+Learn AWS analytics and data services through the journey of a retail analytics company building a
+modern cloud data platform from Excel reports to real-time fraud detection.
+
+**Covers**: S3 Data Lake, Athena, Glue, Redshift, Redshift Spectrum, AQUA, Kinesis, Lake Formation,
+ElastiCache, Step Functions
+
+```mermaid
+flowchart LR
+    P1["Phase 1<br>S3 Lake"] --> P2["Phase 2<br>Athena"]
+    P2 --> P3["Phase 3<br>Glue ETL"]
+    P3 --> P4["Phase 4<br>Redshift"]
+    P4 --> P5["Phase 5<br>Kinesis"]
+    P5 --> P6["Phase 6<br>Governance"]
+
+    style P1 fill:#e3f2fd,color:#000
+    style P2 fill:#e3f2fd,color:#000
+    style P3 fill:#fff3e0,color:#000
+    style P4 fill:#fff3e0,color:#000
+    style P5 fill:#e8f5e9,color:#000
+    style P6 fill:#e8f5e9,color:#000
+```
