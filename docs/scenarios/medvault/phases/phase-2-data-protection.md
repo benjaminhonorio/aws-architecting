@@ -81,6 +81,58 @@ provide the most control but require more management. Choose based on your compl
 > **Exam Tip**: Customer managed keys give you control over the key policy, deletion, and rotation.
 > Use them when compliance requires it.
 
+### KMS Key Types Deep Dive
+
+Understanding the full spectrum of KMS key options is critical for the exam:
+
+| Key Type                  | Ownership        | Management | Key Material    | Use Case                            |
+| ------------------------- | ---------------- | ---------- | --------------- | ----------------------------------- |
+| **AWS owned keys**        | AWS              | AWS        | AWS             | Default encryption (invisible)      |
+| **AWS managed keys**      | Customer account | AWS        | AWS             | SSE-KMS default, visible in console |
+| **Customer managed keys** | Customer account | Customer   | AWS or imported | Full control, compliance            |
+
+### Symmetric vs Asymmetric Keys
+
+| Aspect                  | Symmetric (AES-256)            | Asymmetric (RSA/ECC)            |
+| ----------------------- | ------------------------------ | ------------------------------- |
+| **Operations**          | Encrypt + Decrypt              | Sign/Verify OR Encrypt (public) |
+| **Key material**        | Never leaves KMS               | Public key downloadable         |
+| **AWS service support** | S3, EBS, RDS, DynamoDB, Lambda | Limited (signing use cases)     |
+| **Performance**         | Faster                         | Slower                          |
+
+```mermaid
+flowchart TB
+    subgraph Symmetric["Symmetric Key (Default)"]
+        S1["Same key encrypts<br>and decrypts"]
+        S2["256-bit AES"]
+        S3["Never leaves KMS"]
+    end
+
+    subgraph Asymmetric["Asymmetric Key"]
+        A1["Public key: encrypt/verify"]
+        A2["Private key: decrypt/sign"]
+        A3["Public key downloadable"]
+    end
+
+    style Symmetric fill:#c8e6c9,color:#000
+    style Asymmetric fill:#fff9c4,color:#000
+    linkStyle default stroke:#000,stroke-width:2px
+```
+
+### Choosing the Right Key Type
+
+| Scenario                              | Key Type             | Why                            |
+| ------------------------------------- | -------------------- | ------------------------------ |
+| "Encrypt S3/RDS/DynamoDB data"        | **Symmetric**        | Only option supported          |
+| "Don't want to manage keys"           | **AWS managed**      | AWS handles rotation           |
+| "Need audit trail + key control"      | **Customer managed** | Full CloudTrail, custom policy |
+| "Sign data outside AWS"               | **Asymmetric**       | Public key can be shared       |
+| "Encrypt outside AWS, decrypt in AWS" | **Asymmetric**       | Public key encryption          |
+
+> **SAA Exam Tip:** "256-bit key that never leaves KMS" + "don't want to own/manage" = **Symmetric
+> AWS managed key**. Asymmetric keys CANNOT be used with S3, EBS, RDS, DynamoDB, or Lambda
+> encryption.
+
 ### Envelope Encryption
 
 KMS uses envelope encryption for efficiency:

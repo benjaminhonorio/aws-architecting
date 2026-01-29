@@ -126,6 +126,43 @@ flowchart LR
 }
 ```
 
+### VPC Endpoint Conditions (Exam Favorite)
+
+When using KMS or other services via VPC endpoints, you can restrict access using IAM conditions:
+
+| Condition Key    | Restricts By    | Granularity          |
+| ---------------- | --------------- | -------------------- |
+| `aws:SourceVpc`  | VPC ID          | All endpoints in VPC |
+| `aws:SourceVpce` | VPC Endpoint ID | Specific endpoint    |
+
+**Example: KMS Key Policy with Endpoint Restriction**
+
+```json
+{
+  "Effect": "Allow",
+  "Principal": { "AWS": "arn:aws:iam::111122223333:role/AppRole" },
+  "Action": ["kms:Encrypt", "kms:Decrypt"],
+  "Resource": "*",
+  "Condition": {
+    "StringEquals": {
+      "aws:SourceVpce": "vpce-1234567890abcdef0"
+    }
+  }
+}
+```
+
+**When to use which:**
+
+| Scenario                                 | Use              | Why                                        |
+| ---------------------------------------- | ---------------- | ------------------------------------------ |
+| "Restrict to specific endpoint"          | `aws:SourceVpce` | Most granular control                      |
+| "Restrict to any endpoint in VPC"        | `aws:SourceVpc`  | Less restrictive, allows all VPC endpoints |
+| "Restrict to VPC but allow any endpoint" | `aws:SourceVpc`  | Simpler when you have multiple endpoints   |
+
+> **Exam Tip:** "Restrict KMS access to specific VPC endpoint" = `aws:SourceVpce` (endpoint ID).
+> "Restrict to VPC" = `aws:SourceVpc` (VPC ID). `aws:SourceVpce` is more restrictive and follows
+> least-privilege better.
+
 ### Interface Endpoint Deep Dive
 
 ```mermaid

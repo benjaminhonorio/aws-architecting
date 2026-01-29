@@ -180,6 +180,57 @@ answer:
 
 > **Exam Tip**: MGN is the recommended service. SMS is legacy and being phased out.
 
+## AWS Application Discovery Service
+
+Before migrating, you need to understand what you're migrating. **Application Discovery Service**
+collects detailed information about your on-premises servers.
+
+### Discovery Methods
+
+```mermaid
+flowchart TB
+    subgraph Agentless["Agentless Discovery"]
+        OVA["OVA Appliance"]
+        vCenter["vCenter Integration"]
+        Metrics1["CPU, Memory, Disk<br>Network utilization"]
+    end
+
+    subgraph AgentBased["Agent-Based Discovery"]
+        Agent["Discovery Agent"]
+        Detailed["Detailed metrics<br>+ running processes<br>+ network connections"]
+    end
+
+    OVA --> vCenter --> Metrics1
+    Agent --> Detailed
+
+    style Agentless fill:#c8e6c9,color:#000
+    style AgentBased fill:#fff9c4,color:#000
+    linkStyle default stroke:#000,stroke-width:2px
+```
+
+### Agentless vs Agent-Based Discovery
+
+| Aspect                 | Agentless                  | Agent-Based                         |
+| ---------------------- | -------------------------- | ----------------------------------- |
+| **Best for**           | VMware environments        | Physical servers, detailed analysis |
+| **Installation**       | OVA appliance in vCenter   | Agent on each server                |
+| **Metrics**            | CPU, memory, disk, network | All above + processes, connections  |
+| **Dependency mapping** | Limited                    | Full application dependencies       |
+| **Effort**             | Lower (one appliance)      | Higher (agent per server)           |
+
+### When to Use Which
+
+| Scenario                            | Recommended Discovery                       |
+| ----------------------------------- | ------------------------------------------- |
+| VMware vCenter environment          | **Agentless** (simpler, sufficient metrics) |
+| Physical servers                    | **Agent-based** (only option)               |
+| Need application dependency mapping | **Agent-based** (captures connections)      |
+| Quick assessment, limited time      | **Agentless** (faster deployment)           |
+
+> **Exam Tip:** "VMware vCenter environment" + "assess resource utilization for EC2 sizing" =
+> **Agentless discovery** with Application Discovery Service. Agent-based is only needed for
+> physical servers or detailed dependency analysis.
+
 ## AWS Snow Family
 
 For very large data migrations where network transfer isn't practical:

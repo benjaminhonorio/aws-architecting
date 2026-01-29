@@ -528,6 +528,61 @@ For TechBooks, we combine multiple policies for comprehensive coverage:
 
 ---
 
+## Step 7b: ASG Termination Policies
+
+### Which Instance Gets Terminated First?
+
+When scaling in, Auto Scaling must choose which instance to terminate. **Termination policies**
+control this decision.
+
+```mermaid
+flowchart TB
+    subgraph ASG["Auto Scaling Group - Scale In"]
+        EC2a["EC2-1<br>Old AMI<br>Launch Template v1"]
+        EC2b["EC2-2<br>New AMI<br>Launch Template v2"]
+        EC2c["EC2-3<br>New AMI<br>Launch Template v2"]
+    end
+
+    Policy["OldestLaunchTemplate<br>Policy"]
+    Terminate["Terminate EC2-1"]
+
+    ASG --> Policy
+    Policy --> Terminate
+
+    style EC2a fill:#ffcdd2,color:#000
+    style EC2b fill:#c8e6c9,color:#000
+    style EC2c fill:#c8e6c9,color:#000
+    style Policy fill:#fff9c4,color:#000
+    linkStyle default stroke:#000,stroke-width:2px
+```
+
+### Termination Policies Comparison
+
+| Policy                        | Terminates First                                | Use Case                          |
+| ----------------------------- | ----------------------------------------------- | --------------------------------- |
+| **Default**                   | AZ balance → oldest config → closest to billing | General use                       |
+| **OldestLaunchTemplate**      | Instances with older launch template versions   | **Phasing out old AMIs**          |
+| **OldestInstance**            | Longest-running instances                       | Keep fleet fresh                  |
+| **NewestInstance**            | Most recently launched                          | Testing new configs               |
+| **ClosestToNextInstanceHour** | Nearest to billing boundary                     | Cost optimization (legacy hourly) |
+| **OldestLaunchConfiguration** | Older launch configurations                     | Migrate to launch templates       |
+| **AllocationStrategy**        | Based on Spot allocation                        | Spot Fleet capacity               |
+
+### TechBooks AMI Update Scenario
+
+When deploying a new application version with an updated AMI:
+
+1. Create new Launch Template version with new AMI
+2. Update ASG to use new Launch Template version
+3. Set termination policy to **OldestLaunchTemplate**
+4. Scale out (adds instances with new AMI)
+5. Scale in (removes instances with old AMI first)
+
+> **SAA Exam Tip:** "Phase out instances with old AMI" = **OldestLaunchTemplate**. "Reduce costs" ≠
+> ClosestToNextInstanceHour (only useful for legacy hourly billing, not modern per-second billing).
+
+---
+
 ## Step 8: Removing the Elastic IP
 
 ### WHY We No Longer Need Elastic IP

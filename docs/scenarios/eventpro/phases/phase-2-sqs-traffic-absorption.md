@@ -257,6 +257,100 @@ preferred:
 
 ---
 
+## Advanced SQS Patterns
+
+### Cross-Account SQS Access
+
+When multiple AWS accounts need to send messages to a centralized queue (like EventPro's partner
+integrations):
+
+```mermaid
+flowchart LR
+    subgraph Account1["Partner Account A"]
+        App1["Partner App"]
+    end
+
+    subgraph Account2["Partner Account B"]
+        App2["Partner App"]
+    end
+
+    subgraph EventPro["EventPro Account"]
+        SQS["SQS Queue<br>+ Queue Policy"]
+        Worker["Workers"]
+    end
+
+    App1 -->|"SendMessage"| SQS
+    App2 -->|"SendMessage"| SQS
+    SQS --> Worker
+
+    style EventPro fill:#e3f2fd,color:#000
+    style SQS fill:#fff9c4,color:#000
+    linkStyle default stroke:#000,stroke-width:2px
+```
+
+**Two approaches to cross-account access:**
+
+| Method                                | Complexity | Best For                             |
+| ------------------------------------- | ---------- | ------------------------------------ |
+| **SQS Queue Policy** (resource-based) | Simple     | Multiple accounts sending messages   |
+| **IAM Role + AssumeRole**             | Complex    | Tight control, temporary credentials |
+
+**Queue Policy Example (Recommended):**
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": { "AWS": ["arn:aws:iam::111111111111:root", "arn:aws:iam::222222222222:root"] },
+      "Action": "sqs:SendMessage",
+      "Resource": "arn:aws:sqs:us-east-1:999999999999:partner-events"
+    }
+  ]
+}
+```
+
+> **SAA Exam Tip:** "Allow other AWS accounts to send messages to SQS" = **Queue policy**
+> (resource-based). No need for cross-account role assumption - queue policies are simpler and more
+> scalable.
+
+### SQS as Database Write Buffer
+
+When RDS hits connection limits or IOPS ceiling during traffic spikes:
+
+```mermaid
+flowchart LR
+    subgraph Problem["Without Buffer"]
+        App1["App"] -->|"Direct writes"| RDS1[("RDS<br>Connection limit!")]
+    end
+
+    subgraph Solution["With SQS Buffer"]
+        App2["App"] --> SQS["SQS Queue"]
+        SQS --> Lambda["Lambda/Worker"]
+        Lambda -->|"Controlled rate"| RDS2[("RDS<br>Sustainable load")]
+    end
+
+    style Problem fill:#ffcdd2,color:#000
+    style Solution fill:#c8e6c9,color:#000
+    style SQS fill:#fff9c4,color:#000
+    linkStyle default stroke:#000,stroke-width:2px
+```
+
+**Symptoms that indicate you need a write buffer:**
+
+| Problem                       | Without SQS             | With SQS Buffer                        |
+| ----------------------------- | ----------------------- | -------------------------------------- |
+| "Too many connections" errors | ❌ App crashes          | ✅ Queue absorbs spike                 |
+| IOPS limit reached            | ❌ Writes fail          | ✅ Workers process at sustainable rate |
+| Write latency spikes          | ❌ User timeouts        | ✅ Async response, smooth processing   |
+| Traffic burst (flash sale)    | ❌ Database overwhelmed | ✅ Queue buffers thousands of requests |
+
+> **SAA Exam Tip:** "RDS showing too many connections during traffic spike" = **SQS buffer**
+> (decouple writes), NOT vertical scaling, NOT read replicas (those help reads, not writes).
+
+---
+
 ## Putting It All Together
 
 ### Phase 2 Architecture

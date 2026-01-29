@@ -586,6 +586,56 @@ techbooks.com → CloudFront distribution (d1234.cloudfront.net)
 > **SAA Exam Tip:** Alias records are Route 53-specific. They're free for queries to AWS resources
 > and work with zone apex. Use Alias instead of CNAME for AWS resources.
 
+### Route 53 Failover Deep Dive
+
+For disaster recovery scenarios where you have primary AWS resources and a backup (on-premises or
+secondary region):
+
+```mermaid
+flowchart TB
+    subgraph R53["Route 53 Failover"]
+        Primary["Primary Record<br>AWS ALB<br>Evaluate Target Health = Yes"]
+        Secondary["Secondary Record<br>On-premises server<br>Health Check attached"]
+    end
+
+    subgraph AWS["AWS (Primary)"]
+        ALB["ALB"]
+        EC2["EC2 Fleet"]
+    end
+
+    subgraph OnPrem["On-Premises (Secondary)"]
+        Server["Backup Server"]
+        HC["Route 53<br>Health Check"]
+    end
+
+    Primary --> ALB --> EC2
+    Secondary --> Server
+    HC --> Server
+
+    style R53 fill:#e3f2fd,color:#000
+    style AWS fill:#c8e6c9,color:#000
+    style OnPrem fill:#fff9c4,color:#000
+    linkStyle default stroke:#000,stroke-width:2px
+```
+
+### Evaluate Target Health vs Health Checks
+
+| Configuration                    | Use For                                   | How It Works                                      |
+| -------------------------------- | ----------------------------------------- | ------------------------------------------------- |
+| **Evaluate Target Health = Yes** | AWS resources (ALB, CloudFront)           | Route 53 automatically checks ALB's target health |
+| **Route 53 Health Check**        | Non-AWS resources (on-prem, other clouds) | You create explicit health check endpoint         |
+
+**Failover Record Configuration:**
+
+| Record                  | Type           | Setting                        |
+| ----------------------- | -------------- | ------------------------------ |
+| **Primary (AWS)**       | Alias to ALB   | `Evaluate Target Health = Yes` |
+| **Secondary (On-prem)** | A record to IP | Attach Route 53 Health Check   |
+
+> **SAA Exam Tip:** For AWS-to-on-premises failover: use **Evaluate Target Health** for AWS
+> resources, use **explicit Health Checks** for non-AWS resources. You need **two separate failover
+> records** (primary + secondary), not one combined record.
+
 ---
 
 ## Step 10: SSL/TLS with ACM
