@@ -36,6 +36,8 @@ business decisions:
   Gateway, FSx, S3)
 - [**Phase 6**: Complete Migration](scenarios/shipfast/phases/phase-6-workload-migration.md) (MGN,
   Snow Family)
+- [**Phase 7**: Disaster Recovery](scenarios/shipfast/phases/phase-7-disaster-recovery.md) (EBS
+  Snapshots, Aurora Global, AWS Backup)
 
 ## Migration Journey Map
 
@@ -46,6 +48,7 @@ flowchart LR
     P3 --> P4["Phase 4<br>Database<br>Migration"]
     P4 --> P5["Phase 5<br>Hybrid<br>Storage"]
     P5 --> P6["Phase 6<br>Complete<br>Migration"]
+    P6 --> P7["Phase 7<br>Disaster<br>Recovery"]
 
     style P1 fill:#ffcdd2,color:#000
     style P2 fill:#fff9c4,color:#000
@@ -53,11 +56,12 @@ flowchart LR
     style P4 fill:#c8e6c9,color:#000
     style P5 fill:#c8e6c9,color:#000
     style P6 fill:#bbdefb,color:#000
+    style P7 fill:#e1bee7,color:#000
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
 **Legend**: Red = On-prem | Yellow = Hybrid connectivity | Green = Data migration | Blue = Workload
-migration
+migration | Purple = Disaster Recovery
 
 ## Current State: The Datacenter
 

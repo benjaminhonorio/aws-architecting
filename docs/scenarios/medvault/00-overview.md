@@ -39,6 +39,8 @@ decisions:
   (Organizations, SCPs, Control Tower)
 - [**Phase 6**: Threat Detection](scenarios/medvault/phases/phase-6-threat-detection.md) (GuardDuty,
   Security Hub, Macie)
+- [**Phase 7**: Data Immutability](scenarios/medvault/phases/phase-7-data-immutability.md) (S3
+  Object Lock, Vault Lock, RDS Snapshots)
 
 ## Security Journey Map
 
@@ -49,6 +51,7 @@ flowchart LR
     P3 --> P4["Phase 4<br>Logging &<br>Monitoring"]
     P4 --> P5["Phase 5<br>Multi-<br>Account"]
     P5 --> P6["Phase 6<br>Threat<br>Detection"]
+    P6 --> P7["Phase 7<br>Data<br>Immutability"]
 
     style P1 fill:#e8eaf6,color:#000
     style P2 fill:#e8eaf6,color:#000
@@ -56,11 +59,12 @@ flowchart LR
     style P4 fill:#fff3e0,color:#000
     style P5 fill:#e8f5e9,color:#000
     style P6 fill:#ffebee,color:#000
+    style P7 fill:#fff9c4,color:#000
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
 **Legend**: Purple = Identity & Data | Orange = Network & Audit | Green = Governance | Red =
-Detection
+Detection | Yellow = Compliance
 
 ## HIPAA on AWS - The Foundation
 

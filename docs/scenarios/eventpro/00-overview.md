@@ -33,6 +33,8 @@ high-traffic applications:
   Event-driven integration
 - [**Phase 6**: Event-Driven Observability](scenarios/eventpro/phases/phase-6-observability.md) -
   Tracing and monitoring
+- [**Phase 7**: Container Deployment](scenarios/eventpro/phases/phase-7-container-deployment.md) -
+  ECS, EKS, IRSA
 
 ## Architecture Evolution Map
 
@@ -43,6 +45,7 @@ flowchart LR
     P3 --> P4["Phase 4<br>Step Fn<br>Workflows"]
     P4 --> P5["Phase 5<br>EventBridge<br>Routing"]
     P5 --> P6["Phase 6<br>X-Ray<br>Observable"]
+    P6 --> P7["Phase 7<br>Containers<br>ECS/EKS"]
 
     style P1 fill:#ffcdd2,color:#000
     style P2 fill:#fff9c4,color:#000
@@ -50,6 +53,7 @@ flowchart LR
     style P4 fill:#c8e6c9,color:#000
     style P5 fill:#c8e6c9,color:#000
     style P6 fill:#bbdefb,color:#000
+    style P7 fill:#e1bee7,color:#000
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
@@ -63,6 +67,7 @@ flowchart LR
 | 4     | Step Functions, SNS       | Saga pattern, workflow orchestration      |
 | 5     | EventBridge               | Event routing, fan-out, scheduling        |
 | 6     | X-Ray, CloudWatch, Lambda | Distributed tracing, observability        |
+| 7     | ECS, EKS, ECR, App Mesh   | Container orchestration, IRSA, VPC Link   |
 
 ## SAA Exam Domain Mapping
 

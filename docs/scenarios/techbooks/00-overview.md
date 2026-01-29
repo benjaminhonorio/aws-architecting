@@ -22,6 +22,8 @@ decisions:
   53, S3)
 - [**Phase 6**: Modernization](scenarios/techbooks/phases/phase-6-modernization.md) (Lambda, SQS,
   ElastiCache)
+- [**Phase 7**: Infrastructure as Code](scenarios/techbooks/phases/phase-7-infrastructure-as-code.md)
+  (CloudFormation, cfn-init, ACM)
 
 ## Architecture Evolution Map
 
@@ -32,6 +34,7 @@ flowchart LR
     P3 --> P4["Phase 4<br>Auto Scaling<br>ALB"]
     P4 --> P5["Phase 5<br>CloudFront<br>Global"]
     P5 --> P6["Phase 6<br>Serverless<br>Modern"]
+    P6 --> P7["Phase 7<br>IaC<br>CloudFormation"]
 
     style P1 fill:#e1f5fe,color:#000
     style P2 fill:#e1f5fe,color:#000
@@ -39,6 +42,7 @@ flowchart LR
     style P4 fill:#fff3e0,color:#000
     style P5 fill:#e8f5e9,color:#000
     style P6 fill:#e8f5e9,color:#000
+    style P7 fill:#bbdefb,color:#000
     linkStyle default stroke:#000,stroke-width:2px
 ```
 
